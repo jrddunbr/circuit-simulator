@@ -713,9 +713,9 @@ public abstract class CircuitElm
         }
         double cadd = cur * currentMult;
     /*if (cur != 0 && cadd <= .05 && cadd >= -.05)
-	  cadd = (cadd < 0) ? -.05 : .05;*/
+      cadd = (cadd < 0) ? -.05 : .05;*/
         cadd %= 8;
-	/*if (cadd > 8)
+    /*if (cadd > 8)
 	  cadd = 8;
 	  if (cadd < -8)
 	  cadd = -8;*/

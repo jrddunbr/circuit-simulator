@@ -39,7 +39,7 @@ public class DiacElm
 
     public boolean nonLinear() {return true;}
 
-    public int getDumpType() { return 185; }
+    public int getDumpType() { return 203; }
 
     public String dump()
     {

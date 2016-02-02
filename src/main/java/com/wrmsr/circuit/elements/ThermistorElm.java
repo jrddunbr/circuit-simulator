@@ -39,7 +39,7 @@ public class ThermistorElm
 
     public boolean nonLinear() {return true;}
 
-    public int getDumpType() { return 188; }
+    public int getDumpType() { return 192; }
 
     public String dump()
     {

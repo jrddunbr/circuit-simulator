@@ -220,7 +220,7 @@ public class TransLineElm
     {
         return false;
     /*if (comparePair(n1, n2, 0, 1))
-	  return true;
+      return true;
 	  if (comparePair(n1, n2, 2, 3))
 	  return true;
 	  return false;*/

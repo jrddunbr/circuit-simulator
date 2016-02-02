@@ -1,11 +1,15 @@
 package com.wrmsr.circuit.elements;
 
+import com.wrmsr.circuit.EditInfo;
+
+import java.awt.Checkbox;
 import java.util.StringTokenizer;
 
 public class CounterElm
         extends ChipElm
 {
     final int FLAG_ENABLE = 2;
+    boolean invertreset = false;
 
     public CounterElm(int xx, int yy) { super(xx, yy); }
 
@@ -13,6 +17,18 @@ public class CounterElm
             StringTokenizer st)
     {
         super(xa, ya, xb, yb, f, st);
+        if (st.hasMoreTokens()) {
+            invertreset = new Boolean(st.nextToken()).booleanValue();
+        }
+        else {
+            invertreset = true;
+        }
+        pins[1].bubble = invertreset;
+    }
+
+    public String dump()
+    {
+        return super.dump() + " " + invertreset;
     }
 
     boolean needsBits() { return true; }
@@ -27,7 +43,7 @@ public class CounterElm
         pins[0] = new Pin(0, SIDE_W, "");
         pins[0].clock = true;
         pins[1] = new Pin(sizeY - 1, SIDE_W, "R");
-        pins[1].bubble = true;
+        pins[1].bubble = invertreset;
         int i;
         for (i = 0; i != bits; i++) {
             int ii = i + 2;
@@ -46,6 +62,59 @@ public class CounterElm
             return bits + 3;
         }
         return bits + 2;
+    }
+
+    public EditInfo getEditInfo(int n)
+    {
+        if (n == 0) {
+            EditInfo ei = new EditInfo("", 0, -1, -1);
+            ei.checkbox = new Checkbox("Flip X", (flags & FLAG_FLIP_X) != 0);
+            return ei;
+        }
+        if (n == 1) {
+            EditInfo ei = new EditInfo("", 0, -1, -1);
+            ei.checkbox = new Checkbox("Flip Y", (flags & FLAG_FLIP_Y) != 0);
+            return ei;
+        }
+        if (n == 2) {
+            EditInfo ei = new EditInfo("", 0, -1, -1);
+            ei.checkbox = new Checkbox("Invert reset pin", invertreset);
+            return ei;
+        }
+        return null;
+    }
+
+    public void setEditValue(int n, EditInfo ei)
+    {
+        if (n == 0) {
+            if (ei.checkbox.getState()) {
+                flags |= FLAG_FLIP_X;
+            }
+            else {
+                flags &= ~FLAG_FLIP_X;
+            }
+            setPoints();
+        }
+        if (n == 1) {
+            if (ei.checkbox.getState()) {
+                flags |= FLAG_FLIP_Y;
+            }
+            else {
+                flags &= ~FLAG_FLIP_Y;
+            }
+            setPoints();
+        }
+        if (n == 2) {
+            if (ei.checkbox.getState()) {
+                invertreset = true;
+                pins[1].bubble = true;
+            }
+            else {
+                invertreset = false;
+                pins[1].bubble = false;
+            }
+            setPoints();
+        }
     }
 
     boolean hasEnable() { return (flags & FLAG_ENABLE) != 0; }
@@ -69,7 +138,7 @@ public class CounterElm
                 pins[ii].value = false;
             }
         }
-        if (!pins[1].value) {
+        if (!pins[1].value == invertreset) {
             int i;
             for (i = 0; i != bits; i++) {
                 pins[i + 2].value = false;

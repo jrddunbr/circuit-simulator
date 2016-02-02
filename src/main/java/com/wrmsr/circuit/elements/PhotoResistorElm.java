@@ -39,7 +39,7 @@ public class PhotoResistorElm
 
     public boolean nonLinear() {return true;}
 
-    public int getDumpType() { return 186; }
+    public int getDumpType() { return 190; }
 
     public String dump()
     {

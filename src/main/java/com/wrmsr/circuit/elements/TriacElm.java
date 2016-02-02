@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
 // 3, 2 = diode
 // 2, 1 = 50 ohm resistor
 
-public class TriacElm
+class TriacElm
         extends CircuitElm
 {
     final int anode = 0;
@@ -83,7 +83,7 @@ public class TriacElm
         lastvag = lastvac = curcount_a = curcount_c = curcount_g = 0;
     }
 
-    public int getDumpType() { return 183; }
+    public int getDumpType() { return 206; }
 
     public String dump()
     {
@@ -127,6 +127,7 @@ public class TriacElm
         interpPoint(lead2, point2, gate[1], gatelen / leadlen, sim.gridSize * 2 * dir);
     }
 
+    @Override
     public void draw(Graphics g)
     {
         setBbox(point1, point2, hs);

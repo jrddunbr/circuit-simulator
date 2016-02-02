@@ -1,10 +1,15 @@
 package com.wrmsr.circuit.elements;
 
+import com.wrmsr.circuit.EditInfo;
+
+import java.awt.Checkbox;
 import java.util.StringTokenizer;
 
 public class JKFlipFlopElm
         extends ChipElm
 {
+    final int FLAG_RESET = 2;
+
     public JKFlipFlopElm(int xx, int yy) { super(xx, yy); }
 
     public JKFlipFlopElm(int xa, int ya, int xb, int yb, int f,
@@ -14,13 +19,15 @@ public class JKFlipFlopElm
         pins[4].value = !pins[3].value;
     }
 
+    boolean hasReset() {return (flags & FLAG_RESET) != 0;}
+
     String getChipName() { return "JK flip-flop"; }
 
     void setupPins()
     {
         sizeX = 2;
         sizeY = 3;
-        pins = new Pin[5];
+        pins = new Pin[getPostCount()];
         pins[0] = new Pin(0, SIDE_W, "J");
         pins[1] = new Pin(1, SIDE_W, "");
         pins[1].clock = true;
@@ -31,9 +38,13 @@ public class JKFlipFlopElm
         pins[4] = new Pin(2, SIDE_E, "Q");
         pins[4].output = true;
         pins[4].lineOver = true;
+
+        if (hasReset()) {
+            pins[5] = new Pin(1, SIDE_E, "R");
+        }
     }
 
-    public int getPostCount() { return 5; }
+    public int getPostCount() { return 5 + (hasReset() ? 1 : 0); }
 
     public int getVoltageSourceCount() { return 2; }
 
@@ -56,7 +67,43 @@ public class JKFlipFlopElm
             pins[4].value = !q;
         }
         lastClock = pins[1].value;
+
+        if (hasReset()) {
+            if (pins[5].value) {
+                pins[3].value = false;
+                pins[4].value = true;
+            }
+        }
     }
 
     public int getDumpType() { return 156; }
+
+    public EditInfo getEditInfo(int n)
+    {
+        if (n == 2) {
+            EditInfo ei = new EditInfo("", 0, -1, -1);
+            ei.checkbox = new Checkbox("Reset Pin", hasReset());
+            return ei;
+        }
+
+        return super.getEditInfo(n);
+    }
+
+    public void setEditValue(int n, EditInfo ei)
+    {
+        if (n == 2) {
+            if (ei.checkbox.getState()) {
+                flags |= FLAG_RESET;
+            }
+            else {
+                flags &= ~FLAG_RESET;
+            }
+
+            setupPins();
+            allocNodes();
+            setPoints();
+        }
+
+        super.setEditValue(n, ei);
+    }
 }

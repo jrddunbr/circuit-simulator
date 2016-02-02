@@ -229,7 +229,7 @@ public class TransistorElm
             expbe = 1;
         }
         /*if (expbe > 1e13 || Double.isInfinite(expbe))
-	      expbe = 1e13;*/
+          expbe = 1e13;*/
         ie = pnp * leakage * (-(expbe - 1) + rgain * (expbc - 1));
         ic = pnp * leakage * (fgain * (expbe - 1) - (expbc - 1));
         ib = -(ie + ic);
@@ -241,7 +241,7 @@ public class TransistorElm
         double gcc = -gec * (1 / rgain);
 
 	    /*System.out.print("gee = " + gee + "\n");
-	    System.out.print("gec = " + gec + "\n");
+        System.out.print("gec = " + gec + "\n");
 	    System.out.print("gce = " + gce + "\n");
 	    System.out.print("gcc = " + gcc + "\n");
 	    System.out.print("gce+gcc = " + (gce+gcc) + "\n");

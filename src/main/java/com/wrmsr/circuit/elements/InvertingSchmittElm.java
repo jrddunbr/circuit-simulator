@@ -1,3 +1,7 @@
+package com.wrmsr.circuit.elements;
+
+import com.wrmsr.circuit.EditInfo;
+
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
@@ -5,13 +9,18 @@ import java.util.StringTokenizer;
 
 // contributed by Edward Calver
 
-class InvertingSchmittElm
+public class InvertingSchmittElm
         extends CircuitElm
 {
     double slewRate; // V/ns
     double lowerTrigger;
     double upperTrigger;
     boolean state;
+    Polygon gatePoly;
+    Polygon symbolPoly;
+    Point pcircle;
+    double dlt;
+    double dut;
 
     public InvertingSchmittElm(int xx, int yy)
     {
@@ -40,14 +49,14 @@ class InvertingSchmittElm
         }
     }
 
-    String dump()
+    public String dump()
     {
         return super.dump() + " " + slewRate + " " + lowerTrigger + " " + upperTrigger;
     }
 
-    int getDumpType() { return 183; }//Trying to find unused type
+    public int getDumpType() { return 183; }//Trying to find unused type
 
-    void draw(Graphics g)
+    public void draw(Graphics g)
     {
         drawPosts(g);
         draw2Leads(g);
@@ -59,11 +68,7 @@ class InvertingSchmittElm
         drawDots(g, lead2, point2, curcount);
     }
 
-    Polygon gatePoly;
-    Polygon symbolPoly;
-    Point pcircle;
-
-    void setPoints()
+    public void setPoints()
     {
         super.setPoints();
         int hs = 16;
@@ -90,14 +95,14 @@ class InvertingSchmittElm
         setBbox(point1, point2, hs);
     }
 
-    int getVoltageSourceCount() { return 1; }
+    public int getVoltageSourceCount() { return 1; }
 
-    void stamp()
+    public void stamp()
     {
         sim.stampVoltageSource(0, nodes[1], voltSource);
     }
 
-    void doStep()
+    public void doStep()
     {
         double v0 = volts[1];
         double out;
@@ -127,9 +132,9 @@ class InvertingSchmittElm
         sim.updateVoltageSource(0, nodes[1], voltSource, out);
     }
 
-    double getVoltageDiff() { return volts[0]; }
+    public double getVoltageDiff() { return volts[0]; }
 
-    void getInfo(String arr[])
+    public void getInfo(String arr[])
     {
         arr[0] = "InvertingSchmitt";
         arr[1] = "Vi = " + getVoltageText(volts[0]);
@@ -151,9 +156,6 @@ class InvertingSchmittElm
         }
         return null;
     }
-
-    double dlt;
-    double dut;
 
     public void setEditValue(int n, EditInfo ei)
     {
@@ -179,9 +181,9 @@ class InvertingSchmittElm
 
     // there is no current path through the InvertingSchmitt input, but there
     // is an indirect path through the output to ground.
-    boolean getConnection(int n1, int n2) { return false; }
+    public boolean getConnection(int n1, int n2) { return false; }
 
-    boolean hasGroundConnection(int n1)
+    public boolean hasGroundConnection(int n1)
     {
         return (n1 == 1);
     }
