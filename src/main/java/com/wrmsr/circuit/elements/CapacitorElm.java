@@ -11,10 +11,11 @@ import java.util.StringTokenizer;
 public class CapacitorElm
         extends CircuitElm
 {
+    public static final int FLAG_BACK_EULER = 2;
     public double capacitance;
     public double compResistance, voltdiff;
     Point plate1[], plate2[];
-    public static final int FLAG_BACK_EULER = 2;
+    double curSourceValue;
 
     public CapacitorElm(int xx, int yy)
     {
@@ -137,8 +138,6 @@ public class CapacitorElm
             current = voltdiff / compResistance + curSourceValue;
         }
     }
-
-    double curSourceValue;
 
     public void doStep()
     {

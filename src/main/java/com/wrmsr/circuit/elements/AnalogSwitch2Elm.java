@@ -7,6 +7,9 @@ import java.util.StringTokenizer;
 public class AnalogSwitch2Elm
         extends AnalogSwitchElm
 {
+    final int openhs = 16;
+    Point swposts[], swpoles[], ctlPoint;
+
     public AnalogSwitch2Elm(int xx, int yy)
     {
         super(xx, yy);
@@ -17,9 +20,6 @@ public class AnalogSwitch2Elm
     {
         super(xa, ya, xb, yb, f, st);
     }
-
-    final int openhs = 16;
-    Point swposts[], swpoles[], ctlPoint;
 
     public void setPoints()
     {

@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -11,6 +10,7 @@ public class MemristorElm
         extends CircuitElm
 {
     double r_on, r_off, dopeWidth, totalWidth, mobility, resistance;
+    Point ps3, ps4;
 
     public MemristorElm(int xx, int yy)
     {
@@ -42,8 +42,6 @@ public class MemristorElm
         return super.dump() + " " + r_on + " " + r_off + " " + dopeWidth + " " +
                 totalWidth + " " + mobility;
     }
-
-    Point ps3, ps4;
 
     public void setPoints()
     {

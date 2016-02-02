@@ -1,7 +1,5 @@
 package com.wrmsr.circuit.elements;
 
-import com.wrmsr.circuit.elements.CircuitElm;
-
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
@@ -10,6 +8,17 @@ import java.util.StringTokenizer;
 public class TunnelDiodeElm
         extends CircuitElm
 {
+    static final double pvp = .1;
+    static final double pip = 4.7e-3;
+    static final double pvv = .37;
+    static final double pvt = .026;
+    static final double pvpp = .525;
+    static final double piv = 370e-6;
+    final int hs = 8;
+    Polygon poly;
+    Point cathode[];
+    double lastvoltdiff;
+
     public TunnelDiodeElm(int xx, int yy)
     {
         super(xx, yy);
@@ -30,10 +39,6 @@ public class TunnelDiodeElm
     }
 
     public int getDumpType() { return 175; }
-
-    final int hs = 8;
-    Polygon poly;
-    Point cathode[];
 
     public void setPoints()
     {
@@ -76,8 +81,6 @@ public class TunnelDiodeElm
         lastvoltdiff = volts[0] = volts[1] = curcount = 0;
     }
 
-    double lastvoltdiff;
-
     double limitStep(double vnew, double vold)
     {
         // Prevent voltage changes of more than 1V when iterating.  Wow, I thought it would be
@@ -96,13 +99,6 @@ public class TunnelDiodeElm
         sim.stampNonLinear(nodes[0]);
         sim.stampNonLinear(nodes[1]);
     }
-
-    static final double pvp = .1;
-    static final double pip = 4.7e-3;
-    static final double pvv = .37;
-    static final double pvt = .026;
-    static final double pvpp = .525;
-    static final double piv = 370e-6;
 
     public void doStep()
     {

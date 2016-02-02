@@ -4,7 +4,6 @@ package com.wrmsr.circuit.elements;
 // FIXME need to add ThermistorElm.java to srclist
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Graphics;
 import java.awt.Label;
@@ -19,6 +18,7 @@ public class ThermistorElm
     double resistance;
     Scrollbar slider;
     Label label;
+    Point ps3, ps4;
 
     public ThermistorElm(int xx, int yy)
     {
@@ -45,8 +45,6 @@ public class ThermistorElm
     {
         return super.dump() + " " + minresistance + " " + maxresistance;
     }
-
-    Point ps3, ps4;
 
     void createSlider()
     {

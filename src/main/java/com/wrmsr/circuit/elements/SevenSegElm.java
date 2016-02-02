@@ -1,7 +1,5 @@
 package com.wrmsr.circuit.elements;
 
-import com.wrmsr.circuit.elements.ChipElm;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.StringTokenizer;
@@ -9,6 +7,8 @@ import java.util.StringTokenizer;
 public class SevenSegElm
         extends ChipElm
 {
+    Color darkred;
+
     public SevenSegElm(int xx, int yy) { super(xx, yy); }
 
     public SevenSegElm(int xa, int ya, int xb, int yb, int f,
@@ -18,8 +18,6 @@ public class SevenSegElm
     }
 
     String getChipName() { return "7-segment driver/display"; }
-
-    Color darkred;
 
     void setupPins()
     {

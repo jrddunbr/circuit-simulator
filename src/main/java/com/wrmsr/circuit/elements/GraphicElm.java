@@ -1,7 +1,5 @@
 package com.wrmsr.circuit.elements;
 
-import com.wrmsr.circuit.elements.CircuitElm;
-
 public class GraphicElm
         extends CircuitElm
 {

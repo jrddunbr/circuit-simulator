@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -14,6 +13,11 @@ public abstract class GateElm
     final int FLAG_SMALL = 1;
     int inputCount = 2;
     boolean lastOutput;
+    int gsize, gwidth, gwidth2, gheight, hs2;
+    Point inPosts[], inGates[];
+    int ww;
+    Polygon gatePoly;
+    Point pcircle, linePoints[];
 
     public GateElm(int xx, int yy)
     {
@@ -35,8 +39,6 @@ public abstract class GateElm
 
     boolean isInverting() { return false; }
 
-    int gsize, gwidth, gwidth2, gheight, hs2;
-
     void setSize(int s)
     {
         gsize = s;
@@ -50,9 +52,6 @@ public abstract class GateElm
     {
         return super.dump() + " " + inputCount + " " + volts[inputCount];
     }
-
-    Point inPosts[], inGates[];
-    int ww;
 
     public void setPoints()
     {
@@ -109,9 +108,6 @@ public abstract class GateElm
         drawDots(g, lead2, point2, curcount);
         drawPosts(g);
     }
-
-    Polygon gatePoly;
-    Point pcircle, linePoints[];
 
     public int getPostCount() { return inputCount + 1; }
 

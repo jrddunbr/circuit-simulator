@@ -13,6 +13,7 @@ public class SwitchElm
     public boolean momentary;
     // position 0 == closed, position 1 == open
     int position, posCount;
+    Point ps, ps2;
 
     public SwitchElm(int xx, int yy)
     {
@@ -54,8 +55,6 @@ public class SwitchElm
     {
         return super.dump() + " " + position + " " + momentary;
     }
-
-    Point ps, ps2;
 
     public void setPoints()
     {

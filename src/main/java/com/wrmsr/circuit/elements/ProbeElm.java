@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Checkbox;
 import java.awt.Font;
@@ -13,6 +12,7 @@ public class ProbeElm
         extends CircuitElm
 {
     static final int FLAG_SHOWVOLTAGE = 1;
+    Point center;
 
     public ProbeElm(int xx, int yy) { super(xx, yy); }
 
@@ -23,8 +23,6 @@ public class ProbeElm
     }
 
     public int getDumpType() { return 'p'; }
-
-    Point center;
 
     public void setPoints()
     {

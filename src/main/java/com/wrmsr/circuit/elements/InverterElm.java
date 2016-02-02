@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -12,6 +11,8 @@ public class InverterElm
         extends CircuitElm
 {
     double slewRate; // V/ns
+    Polygon gatePoly;
+    Point pcircle;
 
     public InverterElm(int xx, int yy)
     {
@@ -50,9 +51,6 @@ public class InverterElm
         curcount = updateDotCount(current, curcount);
         drawDots(g, lead2, point2, curcount);
     }
-
-    Polygon gatePoly;
-    Point pcircle;
 
     public void setPoints()
     {

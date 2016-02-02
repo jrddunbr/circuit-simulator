@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.ChipElm;
 
 import java.awt.Checkbox;
 import java.util.StringTokenizer;
@@ -11,8 +10,6 @@ public class DFlipFlopElm
 {
     final int FLAG_RESET = 2;
 
-    boolean hasReset() { return (flags & FLAG_RESET) != 0; }
-
     public DFlipFlopElm(int xx, int yy) { super(xx, yy); }
 
     public DFlipFlopElm(int xa, int ya, int xb, int yb, int f,
@@ -21,6 +18,8 @@ public class DFlipFlopElm
         super(xa, ya, xb, yb, f, st);
         pins[2].value = !pins[1].value;
     }
+
+    boolean hasReset() { return (flags & FLAG_RESET) != 0; }
 
     String getChipName() { return "D flip-flop"; }
 

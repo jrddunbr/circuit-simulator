@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,9 +10,12 @@ import java.util.StringTokenizer;
 public class LampElm
         extends CircuitElm
 {
-    double resistance;
     final double roomTemp = 300;
+    final int filament_len = 24;
+    double resistance;
     double temp, nom_pow, nom_v, warmTime, coolTime;
+    Point bulbLead[], filament[], bulb;
+    int bulbR;
 
     public LampElm(int xx, int yy)
     {
@@ -44,16 +46,11 @@ public class LampElm
 
     public int getDumpType() { return 181; }
 
-    Point bulbLead[], filament[], bulb;
-    int bulbR;
-
     public void reset()
     {
         super.reset();
         temp = roomTemp;
     }
-
-    final int filament_len = 24;
 
     public void setPoints()
     {

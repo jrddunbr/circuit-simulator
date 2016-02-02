@@ -12,11 +12,19 @@ import java.util.StringTokenizer;
 public class MosfetElm
         extends CircuitElm
 {
+    final int hs = 16;
     int pnp;
     int FLAG_PNP = 1;
     int FLAG_SHOWVT = 2;
     int FLAG_DIGITAL = 4;
     double vt;
+    int pcircler;
+    Point src[], drn[], gate[], pcircle;
+    Polygon arrowPoly;
+    double lastv1, lastv2;
+    double ids;
+    int mode = 0;
+    double gm = 0;
 
     MosfetElm(int xx, int yy, boolean pnpflag)
     {
@@ -60,8 +68,6 @@ public class MosfetElm
     }
 
     public int getDumpType() { return 'f'; }
-
-    final int hs = 16;
 
     public void draw(Graphics g)
     {
@@ -130,10 +136,6 @@ public class MosfetElm
 
     public int getPostCount() { return 3; }
 
-    int pcircler;
-    Point src[], drn[], gate[], pcircle;
-    Polygon arrowPoly;
-
     public void setPoints()
     {
         super.setPoints();
@@ -166,11 +168,6 @@ public class MosfetElm
             pcircler = 3;
         }
     }
-
-    double lastv1, lastv2;
-    double ids;
-    int mode = 0;
-    double gm = 0;
 
     public void stamp()
     {

@@ -2,7 +2,6 @@ package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.Diode;
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -12,10 +11,13 @@ import java.util.StringTokenizer;
 public class DiodeElm
         extends CircuitElm
 {
-    Diode diode;
     static final int FLAG_FWDROP = 1;
     final double defaultdrop = .805904783;
+    final int hs = 8;
+    Diode diode;
     double fwdrop, zvoltage;
+    Polygon poly;
+    Point cathode[];
 
     public DiodeElm(int xx, int yy)
     {
@@ -57,10 +59,6 @@ public class DiodeElm
         flags |= FLAG_FWDROP;
         return super.dump() + " " + fwdrop;
     }
-
-    final int hs = 8;
-    Polygon poly;
-    Point cathode[];
 
     public void setPoints()
     {

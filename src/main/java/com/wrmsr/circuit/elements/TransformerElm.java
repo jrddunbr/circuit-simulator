@@ -2,7 +2,6 @@ package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
 import com.wrmsr.circuit.Inductor;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Checkbox;
 import java.awt.Graphics;
@@ -12,11 +11,13 @@ import java.util.StringTokenizer;
 public class TransformerElm
         extends CircuitElm
 {
+    public static final int FLAG_BACK_EULER = 2;
     double inductance, ratio, couplingCoef;
     Point ptEnds[], ptCoil[], ptCore[];
     double current[], curcount[];
     int width;
-    public static final int FLAG_BACK_EULER = 2;
+    double a1, a2, a3, a4;
+    double curSourceValue1, curSourceValue2;
 
     public TransformerElm(int xx, int yy)
     {
@@ -135,8 +136,6 @@ public class TransformerElm
         volts[3] = curcount[0] = curcount[1] = 0;
     }
 
-    double a1, a2, a3, a4;
-
     public void stamp()
     {
         // equations for transformer:
@@ -199,8 +198,6 @@ public class TransformerElm
             curSourceValue2 = current[1];
         }
     }
-
-    double curSourceValue1, curSourceValue2;
 
     public void doStep()
     {

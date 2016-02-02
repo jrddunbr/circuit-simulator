@@ -2,8 +2,12 @@ package com.wrmsr.circuit;
 
 public class Diode
 {
+    public double leakage = 1e-14; // was 1e-9;
     int nodes[];
     CirSim sim;
+    double vt, vdcoef, fwdrop, zvoltage, zoffset;
+    double lastvoltdiff;
+    double vcrit;
 
     public Diode(CirSim s)
     {
@@ -34,11 +38,6 @@ public class Diode
     {
         lastvoltdiff = 0;
     }
-
-    public double leakage = 1e-14; // was 1e-9;
-    double vt, vdcoef, fwdrop, zvoltage, zoffset;
-    double lastvoltdiff;
-    double vcrit;
 
     double limitStep(double vnew, double vold)
     {
@@ -132,7 +131,7 @@ public class Diode
             // Zener diode
 
 	    /* 
-	     * I(Vd) = Is * (exp[Vd*C] - exp[(-Vd-Vz)*C] - 1 )
+         * I(Vd) = Is * (exp[Vd*C] - exp[(-Vd-Vz)*C] - 1 )
 	     *
 	     * geq is I'(Vd)
 	     * nc is I(Vd) + I'(Vd)*(-Vd)

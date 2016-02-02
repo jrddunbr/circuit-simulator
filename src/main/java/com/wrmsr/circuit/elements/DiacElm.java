@@ -14,6 +14,7 @@ public class DiacElm
 {
     double onresistance, offresistance, breakdown, holdcurrent;
     boolean state;
+    Point ps3, ps4;
 
     public DiacElm(int xx, int yy)
     {
@@ -45,8 +46,6 @@ public class DiacElm
         return super.dump() + " " + onresistance + " " + offresistance + " "
                 + breakdown + " " + holdcurrent;
     }
-
-    Point ps3, ps4;
 
     public void setPoints()
     {

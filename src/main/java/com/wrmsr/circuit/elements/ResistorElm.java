@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -11,6 +10,7 @@ public class ResistorElm
         extends CircuitElm
 {
     public double resistance;
+    Point ps3, ps4;
 
     public ResistorElm(int xx, int yy)
     {
@@ -31,8 +31,6 @@ public class ResistorElm
     {
         return super.dump() + " " + resistance;
     }
-
-    Point ps3, ps4;
 
     public void setPoints()
     {

@@ -2,7 +2,6 @@ package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
 import com.wrmsr.circuit.Scope;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Checkbox;
 import java.awt.Color;
@@ -14,11 +13,20 @@ import java.util.StringTokenizer;
 public class TransistorElm
         extends CircuitElm
 {
+    static final double leakage = 1e-13; // 1e-6;
+    static final double vt = .025;
+    static final double vdcoef = 1 / vt;
+    static final double rgain = .5;
+    final int FLAG_FLIP = 1;
     int pnp;
     double beta;
     double fgain;
     double gmin;
-    final int FLAG_FLIP = 1;
+    double ic, ie, ib, curcount_c, curcount_e, curcount_b;
+    Polygon rectPoly, arrowPoly;
+    Point rect[], coll[], emit[], base;
+    double vcrit;
+    double lastvbc, lastvbe;
 
     TransistorElm(int xx, int yy, boolean pnpflag)
     {
@@ -69,9 +77,6 @@ public class TransistorElm
         return super.dump() + " " + pnp + " " + (volts[0] - volts[1]) + " " +
                 (volts[0] - volts[2]) + " " + beta;
     }
-
-    double ic, ie, ib, curcount_c, curcount_e, curcount_b;
-    Polygon rectPoly, arrowPoly;
 
     public void draw(Graphics g)
     {
@@ -127,8 +132,6 @@ public class TransistorElm
         return (volts[0] - volts[2]) * ib + (volts[1] - volts[2]) * ic;
     }
 
-    Point rect[], coll[], emit[], base;
-
     public void setPoints()
     {
         super.setPoints();
@@ -163,13 +166,6 @@ public class TransistorElm
             arrowPoly = calcArrow(emit[0], pt, 8, 4);
         }
     }
-
-    static final double leakage = 1e-13; // 1e-6;
-    static final double vt = .025;
-    static final double vdcoef = 1 / vt;
-    static final double rgain = .5;
-    double vcrit;
-    double lastvbc, lastvbe;
 
     double limitStep(double vnew, double vold)
     {
@@ -227,12 +223,12 @@ public class TransistorElm
         double pcoef = vdcoef * pnp;
         double expbc = Math.exp(vbc * pcoef);
         /*if (expbc > 1e13 || Double.isInfinite(expbc))
-	      expbc = 1e13;*/
+          expbc = 1e13;*/
         double expbe = Math.exp(vbe * pcoef);
         if (expbe < 1) {
             expbe = 1;
         }
-	    /*if (expbe > 1e13 || Double.isInfinite(expbe))
+        /*if (expbe > 1e13 || Double.isInfinite(expbe))
 	      expbe = 1e13;*/
         ie = pnp * leakage * (-(expbe - 1) + rgain * (expbc - 1));
         ic = pnp * leakage * (fgain * (expbe - 1) - (expbc - 1));

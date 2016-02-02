@@ -11,6 +11,7 @@ public class LEDElm
         extends DiodeElm
 {
     double colorR, colorG, colorB;
+    Point ledLead1, ledLead2, ledCenter;
 
     public LEDElm(int xx, int yy)
     {
@@ -40,8 +41,6 @@ public class LEDElm
     {
         return super.dump() + " " + colorR + " " + colorG + " " + colorB;
     }
-
-    Point ledLead1, ledLead2, ledCenter;
 
     public void setPoints()
     {

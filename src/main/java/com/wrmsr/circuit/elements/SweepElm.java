@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Checkbox;
 import java.awt.Color;
@@ -11,9 +10,13 @@ import java.util.StringTokenizer;
 public class SweepElm
         extends CircuitElm
 {
-    double maxV, maxF, minF, sweepTime, frequency;
     final int FLAG_LOG = 1;
     final int FLAG_BIDIR = 2;
+    final int circleSize = 17;
+    double maxV, maxF, minF, sweepTime, frequency;
+    double fadd, fmul, freqTime, savedTimeStep;
+    int dir = 1;
+    double v;
 
     public SweepElm(int xx, int yy)
     {
@@ -39,8 +42,6 @@ public class SweepElm
     public int getDumpType() { return 170; }
 
     public int getPostCount() { return 1; }
-
-    final int circleSize = 17;
 
     public String dump()
     {
@@ -107,9 +108,6 @@ public class SweepElm
         sim.stampVoltageSource(0, nodes[0], voltSource);
     }
 
-    double fadd, fmul, freqTime, savedTimeStep;
-    int dir = 1;
-
     void setParams()
     {
         if (frequency < minF || frequency > maxF) {
@@ -135,8 +133,6 @@ public class SweepElm
         dir = 1;
         setParams();
     }
-
-    double v;
 
     public void startIteration()
     {

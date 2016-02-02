@@ -1,12 +1,12 @@
 package com.wrmsr.circuit.elements;
 
-import com.wrmsr.circuit.elements.ChipElm;
-
 import java.util.StringTokenizer;
 
 public class PhaseCompElm
         extends ChipElm
 {
+    boolean ff1, ff2;
+
     public PhaseCompElm(int xx, int yy) { super(xx, yy); }
 
     public PhaseCompElm(int xa, int ya, int xb, int yb, int f,
@@ -37,8 +37,6 @@ public class PhaseCompElm
         sim.stampNonLinear(0);
         sim.stampNonLinear(nodes[2]);
     }
-
-    boolean ff1, ff2;
 
     public void doStep()
     {

@@ -12,7 +12,6 @@ public class VoltageElm
         extends CircuitElm
 {
     static final int FLAG_COS = 2;
-    int waveform;
     static final int WF_DC = 0;
     static final int WF_AC = 1;
     static final int WF_SQUARE = 2;
@@ -20,6 +19,8 @@ public class VoltageElm
     static final int WF_SAWTOOTH = 4;
     static final int WF_PULSE = 5;
     static final int WF_VAR = 6;
+    final int circleSize = 17;
+    int waveform;
     double frequency, maxVoltage, freqTimeZero, bias,
             phaseShift, dutyCycle;
 
@@ -59,6 +60,10 @@ public class VoltageElm
     }
 
     public int getDumpType() { return 'v'; }
+    /*void setCurrent(double c) {
+      current = c;
+      System.out.print("v current set to " + c + "\n");
+      }*/
 
     public String dump()
     {
@@ -66,10 +71,6 @@ public class VoltageElm
                 maxVoltage + " " + bias + " " + phaseShift + " " +
                 dutyCycle;
     }
-    /*void setCurrent(double c) {
-      current = c;
-      System.out.print("v current set to " + c + "\n");
-      }*/
 
     public void reset()
     {
@@ -125,8 +126,6 @@ public class VoltageElm
                 return 0;
         }
     }
-
-    final int circleSize = 17;
 
     public void setPoints()
     {

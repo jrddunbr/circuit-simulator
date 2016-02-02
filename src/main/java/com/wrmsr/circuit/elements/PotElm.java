@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Graphics;
 import java.awt.Label;
@@ -21,6 +20,9 @@ public class PotElm
     Scrollbar slider;
     Label label;
     String sliderText;
+    Point post3, corner2, arrowPoint, midpoint, arrow1, arrow2;
+    Point ps3, ps4;
+    int bodyLen;
 
     public PotElm(int xx, int yy)
     {
@@ -84,10 +86,6 @@ public class PotElm
         sim.main.remove(label);
         sim.main.remove(slider);
     }
-
-    Point post3, corner2, arrowPoint, midpoint, arrow1, arrow2;
-    Point ps3, ps4;
-    int bodyLen;
 
     public void setPoints()
     {

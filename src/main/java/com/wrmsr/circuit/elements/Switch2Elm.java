@@ -10,8 +10,10 @@ import java.util.StringTokenizer;
 public class Switch2Elm
         extends SwitchElm
 {
-    int link;
     static final int FLAG_CENTER_OFF = 1;
+    final int openhs = 16;
+    int link;
+    Point swposts[], swpoles[];
 
     public Switch2Elm(int xx, int yy)
     {
@@ -39,9 +41,6 @@ public class Switch2Elm
     {
         return super.dump() + " " + link;
     }
-
-    final int openhs = 16;
-    Point swposts[], swpoles[];
 
     public void setPoints()
     {

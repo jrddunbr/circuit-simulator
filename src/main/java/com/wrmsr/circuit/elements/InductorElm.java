@@ -2,7 +2,6 @@ package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
 import com.wrmsr.circuit.Inductor;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Checkbox;
 import java.awt.Graphics;
@@ -11,8 +10,8 @@ import java.util.StringTokenizer;
 public class InductorElm
         extends CircuitElm
 {
-    Inductor ind;
     public double inductance;
+    Inductor ind;
 
     public InductorElm(int xx, int yy)
     {

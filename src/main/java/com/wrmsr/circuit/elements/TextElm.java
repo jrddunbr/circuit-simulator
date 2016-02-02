@@ -12,11 +12,11 @@ import java.util.Vector;
 public class TextElm
         extends GraphicElm
 {
+    final int FLAG_CENTER = 1;
+    final int FLAG_BAR = 2;
     String text;
     Vector<String> lines;
     int size;
-    final int FLAG_CENTER = 1;
-    final int FLAG_BAR = 2;
 
     public TextElm(int xx, int yy)
     {

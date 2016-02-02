@@ -7,6 +7,16 @@ import java.awt.TextField;
 
 public class EditInfo
 {
+    public String name, text;
+    public double value, minval, maxval;
+    public TextField textf;
+    public Choice choice;
+    public Checkbox checkbox;
+    public boolean newDialog;
+    Scrollbar bar;
+    boolean forceLargeM;
+    boolean dimensionless;
+
     public EditInfo(String n, double val, double mn, double mx)
     {
         name = n;
@@ -32,15 +42,5 @@ public class EditInfo
         dimensionless = true;
         return this;
     }
-
-    public String name, text;
-    public double value, minval, maxval;
-    public TextField textf;
-    Scrollbar bar;
-    public Choice choice;
-    public Checkbox checkbox;
-    public boolean newDialog;
-    boolean forceLargeM;
-    boolean dimensionless;
 }
     

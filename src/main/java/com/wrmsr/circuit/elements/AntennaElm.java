@@ -5,6 +5,8 @@ import java.util.StringTokenizer;
 public class AntennaElm
         extends RailElm
 {
+    double fmphase;
+
     public AntennaElm(int xx, int yy) { super(xx, yy, WF_DC); }
 
     public AntennaElm(int xa, int ya, int xb, int yb, int f,
@@ -13,8 +15,6 @@ public class AntennaElm
         super(xa, ya, xb, yb, f, st);
         waveform = WF_DC;
     }
-
-    double fmphase;
 
     public void stamp()
     {

@@ -69,24 +69,29 @@ public class CirSim
         implements ComponentListener, ActionListener, AdjustmentListener,
         MouseMotionListener, MouseListener, ItemListener, KeyListener
 {
-    public Dimension winSize;
-    Image dbimage;
-
-    Random random;
     public static final int sourceRadius = 7;
     public static final double freqMult = 3.14159265 * 2 * 4;
-
-    public String getAppletInfo()
-    {
-        return "Circuit by Paul Falstad";
-    }
-
+    public static final int MODE_DRAG_ROW = 2;
+    public static final int MODE_DRAG_COLUMN = 3;
+    public static final int MODE_DRAG_SELECTED = 4;
+    public static final int MODE_DRAG_POST = 5;
+    public static final int MODE_SELECT = 6;
+    static final double pi = 3.14159265358979323846;
+    static final int MODE_ADD_ELM = 0;
+    static final int MODE_DRAG_ALL = 1;
+    static final int infoWidth = 120;
+    static final int HINT_LC = 1;
+    static final int HINT_RC = 2;
+    static final int HINT_3DB_C = 3;
+    static final int HINT_TWINT = 4;
+    static final int HINT_3DB_L = 5;
+    static final int resct = 6;
     public static Container main;
-    Label titleLabel;
-    Button resetButton;
-    Button dumpMatrixButton;
-    MenuItem exportItem, exportLinkItem, importItem, exitItem, undoItem, redoItem, cutItem, copyItem, pasteItem, selectAllItem, optionsItem;
-    Menu optionsMenu;
+    public static String muString = "u";
+    public static String ohmString = "ohm";
+    static EditDialog editDialog;
+    static ImportExportDialog impDialog, expDialog;
+    public Dimension winSize;
     public Checkbox stoppedCheck;
     public CheckboxMenuItem dotsCheckItem;
     public CheckboxMenuItem voltsCheckItem;
@@ -98,6 +103,27 @@ public class CirSim
     public CheckboxMenuItem printableCheckItem;
     public CheckboxMenuItem conventionCheckItem;
     public CheckboxMenuItem idealWireCheckItem;
+    public int mouseMode = MODE_SELECT;
+    public int tempMouseMode = MODE_SELECT;
+    public int gridSize, gridMask, gridRound;
+    public boolean analyzeFlag;
+    public double t;
+    public double timeStep;
+    public Vector<CircuitElm> elmList;
+    //    Vector setupList;
+    public CircuitElm dragElm, menuElm, mouseElm, stopElm;
+    public CircuitElm plotXElm, plotYElm;
+    public boolean useFrame;
+    public Vector<CircuitNode> nodeList;
+    public boolean converged;
+    public int subIterations;
+    Image dbimage;
+    Random random;
+    Label titleLabel;
+    Button resetButton;
+    Button dumpMatrixButton;
+    MenuItem exportItem, exportLinkItem, importItem, exitItem, undoItem, redoItem, cutItem, copyItem, pasteItem, selectAllItem, optionsItem;
+    Menu optionsMenu;
     Scrollbar speedBar;
     Scrollbar currentBar;
     Label powerLabel;
@@ -129,46 +155,22 @@ public class CirSim
     CheckboxMenuItem scopeVceIcMenuItem;
     MenuItem scopeSelectYMenuItem;
     Class addingClass;
-    public int mouseMode = MODE_SELECT;
-    public int tempMouseMode = MODE_SELECT;
     String mouseModeStr = "Select";
-    static final double pi = 3.14159265358979323846;
-    static final int MODE_ADD_ELM = 0;
-    static final int MODE_DRAG_ALL = 1;
-    public static final int MODE_DRAG_ROW = 2;
-    public static final int MODE_DRAG_COLUMN = 3;
-    public static final int MODE_DRAG_SELECTED = 4;
-    public static final int MODE_DRAG_POST = 5;
-    public static final int MODE_SELECT = 6;
-    static final int infoWidth = 120;
     int dragX, dragY, initDragX, initDragY;
     int selectedSource;
     Rectangle selectedArea;
-    public int gridSize, gridMask, gridRound;
     boolean dragging;
-    public boolean analyzeFlag;
     boolean dumpMatrix;
     boolean useBufferedImage;
     boolean isMac;
     String ctrlMetaKey;
-    public double t;
     int pause = 10;
     int scopeSelected = -1;
     int menuScope = -1;
     int hintType = -1, hintItem1, hintItem2;
     String stopMessage;
-    public double timeStep;
-    static final int HINT_LC = 1;
-    static final int HINT_RC = 2;
-    static final int HINT_3DB_C = 3;
-    static final int HINT_TWINT = 4;
-    static final int HINT_3DB_L = 5;
-    public Vector<CircuitElm> elmList;
-    //    Vector setupList;
-    public CircuitElm dragElm, menuElm, mouseElm, stopElm;
     boolean didSwitch = false;
     int mousePost = -1;
-    public CircuitElm plotXElm, plotYElm;
     int draggingPost;
     SwitchElm heldSwitchElm;
     double circuitMatrix[][], circuitRightSide[],
@@ -179,19 +181,38 @@ public class CirSim
     int voltageSourceCount;
     int circuitMatrixSize, circuitMatrixFullSize;
     boolean circuitNeedsMap;
-    public boolean useFrame;
     int scopeCount;
     Scope scopes[];
     int scopeColCount[];
-    static EditDialog editDialog;
-    static ImportExportDialog impDialog, expDialog;
     Class dumpTypes[], shortcuts[];
-    public static String muString = "u";
-    public static String ohmString = "ohm";
     String clipboard;
     Rectangle circuitArea;
     int circuitBottom;
     Vector<String> undoStack, redoStack;
+    CircuitCanvas cv;
+    Circuit applet;
+    String startCircuit = null;
+    String startLabel = null;
+    String startCircuitText = null;
+    String baseURL = "http://www.falstad.com/circuit/";
+    boolean shown = false;
+    long lastTime = 0, lastFrameTime, lastIterTime, secTime = 0;
+    int frames = 0;
+    int steps = 0;
+    int framerate = 0, steprate = 0;
+    CircuitElm voltageSources[];
+
+    CirSim(Circuit a)
+    {
+        super("Circuit Simulator v1.6.1a");
+        applet = a;
+        useFrame = false;
+    }
+
+    public String getAppletInfo()
+    {
+        return "Circuit by Paul Falstad";
+    }
 
     public int getrand(int x)
     {
@@ -201,21 +222,6 @@ public class CirSim
         }
         return q % x;
     }
-
-    CircuitCanvas cv;
-    Circuit applet;
-
-    CirSim(Circuit a)
-    {
-        super("Circuit Simulator v1.6.1a");
-        applet = a;
-        useFrame = false;
-    }
-
-    String startCircuit = null;
-    String startLabel = null;
-    String startCircuitText = null;
-    String baseURL = "http://www.falstad.com/circuit/";
 
     public void init()
     {
@@ -637,8 +643,6 @@ public class CirSim
         );
     }
 
-    boolean shown = false;
-
     public void triggerShow()
     {
         if (!shown) {
@@ -846,12 +850,6 @@ public class CirSim
         cv.repaint();
     }
 
-    static final int resct = 6;
-    long lastTime = 0, lastFrameTime, lastIterTime, secTime = 0;
-    int frames = 0;
-    int steps = 0;
-    int framerate = 0, steprate = 0;
-
     public void updateCircuit(Graphics realg)
     {
         CircuitElm realMouseElm;
@@ -968,8 +966,8 @@ public class CirSim
                 }
             }
         }
-	/*if (mouseElm != null) {
-	    g.setFont(oldfont);
+    /*if (mouseElm != null) {
+        g.setFont(oldfont);
 	    g.drawString("+", mouseElm.x+10, mouseElm.y);
 	    }*/
         if (dragElm != null &&
@@ -1246,9 +1244,6 @@ public class CirSim
         analyzeFlag = true;
         cv.repaint();
     }
-
-    public Vector<CircuitNode> nodeList;
-    CircuitElm voltageSources[];
 
     public CircuitNode getCircuitNode(int n)
     {
@@ -1737,123 +1732,6 @@ public class CirSim
         }
     }
 
-    class FindPathInfo
-    {
-        static final int INDUCT = 1;
-        static final int VOLTAGE = 2;
-        static final int SHORT = 3;
-        static final int CAP_V = 4;
-        boolean used[];
-        int dest;
-        CircuitElm firstElm;
-        int type;
-
-        FindPathInfo(int t, CircuitElm e, int d)
-        {
-            dest = d;
-            type = t;
-            firstElm = e;
-            used = new boolean[nodeList.size()];
-        }
-
-        boolean findPath(int n1) { return findPath(n1, -1); }
-
-        boolean findPath(int n1, int depth)
-        {
-            if (n1 == dest) {
-                return true;
-            }
-            if (depth-- == 0) {
-                return false;
-            }
-            if (used[n1]) {
-                //System.out.println("used " + n1);
-                return false;
-            }
-            used[n1] = true;
-            int i;
-            for (i = 0; i != elmList.size(); i++) {
-                CircuitElm ce = getElm(i);
-                if (ce == firstElm) {
-                    continue;
-                }
-                if (type == INDUCT) {
-                    if (ce instanceof CurrentElm) {
-                        continue;
-                    }
-                }
-                if (type == VOLTAGE) {
-                    if (!(ce.isWire() || ce instanceof VoltageElm)) {
-                        continue;
-                    }
-                }
-                if (type == SHORT && !ce.isWire()) {
-                    continue;
-                }
-                if (type == CAP_V) {
-                    if (!(ce.isWire() || ce instanceof CapacitorElm ||
-                            ce instanceof VoltageElm)) {
-                        continue;
-                    }
-                }
-                if (n1 == 0) {
-                    // look for posts which have a ground connection;
-                    // our path can go through ground
-                    int j;
-                    for (j = 0; j != ce.getPostCount(); j++) {
-                        if (ce.hasGroundConnection(j) &&
-                                findPath(ce.getNode(j), depth)) {
-                            used[n1] = false;
-                            return true;
-                        }
-                    }
-                }
-                int j;
-                for (j = 0; j != ce.getPostCount(); j++) {
-                    //System.out.println(ce + " " + ce.getNode(j));
-                    if (ce.getNode(j) == n1) {
-                        break;
-                    }
-                }
-                if (j == ce.getPostCount()) {
-                    continue;
-                }
-                if (ce.hasGroundConnection(j) && findPath(0, depth)) {
-                    //System.out.println(ce + " has ground");
-                    used[n1] = false;
-                    return true;
-                }
-                if (type == INDUCT && ce instanceof InductorElm) {
-                    double c = ce.getCurrent();
-                    if (j == 0) {
-                        c = -c;
-                    }
-                    //System.out.println("matching " + c + " to " + firstElm.getCurrent());
-                    //System.out.println(ce + " " + firstElm);
-                    if (Math.abs(c - firstElm.getCurrent()) > 1e-10) {
-                        continue;
-                    }
-                }
-                int k;
-                for (k = 0; k != ce.getPostCount(); k++) {
-                    if (j == k) {
-                        continue;
-                    }
-                    //System.out.println(ce + " " + ce.getNode(j) + "-" + ce.getNode(k));
-                    if (ce.getConnection(j, k) && findPath(ce.getNode(k), depth)) {
-                        //System.out.println("got findpath " + n1);
-                        used[n1] = false;
-                        return true;
-                    }
-                    //System.out.println("back on findpath " + n1);
-                }
-            }
-            used[n1] = false;
-            //System.out.println(n1 + " failed");
-            return false;
-        }
-    }
-
     public void stop(String s, CircuitElm ce)
     {
         stopMessage = s;
@@ -2012,9 +1890,6 @@ public class CirSim
         //return (Math.exp((speedBar.getValue()-1)/24.) + .5);
         return .1 * Math.exp((speedBar.getValue() - 61) / 24.);
     }
-
-    public boolean converged;
-    public int subIterations;
 
     void runCircuit()
     {
@@ -3732,6 +3607,123 @@ public class CirSim
                 tot -= a[i][j] * b[j];
             }
             b[i] = tot / a[i][i];
+        }
+    }
+
+    class FindPathInfo
+    {
+        static final int INDUCT = 1;
+        static final int VOLTAGE = 2;
+        static final int SHORT = 3;
+        static final int CAP_V = 4;
+        boolean used[];
+        int dest;
+        CircuitElm firstElm;
+        int type;
+
+        FindPathInfo(int t, CircuitElm e, int d)
+        {
+            dest = d;
+            type = t;
+            firstElm = e;
+            used = new boolean[nodeList.size()];
+        }
+
+        boolean findPath(int n1) { return findPath(n1, -1); }
+
+        boolean findPath(int n1, int depth)
+        {
+            if (n1 == dest) {
+                return true;
+            }
+            if (depth-- == 0) {
+                return false;
+            }
+            if (used[n1]) {
+                //System.out.println("used " + n1);
+                return false;
+            }
+            used[n1] = true;
+            int i;
+            for (i = 0; i != elmList.size(); i++) {
+                CircuitElm ce = getElm(i);
+                if (ce == firstElm) {
+                    continue;
+                }
+                if (type == INDUCT) {
+                    if (ce instanceof CurrentElm) {
+                        continue;
+                    }
+                }
+                if (type == VOLTAGE) {
+                    if (!(ce.isWire() || ce instanceof VoltageElm)) {
+                        continue;
+                    }
+                }
+                if (type == SHORT && !ce.isWire()) {
+                    continue;
+                }
+                if (type == CAP_V) {
+                    if (!(ce.isWire() || ce instanceof CapacitorElm ||
+                            ce instanceof VoltageElm)) {
+                        continue;
+                    }
+                }
+                if (n1 == 0) {
+                    // look for posts which have a ground connection;
+                    // our path can go through ground
+                    int j;
+                    for (j = 0; j != ce.getPostCount(); j++) {
+                        if (ce.hasGroundConnection(j) &&
+                                findPath(ce.getNode(j), depth)) {
+                            used[n1] = false;
+                            return true;
+                        }
+                    }
+                }
+                int j;
+                for (j = 0; j != ce.getPostCount(); j++) {
+                    //System.out.println(ce + " " + ce.getNode(j));
+                    if (ce.getNode(j) == n1) {
+                        break;
+                    }
+                }
+                if (j == ce.getPostCount()) {
+                    continue;
+                }
+                if (ce.hasGroundConnection(j) && findPath(0, depth)) {
+                    //System.out.println(ce + " has ground");
+                    used[n1] = false;
+                    return true;
+                }
+                if (type == INDUCT && ce instanceof InductorElm) {
+                    double c = ce.getCurrent();
+                    if (j == 0) {
+                        c = -c;
+                    }
+                    //System.out.println("matching " + c + " to " + firstElm.getCurrent());
+                    //System.out.println(ce + " " + firstElm);
+                    if (Math.abs(c - firstElm.getCurrent()) > 1e-10) {
+                        continue;
+                    }
+                }
+                int k;
+                for (k = 0; k != ce.getPostCount(); k++) {
+                    if (j == k) {
+                        continue;
+                    }
+                    //System.out.println(ce + " " + ce.getNode(j) + "-" + ce.getNode(k));
+                    if (ce.getConnection(j, k) && findPath(ce.getNode(k), depth)) {
+                        //System.out.println("got findpath " + n1);
+                        used[n1] = false;
+                        return true;
+                    }
+                    //System.out.println("back on findpath " + n1);
+                }
+            }
+            used[n1] = false;
+            //System.out.println(n1 + " failed");
+            return false;
         }
     }
 }

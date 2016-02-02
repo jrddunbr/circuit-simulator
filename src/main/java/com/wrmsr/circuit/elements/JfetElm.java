@@ -8,6 +8,10 @@ import java.util.StringTokenizer;
 public class JfetElm
         extends MosfetElm
 {
+    Polygon gatePoly;
+    Polygon arrowPoly;
+    Point gatePt;
+
     JfetElm(int xx, int yy, boolean pnpflag)
     {
         super(xx, yy, pnpflag);
@@ -20,10 +24,6 @@ public class JfetElm
         super(xa, ya, xb, yb, f, st);
         noDiagonal = true;
     }
-
-    Polygon gatePoly;
-    Polygon arrowPoly;
-    Point gatePt;
 
     public void draw(Graphics g)
     {

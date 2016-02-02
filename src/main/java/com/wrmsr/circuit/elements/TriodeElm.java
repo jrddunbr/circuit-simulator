@@ -1,7 +1,5 @@
 package com.wrmsr.circuit.elements;
 
-import com.wrmsr.circuit.elements.CircuitElm;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -10,9 +8,12 @@ import java.util.StringTokenizer;
 public class TriodeElm
         extends CircuitElm
 {
+    final double gridCurrentR = 6000;
     double mu, kg1;
     double curcountp, curcountc, curcountg, currentp, currentg, currentc;
-    final double gridCurrentR = 6000;
+    Point plate[], grid[], cath[], midgrid, midcath;
+    int circler;
+    double lastv0, lastv1, lastv2;
 
     public TriodeElm(int xx, int yy)
     {
@@ -50,9 +51,6 @@ public class TriodeElm
     }
 
     public int getDumpType() { return 173; }
-
-    Point plate[], grid[], cath[], midgrid, midcath;
-    int circler;
 
     public void setPoints()
     {
@@ -128,8 +126,6 @@ public class TriodeElm
     public int getPostCount() { return 3; }
 
     double getPower() { return (volts[0] - volts[2]) * current; }
-
-    double lastv0, lastv1, lastv2;
 
     public void doStep()
     {

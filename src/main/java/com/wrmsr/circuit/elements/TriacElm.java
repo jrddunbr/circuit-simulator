@@ -5,7 +5,6 @@ package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.Diode;
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -26,7 +25,14 @@ public class TriacElm
     final int cnode = 1;
     final int gnode = 2;
     final int inode = 3;
+    final int hs = 8;
     Diode diode;
+    double ia, ic, ig, curcount_a, curcount_c, curcount_g;
+    double lastvac, lastvag;
+    double cresistance, triggerI, holdingI;
+    Polygon poly;
+    Point cathode[], gate[];
+    double aresistance;
 
     public TriacElm(int xx, int yy)
     {
@@ -85,14 +91,6 @@ public class TriacElm
                 (volts[anode] - volts[gnode]) + " " + triggerI + " " + holdingI + " " +
                 cresistance;
     }
-
-    double ia, ic, ig, curcount_a, curcount_c, curcount_g;
-    double lastvac, lastvag;
-    double cresistance, triggerI, holdingI;
-
-    final int hs = 8;
-    Polygon poly;
-    Point cathode[], gate[];
 
     public void setPoints()
     {
@@ -176,8 +174,6 @@ public class TriacElm
     {
         return (volts[anode] - volts[gnode]) * ia + (volts[cnode] - volts[gnode]) * ic;
     }
-
-    double aresistance;
 
     public void stamp()
     {

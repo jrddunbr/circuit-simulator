@@ -4,8 +4,8 @@ import java.util.Vector;
 
 public class CircuitNode
 {
-    int x, y;
     public Vector<CircuitNodeLink> links;
+    int x, y;
     boolean internal;
 
     CircuitNode() { links = new Vector<CircuitNodeLink>(); }

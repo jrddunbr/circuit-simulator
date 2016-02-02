@@ -9,8 +9,10 @@ import java.util.StringTokenizer;
 public class WireElm
         extends ResistorElm
 {
-    public static boolean ideal = false;
+    static final int FLAG_SHOWCURRENT = 1;
+    static final int FLAG_SHOWVOLTAGE = 2;
     private static final double defaultResistance = 1E-12;
+    public static boolean ideal = false;
 
     public WireElm(int xx, int yy)
     {
@@ -24,9 +26,6 @@ public class WireElm
         super(xa, ya, xb, yb, f, new StringTokenizer("0.0"));
         resistance = defaultResistance;
     }
-
-    static final int FLAG_SHOWCURRENT = 1;
-    static final int FLAG_SHOWVOLTAGE = 2;
 
     public void draw(Graphics g)
     {

@@ -15,10 +15,10 @@ import java.nio.charset.Charset;
 class ImportExportFileDialog
         implements ImportExportDialog
 {
-    CirSim cframe;
     private static String circuitDump;
-    Action type;
     private static String directory = ".";
+    CirSim cframe;
+    Action type;
 
     ImportExportFileDialog(CirSim f, Action type)
     {
@@ -32,14 +32,45 @@ class ImportExportFileDialog
         cframe = f;
     }
 
-    public void setDump(String dump)
+    private static String readFile(String path)
+            throws IOException, FileNotFoundException
     {
-        circuitDump = dump;
+        FileInputStream stream = null;
+        try {
+            stream = new FileInputStream(new File(path));
+            FileChannel fc = stream.getChannel();
+            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY,
+                    0, fc.size());
+            return Charset.forName("UTF-8").decode(bb).toString();
+        }
+        finally {
+            stream.close();
+        }
+    }
+
+    private static void writeFile(String path)
+            throws IOException, FileNotFoundException
+    {
+        FileOutputStream stream = null;
+        try {
+            stream = new FileOutputStream(new File(path));
+            FileChannel fc = stream.getChannel();
+            ByteBuffer bb = Charset.forName("UTF-8").encode(circuitDump);
+            fc.write(bb);
+        }
+        finally {
+            stream.close();
+        }
     }
 
     public String getDump()
     {
         return circuitDump;
+    }
+
+    public void setDump(String dump)
+    {
+        circuitDump = dump;
     }
 
     public void execute()
@@ -77,37 +108,6 @@ class ImportExportFileDialog
             catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private static String readFile(String path)
-            throws IOException, FileNotFoundException
-    {
-        FileInputStream stream = null;
-        try {
-            stream = new FileInputStream(new File(path));
-            FileChannel fc = stream.getChannel();
-            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY,
-                    0, fc.size());
-            return Charset.forName("UTF-8").decode(bb).toString();
-        }
-        finally {
-            stream.close();
-        }
-    }
-
-    private static void writeFile(String path)
-            throws IOException, FileNotFoundException
-    {
-        FileOutputStream stream = null;
-        try {
-            stream = new FileOutputStream(new File(path));
-            FileChannel fc = stream.getChannel();
-            ByteBuffer bb = Charset.forName("UTF-8").encode(circuitDump);
-            fc.write(bb);
-        }
-        finally {
-            stream.close();
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.wrmsr.circuit.elements;
 
-import com.wrmsr.circuit.elements.ChipElm;
-
 import java.util.StringTokenizer;
 
 public class CounterElm

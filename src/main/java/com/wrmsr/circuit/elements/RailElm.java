@@ -7,6 +7,8 @@ import java.util.StringTokenizer;
 public class RailElm
         extends VoltageElm
 {
+    final int FLAG_CLOCK = 1;
+
     public RailElm(int xx, int yy) { super(xx, yy, WF_DC); }
 
     RailElm(int xx, int yy, int wf) { super(xx, yy, wf); }
@@ -16,8 +18,6 @@ public class RailElm
     {
         super(xa, ya, xb, yb, f, st);
     }
-
-    final int FLAG_CLOCK = 1;
 
     public int getDumpType() { return 'R'; }
 

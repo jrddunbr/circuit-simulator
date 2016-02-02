@@ -12,6 +12,12 @@ import java.util.StringTokenizer;
 public class ZenerElm
         extends DiodeElm
 {
+    final int hs = 8;
+    final double default_zvoltage = 5.6;
+    Polygon poly;
+    Point cathode[];
+    Point wing[];
+
     public ZenerElm(int xx, int yy)
     {
         super(xx, yy);
@@ -39,11 +45,6 @@ public class ZenerElm
     {
         return super.dump() + " " + zvoltage;
     }
-
-    final int hs = 8;
-    Polygon poly;
-    Point cathode[];
-    Point wing[];
 
     public void setPoints()
     {
@@ -84,8 +85,6 @@ public class ZenerElm
         doDots(g);
         drawPosts(g);
     }
-
-    final double default_zvoltage = 5.6;
 
     public void getInfo(String arr[])
     {

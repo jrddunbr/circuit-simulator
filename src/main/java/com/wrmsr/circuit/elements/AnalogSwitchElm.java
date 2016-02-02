@@ -12,6 +12,8 @@ public class AnalogSwitchElm
 {
     final int FLAG_INVERT = 1;
     double resistance, r_on, r_off;
+    boolean open;
+    Point ps, point3, lead3;
 
     public AnalogSwitchElm(int xx, int yy)
     {
@@ -40,10 +42,6 @@ public class AnalogSwitchElm
     }
 
     public int getDumpType() { return 159; }
-
-    boolean open;
-
-    Point ps, point3, lead3;
 
     public void setPoints()
     {

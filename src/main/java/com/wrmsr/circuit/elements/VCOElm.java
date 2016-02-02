@@ -1,13 +1,15 @@
 package com.wrmsr.circuit.elements;
 
-import com.wrmsr.circuit.elements.ChipElm;
-
 import java.awt.Graphics;
 import java.util.StringTokenizer;
 
 public class VCOElm
         extends ChipElm
 {
+    final double cResistance = 1e6;
+    double cCurrent;
+    int cDir;
+
     public VCOElm(int xx, int yy) { super(xx, yy); }
 
     public VCOElm(int xa, int ya, int xb, int yb, int f,
@@ -50,10 +52,6 @@ public class VCOElm
         sim.stampNonLinear(nodes[2]);
         sim.stampNonLinear(nodes[3]);
     }
-
-    final double cResistance = 1e6;
-    double cCurrent;
-    int cDir;
 
     public void doStep()
     {

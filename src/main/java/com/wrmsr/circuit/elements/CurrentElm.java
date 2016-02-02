@@ -11,6 +11,8 @@ public class CurrentElm
         extends CircuitElm
 {
     double currentValue;
+    Polygon arrow;
+    Point ashaft1, ashaft2, center;
 
     public CurrentElm(int xx, int yy)
     {
@@ -36,9 +38,6 @@ public class CurrentElm
     }
 
     public int getDumpType() { return 'i'; }
-
-    Polygon arrow;
-    Point ashaft1, ashaft2, center;
 
     public void setPoints()
     {

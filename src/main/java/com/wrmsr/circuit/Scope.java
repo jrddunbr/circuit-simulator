@@ -20,7 +20,6 @@ import java.util.StringTokenizer;
 
 public class Scope
 {
-    public final int FLAG_YELM = 32;
     public static final int VAL_POWER = 1;
     public static final int VAL_IB = 1;
     public static final int VAL_IC = 2;
@@ -29,6 +28,7 @@ public class Scope
     public static final int VAL_VBC = 5;
     public static final int VAL_VCE = 6;
     public static final int VAL_R = 2;
+    public final int FLAG_YELM = 32;
     double minV[], maxV[], minMaxV;
     double minI[], maxI[], minMaxI;
     int scopePointCount = 128;
@@ -706,7 +706,7 @@ public class Scope
         if (sim.useBufferedImage) {
             try {
         /* simulate the following code using reflection:
-		   dbimage = new BufferedImage(d.width, d.height,
+           dbimage = new BufferedImage(d.width, d.height,
 		   BufferedImage.TYPE_INT_RGB);
 		   DataBuffer db = (DataBuffer)(((BufferedImage)dbimage).
 		   getRaster().getDataBuffer());

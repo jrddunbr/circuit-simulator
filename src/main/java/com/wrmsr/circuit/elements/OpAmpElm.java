@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -12,12 +11,16 @@ import java.util.StringTokenizer;
 public class OpAmpElm
         extends CircuitElm
 {
-    int opsize, opheight, opwidth, opaddtext;
-    double maxOut, minOut, gain, gbw;
-    boolean reset;
     final int FLAG_SWAP = 1;
     final int FLAG_SMALL = 2;
     final int FLAG_LOWGAIN = 4;
+    int opsize, opheight, opwidth, opaddtext;
+    double maxOut, minOut, gain, gbw;
+    boolean reset;
+    Point in1p[], in2p[], textp[];
+    Polygon triangle;
+    Font plusFont;
+    double lastvd;
 
     public OpAmpElm(int xx, int yy)
     {
@@ -87,10 +90,6 @@ public class OpAmpElm
 
     double getPower() { return volts[2] * current; }
 
-    Point in1p[], in2p[], textp[];
-    Polygon triangle;
-    Font plusFont;
-
     void setSize(int s)
     {
         opsize = s;
@@ -149,8 +148,6 @@ public class OpAmpElm
                 getVoltageText(maxOut);
     }
 
-    double lastvd;
-
     public void stamp()
     {
         int vn = sim.nodeList.size() + voltSource;
@@ -191,7 +188,7 @@ public class OpAmpElm
 
         lastvd = vd;
         /*if (sim.converged)
-	      System.out.println((volts[1]-volts[0]) + " " + volts[2] + " " + initvd);*/
+          System.out.println((volts[1]-volts[0]) + " " + volts[2] + " " + initvd);*/
     }
 
     // there is no current path through the op-amp inputs, but there

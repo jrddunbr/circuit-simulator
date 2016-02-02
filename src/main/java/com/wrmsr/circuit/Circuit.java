@@ -12,6 +12,13 @@ public class Circuit
 {
     static CirSim ogf;
     boolean finished = false;
+    boolean started = false;
+
+    public static void main(String args[])
+    {
+        ogf = new CirSim(null);
+        ogf.init();
+    }
 
     void destroyFrame()
     {
@@ -23,17 +30,9 @@ public class Circuit
         finished = true;
     }
 
-    boolean started = false;
-
     public void init()
     {
         addComponentListener(this);
-    }
-
-    public static void main(String args[])
-    {
-        ogf = new CirSim(null);
-        ogf.init();
     }
 
     public void showFrame()

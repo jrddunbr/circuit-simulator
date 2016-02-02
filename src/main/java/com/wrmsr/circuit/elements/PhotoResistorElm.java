@@ -4,7 +4,6 @@ package com.wrmsr.circuit.elements;
 // FIXME need to add PhotoResistorElm.java to srclist
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Graphics;
 import java.awt.Label;
@@ -19,6 +18,7 @@ public class PhotoResistorElm
     double resistance;
     Scrollbar slider;
     Label label;
+    Point ps3, ps4;
 
     public PhotoResistorElm(int xx, int yy)
     {
@@ -45,8 +45,6 @@ public class PhotoResistorElm
     {
         return super.dump() + " " + minresistance + " " + maxresistance;
     }
-
-    Point ps3, ps4;
 
     void createSlider()
     {

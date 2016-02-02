@@ -13,11 +13,20 @@ import java.util.StringTokenizer;
 public abstract class ChipElm
         extends CircuitElm
 {
-    int csize, cspc, cspc2;
-    int bits;
     final int FLAG_SMALL = 1;
     final int FLAG_FLIP_X = 1024;
     final int FLAG_FLIP_Y = 2048;
+    final int SIDE_N = 0;
+    final int SIDE_S = 1;
+    final int SIDE_W = 2;
+    final int SIDE_E = 3;
+    int csize, cspc, cspc2;
+    int bits;
+    int rectPointsX[], rectPointsY[];
+    int clockPointsX[], clockPointsY[];
+    Pin pins[];
+    int sizeX, sizeY;
+    boolean lastClock;
 
     public ChipElm(int xx, int yy)
     {
@@ -106,12 +115,6 @@ public abstract class ChipElm
             drawPost(g, pins[i].post.x, pins[i].post.y, nodes[i]);
         }
     }
-
-    int rectPointsX[], rectPointsY[];
-    int clockPointsX[], clockPointsY[];
-    Pin pins[];
-    int sizeX, sizeY;
-    boolean lastClock;
 
     public void drag(int xx, int yy)
     {
@@ -323,26 +326,21 @@ public abstract class ChipElm
         }
     }
 
-    final int SIDE_N = 0;
-    final int SIDE_S = 1;
-    final int SIDE_W = 2;
-    final int SIDE_E = 3;
-
     class Pin
     {
-        Pin(int p, int s, String t)
-        {
-            pos = p;
-            side = s;
-            text = t;
-        }
-
         Point post, stub;
         Point textloc;
         int pos, side, voltSource, bubbleX, bubbleY;
         String text;
         boolean lineOver, bubble, clock, output, value, state;
         double curcount, current;
+
+        Pin(int p, int s, String t)
+        {
+            pos = p;
+            side = s;
+            text = t;
+        }
 
         void setPoint(int px, int py, int dx, int dy, int dax, int day,
                 int sx, int sy)

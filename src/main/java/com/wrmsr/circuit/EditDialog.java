@@ -23,12 +23,12 @@ class EditDialog
         extends Dialog
         implements AdjustmentListener, ActionListener, ItemListener
 {
+    final int barmax = 1000;
     Editable elm;
     CirSim cframe;
     Button applyButton, okButton;
     EditInfo einfos[];
     int einfocount;
-    final int barmax = 1000;
     NumberFormat noCommaFormat;
 
     EditDialog(Editable ce, CirSim f)
@@ -239,7 +239,7 @@ class EditDialog
                 }
                 ei.value = (ei.maxval - ei.minval) * v + ei.minval;
         /*if (ei.maxval-ei.minval > 100)
-		    ei.value = Math.round(ei.value);
+            ei.value = Math.round(ei.value);
 		else
 		ei.value = Math.round(ei.value*100)/100.;*/
                 ei.value = Math.round(ei.value / ei.minval) * ei.minval;

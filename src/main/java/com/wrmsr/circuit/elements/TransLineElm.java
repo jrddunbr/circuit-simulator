@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,6 +13,9 @@ public class TransLineElm
     double delay, imped;
     double voltageL[], voltageR[];
     int lenSteps, ptr, width;
+    Point posts[], inner[];
+    int voltSource1, voltSource2;
+    double current1, current2, curCount1, curCount2;
 
     public TransLineElm(int xx, int yy)
     {
@@ -66,8 +68,6 @@ public class TransLineElm
         y2 = yy;
         setPoints();
     }
-
-    Point posts[], inner[];
 
     public void reset()
     {
@@ -148,9 +148,6 @@ public class TransLineElm
         }
     }
 
-    int voltSource1, voltSource2;
-    double current1, current2, curCount1, curCount2;
-
     public void setVoltageSource(int n, int v)
     {
         if (n == 0) {
@@ -190,7 +187,7 @@ public class TransLineElm
         voltageR[ptr] = volts[3] - volts[1] + volts[3] - volts[5];
         //System.out.println(volts[2] + " " + volts[0] + " " + (volts[2]-volts[0]) + " " + (imped*current1) + " " + voltageL[ptr]);
     /*System.out.println("sending fwd  " + currentL[ptr] + " " + current1);
-	  System.out.println("sending back " + currentR[ptr] + " " + current2);*/
+      System.out.println("sending back " + currentR[ptr] + " " + current2);*/
         //System.out.println("sending back " + voltageR[ptr]);
         ptr = (ptr + 1) % lenSteps;
     }
@@ -222,7 +219,7 @@ public class TransLineElm
     public boolean getConnection(int n1, int n2)
     {
         return false;
-	/*if (comparePair(n1, n2, 0, 1))
+    /*if (comparePair(n1, n2, 0, 1))
 	  return true;
 	  if (comparePair(n1, n2, 2, 3))
 	  return true;

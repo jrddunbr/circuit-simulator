@@ -1,12 +1,13 @@
 package com.wrmsr.circuit.elements;
 
-import com.wrmsr.circuit.elements.ChipElm;
-
 import java.util.StringTokenizer;
 
 public class LatchElm
         extends ChipElm
 {
+    int loadPin;
+    boolean lastLoad = false;
+
     public LatchElm(int xx, int yy) { super(xx, yy); }
 
     public LatchElm(int xa, int ya, int xb, int yb, int f,
@@ -18,8 +19,6 @@ public class LatchElm
     String getChipName() { return "Latch"; }
 
     boolean needsBits() { return true; }
-
-    int loadPin;
 
     void setupPins()
     {
@@ -37,8 +36,6 @@ public class LatchElm
         pins[loadPin = bits * 2] = new Pin(bits, SIDE_W, "Ld");
         allocNodes();
     }
-
-    boolean lastLoad = false;
 
     void execute()
     {

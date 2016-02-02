@@ -1,7 +1,5 @@
 package com.wrmsr.circuit.elements;
 
-import com.wrmsr.circuit.elements.ChipElm;
-
 import java.util.StringTokenizer;
 
 public class TimerElm
@@ -15,8 +13,7 @@ public class TimerElm
     final int N_CTL = 4;
     final int N_OUT = 5;
     final int N_RST = 6;
-
-    int getDefaultFlags() { return FLAG_RESET; }
+    boolean setOut, out;
 
     public TimerElm(int xx, int yy) { super(xx, yy); }
 
@@ -25,6 +22,8 @@ public class TimerElm
     {
         super(xa, ya, xb, yb, f, st);
     }
+
+    int getDefaultFlags() { return FLAG_RESET; }
 
     String getChipName() { return "555 Timer"; }
 
@@ -67,8 +66,6 @@ public class TimerElm
         pins[N_CTL].current = -volts[N_CTL] / 10000 - pins[N_VIN].current;
         pins[N_DIS].current = (!out && !setOut) ? -volts[N_DIS] / 10 : 0;
     }
-
-    boolean setOut, out;
 
     public void startIteration()
     {

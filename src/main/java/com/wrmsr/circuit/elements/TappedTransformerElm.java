@@ -1,7 +1,6 @@
 package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -13,6 +12,8 @@ public class TappedTransformerElm
     double inductance, ratio;
     Point ptEnds[], ptCoil[], ptCore[];
     double current[], curcount[];
+    double a[];
+    double curSourceValue[], voltdiff[];
 
     public TappedTransformerElm(int xx, int yy)
     {
@@ -137,8 +138,6 @@ public class TappedTransformerElm
         volts[3] = curcount[0] = curcount[1] = 0;
     }
 
-    double a[];
-
     public void stamp()
     {
         // equations for transformer:
@@ -211,8 +210,6 @@ public class TappedTransformerElm
             }
         }
     }
-
-    double curSourceValue[], voltdiff[];
 
     public void doStep()
     {

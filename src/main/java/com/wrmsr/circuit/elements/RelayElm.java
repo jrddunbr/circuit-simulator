@@ -2,7 +2,6 @@ package com.wrmsr.circuit.elements;
 
 import com.wrmsr.circuit.EditInfo;
 import com.wrmsr.circuit.Inductor;
-import com.wrmsr.circuit.elements.CircuitElm;
 
 import java.awt.Checkbox;
 import java.awt.Color;
@@ -21,6 +20,10 @@ import java.util.StringTokenizer;
 public class RelayElm
         extends CircuitElm
 {
+    final int nSwitch0 = 0;
+    final int nSwitch1 = 1;
+    final int nSwitch2 = 2;
+    final int FLAG_SWAP_COIL = 1;
     double inductance;
     Inductor ind;
     double r_on, r_off, onCurrent;
@@ -31,11 +34,8 @@ public class RelayElm
     int i_position;
     int poleCount;
     int openhs;
-    final int nSwitch0 = 0;
-    final int nSwitch1 = 1;
-    final int nSwitch2 = 2;
     int nCoil1, nCoil2, nCoil3;
-    final int FLAG_SWAP_COIL = 1;
+    double a1, a2, a3, a4;
 
     public RelayElm(int xx, int yy)
     {
@@ -212,8 +212,6 @@ public class RelayElm
             switchCurrent[i] = switchCurCount[i] = 0;
         }
     }
-
-    double a1, a2, a3, a4;
 
     public void stamp()
     {

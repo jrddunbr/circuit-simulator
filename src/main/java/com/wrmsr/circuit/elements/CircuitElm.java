@@ -17,33 +17,45 @@ import java.text.NumberFormat;
 public abstract class CircuitElm
         implements Editable
 {
+    static final double pi = 3.14159265358979323846;
     public static double voltageRange = 5;
+    public static double currentMult, powerMult;
+    public static Color whiteColor, selectColor, lightGrayColor;
+    public static NumberFormat showFormat, shortFormat, noCommaFormat;
     static int colorScaleCount = 32;
     static Color colorScale[];
-    public static double currentMult, powerMult;
     static Point ps1, ps2;
     static CirSim sim;
-    public static Color whiteColor, selectColor, lightGrayColor;
     static Font unitsFont;
-
-    public static NumberFormat showFormat, shortFormat, noCommaFormat;
-    static final double pi = 3.14159265358979323846;
-
     public int x, y, x2, y2, flags, nodes[], voltSource;
     public int dx, dy, dsign;
+    public Rectangle boundingBox;
+    public boolean selected;
     double dn, dpx1, dpy1;
     Point point1, point2, lead1, lead2;
     double volts[];
     double current, curcount;
-    public Rectangle boundingBox;
     boolean noDiagonal;
-    public boolean selected;
 
-    public int getDumpType() { return 0; }
+    CircuitElm(int xx, int yy)
+    {
+        x = x2 = xx;
+        y = y2 = yy;
+        flags = getDefaultFlags();
+        allocNodes();
+        initBoundingBox();
+    }
 
-    public Class getDumpClass() { return getClass(); }
-
-    int getDefaultFlags() { return 0; }
+    CircuitElm(int xa, int ya, int xb, int yb, int f)
+    {
+        x = xa;
+        y = ya;
+        x2 = xb;
+        y2 = yb;
+        flags = f;
+        allocNodes();
+        initBoundingBox();
+    }
 
     public static void initClass(CirSim s)
     {
@@ -78,25 +90,150 @@ public abstract class CircuitElm
         noCommaFormat.setGroupingUsed(false);
     }
 
-    CircuitElm(int xx, int yy)
+    static void drawThickLine(Graphics g, int x, int y, int x2, int y2)
     {
-        x = x2 = xx;
-        y = y2 = yy;
-        flags = getDefaultFlags();
-        allocNodes();
-        initBoundingBox();
+        g.drawLine(x, y, x2, y2);
+        g.drawLine(x + 1, y, x2 + 1, y2);
+        g.drawLine(x, y + 1, x2, y2 + 1);
+        g.drawLine(x + 1, y + 1, x2 + 1, y2 + 1);
     }
 
-    CircuitElm(int xa, int ya, int xb, int yb, int f)
+    static void drawThickLine(Graphics g, Point pa, Point pb)
     {
-        x = xa;
-        y = ya;
-        x2 = xb;
-        y2 = yb;
-        flags = f;
-        allocNodes();
-        initBoundingBox();
+        g.drawLine(pa.x, pa.y, pb.x, pb.y);
+        g.drawLine(pa.x + 1, pa.y, pb.x + 1, pb.y);
+        g.drawLine(pa.x, pa.y + 1, pb.x, pb.y + 1);
+        g.drawLine(pa.x + 1, pa.y + 1, pb.x + 1, pb.y + 1);
     }
+
+    static void drawThickPolygon(Graphics g, int xs[], int ys[], int c)
+    {
+        int i;
+        for (i = 0; i != c - 1; i++) {
+            drawThickLine(g, xs[i], ys[i], xs[i + 1], ys[i + 1]);
+        }
+        drawThickLine(g, xs[i], ys[i], xs[0], ys[0]);
+    }
+
+    static void drawThickPolygon(Graphics g, Polygon p)
+    {
+        drawThickPolygon(g, p.xpoints, p.ypoints, p.npoints);
+    }
+
+    static void drawThickCircle(Graphics g, int cx, int cy, int ri)
+    {
+        int a;
+        double m = pi / 180;
+        double r = ri * .98;
+        for (a = 0; a != 360; a += 20) {
+            double ax = Math.cos(a * m) * r + cx;
+            double ay = Math.sin(a * m) * r + cy;
+            double bx = Math.cos((a + 20) * m) * r + cx;
+            double by = Math.sin((a + 20) * m) * r + cy;
+            drawThickLine(g, (int) ax, (int) ay, (int) bx, (int) by);
+        }
+    }
+
+    static String getVoltageDText(double v)
+    {
+        return getUnitText(Math.abs(v), "V");
+    }
+
+    public static String getVoltageText(double v)
+    {
+        return getUnitText(v, "V");
+    }
+
+    public static String getUnitText(double v, String u)
+    {
+        double va = Math.abs(v);
+        if (va < 1e-14) {
+            return "0 " + u;
+        }
+        if (va < 1e-9) {
+            return showFormat.format(v * 1e12) + " p" + u;
+        }
+        if (va < 1e-6) {
+            return showFormat.format(v * 1e9) + " n" + u;
+        }
+        if (va < 1e-3) {
+            return showFormat.format(v * 1e6) + " " + CirSim.muString + u;
+        }
+        if (va < 1) {
+            return showFormat.format(v * 1e3) + " m" + u;
+        }
+        if (va < 1e3) {
+            return showFormat.format(v) + " " + u;
+        }
+        if (va < 1e6) {
+            return showFormat.format(v * 1e-3) + " k" + u;
+        }
+        if (va < 1e9) {
+            return showFormat.format(v * 1e-6) + " M" + u;
+        }
+        return showFormat.format(v * 1e-9) + " G" + u;
+    }
+
+    static String getShortUnitText(double v, String u)
+    {
+        double va = Math.abs(v);
+        if (va < 1e-13) {
+            return null;
+        }
+        if (va < 1e-9) {
+            return shortFormat.format(v * 1e12) + "p" + u;
+        }
+        if (va < 1e-6) {
+            return shortFormat.format(v * 1e9) + "n" + u;
+        }
+        if (va < 1e-3) {
+            return shortFormat.format(v * 1e6) + CirSim.muString + u;
+        }
+        if (va < 1) {
+            return shortFormat.format(v * 1e3) + "m" + u;
+        }
+        if (va < 1e3) {
+            return shortFormat.format(v) + u;
+        }
+        if (va < 1e6) {
+            return shortFormat.format(v * 1e-3) + "k" + u;
+        }
+        if (va < 1e9) {
+            return shortFormat.format(v * 1e-6) + "M" + u;
+        }
+        return shortFormat.format(v * 1e-9) + "G" + u;
+    }
+
+    public static String getCurrentText(double i)
+    {
+        return getUnitText(i, "A");
+    }
+
+    static String getCurrentDText(double i)
+    {
+        return getUnitText(Math.abs(i), "A");
+    }
+
+    public static int abs(int x) { return x < 0 ? -x : x; }
+
+    public static int sign(int x) { return (x < 0) ? -1 : (x == 0) ? 0 : 1; }
+
+    public static int min(int a, int b) { return (a < b) ? a : b; }
+
+    public static int max(int a, int b) { return (a > b) ? a : b; }
+
+    static double distance(Point p1, Point p2)
+    {
+        double x = p1.x - p2.x;
+        double y = p1.y - p2.y;
+        return Math.sqrt(x * x + y * y);
+    }
+
+    public int getDumpType() { return 0; }
+
+    public Class getDumpClass() { return getClass(); }
+
+    int getDefaultFlags() { return 0; }
 
     void initBoundingBox()
     {
@@ -184,7 +321,7 @@ public abstract class CircuitElm
         int xpd = b.x - a.x;
         int ypd = b.y - a.y;
     /*double q = (a.x*(1-f)+b.x*f+.48);
-	  System.out.println(q + " " + (int) q);*/
+      System.out.println(q + " " + (int) q);*/
         c.x = (int) Math.floor(a.x * (1 - f) + b.x * f + .48);
         c.y = (int) Math.floor(a.y * (1 - f) + b.y * f + .48);
     }
@@ -564,130 +701,6 @@ public abstract class CircuitElm
         }
     }
 
-    static void drawThickLine(Graphics g, int x, int y, int x2, int y2)
-    {
-        g.drawLine(x, y, x2, y2);
-        g.drawLine(x + 1, y, x2 + 1, y2);
-        g.drawLine(x, y + 1, x2, y2 + 1);
-        g.drawLine(x + 1, y + 1, x2 + 1, y2 + 1);
-    }
-
-    static void drawThickLine(Graphics g, Point pa, Point pb)
-    {
-        g.drawLine(pa.x, pa.y, pb.x, pb.y);
-        g.drawLine(pa.x + 1, pa.y, pb.x + 1, pb.y);
-        g.drawLine(pa.x, pa.y + 1, pb.x, pb.y + 1);
-        g.drawLine(pa.x + 1, pa.y + 1, pb.x + 1, pb.y + 1);
-    }
-
-    static void drawThickPolygon(Graphics g, int xs[], int ys[], int c)
-    {
-        int i;
-        for (i = 0; i != c - 1; i++) {
-            drawThickLine(g, xs[i], ys[i], xs[i + 1], ys[i + 1]);
-        }
-        drawThickLine(g, xs[i], ys[i], xs[0], ys[0]);
-    }
-
-    static void drawThickPolygon(Graphics g, Polygon p)
-    {
-        drawThickPolygon(g, p.xpoints, p.ypoints, p.npoints);
-    }
-
-    static void drawThickCircle(Graphics g, int cx, int cy, int ri)
-    {
-        int a;
-        double m = pi / 180;
-        double r = ri * .98;
-        for (a = 0; a != 360; a += 20) {
-            double ax = Math.cos(a * m) * r + cx;
-            double ay = Math.sin(a * m) * r + cy;
-            double bx = Math.cos((a + 20) * m) * r + cx;
-            double by = Math.sin((a + 20) * m) * r + cy;
-            drawThickLine(g, (int) ax, (int) ay, (int) bx, (int) by);
-        }
-    }
-
-    static String getVoltageDText(double v)
-    {
-        return getUnitText(Math.abs(v), "V");
-    }
-
-    public static String getVoltageText(double v)
-    {
-        return getUnitText(v, "V");
-    }
-
-    public static String getUnitText(double v, String u)
-    {
-        double va = Math.abs(v);
-        if (va < 1e-14) {
-            return "0 " + u;
-        }
-        if (va < 1e-9) {
-            return showFormat.format(v * 1e12) + " p" + u;
-        }
-        if (va < 1e-6) {
-            return showFormat.format(v * 1e9) + " n" + u;
-        }
-        if (va < 1e-3) {
-            return showFormat.format(v * 1e6) + " " + CirSim.muString + u;
-        }
-        if (va < 1) {
-            return showFormat.format(v * 1e3) + " m" + u;
-        }
-        if (va < 1e3) {
-            return showFormat.format(v) + " " + u;
-        }
-        if (va < 1e6) {
-            return showFormat.format(v * 1e-3) + " k" + u;
-        }
-        if (va < 1e9) {
-            return showFormat.format(v * 1e-6) + " M" + u;
-        }
-        return showFormat.format(v * 1e-9) + " G" + u;
-    }
-
-    static String getShortUnitText(double v, String u)
-    {
-        double va = Math.abs(v);
-        if (va < 1e-13) {
-            return null;
-        }
-        if (va < 1e-9) {
-            return shortFormat.format(v * 1e12) + "p" + u;
-        }
-        if (va < 1e-6) {
-            return shortFormat.format(v * 1e9) + "n" + u;
-        }
-        if (va < 1e-3) {
-            return shortFormat.format(v * 1e6) + CirSim.muString + u;
-        }
-        if (va < 1) {
-            return shortFormat.format(v * 1e3) + "m" + u;
-        }
-        if (va < 1e3) {
-            return shortFormat.format(v) + u;
-        }
-        if (va < 1e6) {
-            return shortFormat.format(v * 1e-3) + "k" + u;
-        }
-        if (va < 1e9) {
-            return shortFormat.format(v * 1e-6) + "M" + u;
-        }
-        return shortFormat.format(v * 1e-9) + "G" + u;
-    }
-
-    public static String getCurrentText(double i)
-    {
-        return getUnitText(i, "A");
-    }
-
-    static String getCurrentDText(double i)
-    {
-        return getUnitText(Math.abs(i), "A");
-    }
-
     void updateDotCount()
     {
         curcount = updateDotCount(current, curcount);
@@ -699,7 +712,7 @@ public abstract class CircuitElm
             return cc;
         }
         double cadd = cur * currentMult;
-	/*if (cur != 0 && cadd <= .05 && cadd >= -.05)
+    /*if (cur != 0 && cadd <= .05 && cadd >= -.05)
 	  cadd = (cadd < 0) ? -.05 : .05;*/
         cadd %= 8;
 	/*if (cadd > 8)
@@ -839,21 +852,6 @@ public abstract class CircuitElm
     public void selectRect(Rectangle r)
     {
         selected = r.intersects(boundingBox);
-    }
-
-    public static int abs(int x) { return x < 0 ? -x : x; }
-
-    public static int sign(int x) { return (x < 0) ? -1 : (x == 0) ? 0 : 1; }
-
-    public static int min(int a, int b) { return (a < b) ? a : b; }
-
-    public static int max(int a, int b) { return (a > b) ? a : b; }
-
-    static double distance(Point p1, Point p2)
-    {
-        double x = p1.x - p2.x;
-        double y = p1.y - p2.y;
-        return Math.sqrt(x * x + y * y);
     }
 
     public Rectangle getBoundingBox() { return boundingBox; }
