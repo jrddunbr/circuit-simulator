@@ -239,7 +239,7 @@ class EditDialog
                 }
                 ei.value = (ei.maxval - ei.minval) * v + ei.minval;
         /*if (ei.maxval-ei.minval > 100)
-            ei.value = Math.round(ei.value);
+		    ei.value = Math.round(ei.value);
 		else
 		ei.value = Math.round(ei.value*100)/100.;*/
                 ei.value = Math.round(ei.value / ei.minval) * ei.minval;

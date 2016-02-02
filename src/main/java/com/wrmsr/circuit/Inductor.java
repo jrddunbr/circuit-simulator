@@ -1,6 +1,6 @@
 package com.wrmsr.circuit;
 
-public class Inductor
+class Inductor
 {
     public static final int FLAG_BACK_EULER = 2;
     int nodes[];
@@ -11,27 +11,27 @@ public class Inductor
     double compResistance, current;
     double curSourceValue;
 
-    public Inductor(CirSim s)
+    Inductor(CirSim s)
     {
         sim = s;
         nodes = new int[2];
     }
 
-    public void setup(double ic, double cr, int f)
+    void setup(double ic, double cr, int f)
     {
         inductance = ic;
         current = cr;
         flags = f;
     }
 
-    public boolean isTrapezoidal() { return (flags & FLAG_BACK_EULER) == 0; }
+    boolean isTrapezoidal() { return (flags & FLAG_BACK_EULER) == 0; }
 
-    public void reset()
+    void reset()
     {
         current = 0;
     }
 
-    public void stamp(int n0, int n1)
+    void stamp(int n0, int n1)
     {
         // inductor companion model using trapezoidal or backward euler
         // approximations (Norton equivalent) consists of a current
@@ -52,9 +52,9 @@ public class Inductor
         sim.stampRightSide(nodes[1]);
     }
 
-    public boolean nonLinear() { return false; }
+    boolean nonLinear() { return false; }
 
-    public void startIteration(double voltdiff)
+    void startIteration(double voltdiff)
     {
         if (isTrapezoidal()) {
             curSourceValue = voltdiff / compResistance + current;
@@ -65,7 +65,7 @@ public class Inductor
         }
     }
 
-    public double calculateCurrent(double voltdiff)
+    double calculateCurrent(double voltdiff)
     {
         // we check compResistance because this might get called
         // before stamp(), which sets compResistance, causing
@@ -76,7 +76,7 @@ public class Inductor
         return current;
     }
 
-    public void doStep(double voltdiff)
+    void doStep(double voltdiff)
     {
         sim.stampCurrentSource(nodes[0], nodes[1], curSourceValue);
     }

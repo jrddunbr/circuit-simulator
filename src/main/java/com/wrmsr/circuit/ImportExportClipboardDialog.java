@@ -7,7 +7,6 @@ import java.awt.Event;
 import java.awt.Point;
 import java.awt.TextArea;
 import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,12 +27,12 @@ class ImportExportClipboardDialog
         cframe = f;
         setLayout(new ImportExportDialogLayout());
         add(text = new TextArea("", 10, 60, TextArea.SCROLLBARS_BOTH));
-        if (type == Action.EXPORT) {
-            importButton = new Button("Copy to clipboard");
-        }
-        else {
-            importButton = new Button("Import");
-        }
+/*
+    if (type == Action.EXPORT)
+	    importButton = new Button("Copy to clipboard");
+	else
+*/
+        importButton = new Button("Import");
         this.type = type;
         add(importButton);
         importButton.addActionListener(this);
@@ -64,14 +63,17 @@ class ImportExportClipboardDialog
         int i;
         Object src = e.getSource();
         if (src == importButton) {
-            if (clipboard == null) {
-                clipboard = getToolkit().getSystemClipboard();
-            }
-            if (type == Action.EXPORT) {
-                StringSelection data = new StringSelection(text.getText());
-                clipboard.setContents(data, data);
-            }
-            else {
+/*
+	    if (clipboard == null)
+		clipboard = getToolkit().getSystemClipboard();
+	    if ( type == Action.EXPORT )
+	    {
+		StringSelection data = new StringSelection(text.getText());
+		clipboard.setContents(data, data);
+	    }
+	    else
+*/
+            {
                 cframe.readSetup(text.getText());
             }
         }

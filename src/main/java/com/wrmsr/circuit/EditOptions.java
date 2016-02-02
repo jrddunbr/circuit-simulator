@@ -1,7 +1,5 @@
 package com.wrmsr.circuit;
 
-import com.wrmsr.circuit.elements.CircuitElm;
-
 class EditOptions
         implements Editable
 {

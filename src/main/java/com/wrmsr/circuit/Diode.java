@@ -1,6 +1,6 @@
 package com.wrmsr.circuit;
 
-public class Diode
+class Diode
 {
     public double leakage = 1e-14; // was 1e-9;
     int nodes[];
@@ -9,13 +9,13 @@ public class Diode
     double lastvoltdiff;
     double vcrit;
 
-    public Diode(CirSim s)
+    Diode(CirSim s)
     {
         sim = s;
         nodes = new int[2];
     }
 
-    public void setup(double fw, double zv)
+    void setup(double fw, double zv)
     {
         fwdrop = fw;
         zvoltage = zv;
@@ -34,7 +34,7 @@ public class Diode
         }
     }
 
-    public void reset()
+    void reset()
     {
         lastvoltdiff = 0;
     }
@@ -98,7 +98,7 @@ public class Diode
         return vnew;
     }
 
-    public void stamp(int n0, int n1)
+    void stamp(int n0, int n1)
     {
         nodes[0] = n0;
         nodes[1] = n1;
@@ -106,7 +106,7 @@ public class Diode
         sim.stampNonLinear(nodes[1]);
     }
 
-    public void doStep(double voltdiff)
+    void doStep(double voltdiff)
     {
         // used to have .1 here, but needed .01 for peak detector
         if (Math.abs(voltdiff - lastvoltdiff) > .01) {
@@ -131,7 +131,7 @@ public class Diode
             // Zener diode
 
 	    /* 
-         * I(Vd) = Is * (exp[Vd*C] - exp[(-Vd-Vz)*C] - 1 )
+	     * I(Vd) = Is * (exp[Vd*C] - exp[(-Vd-Vz)*C] - 1 )
 	     *
 	     * geq is I'(Vd)
 	     * nc is I(Vd) + I'(Vd)*(-Vd)
@@ -152,7 +152,7 @@ public class Diode
         }
     }
 
-    public double calculateCurrent(double voltdiff)
+    double calculateCurrent(double voltdiff)
     {
         if (voltdiff >= 0 || zvoltage == 0) {
             return leakage * (Math.exp(voltdiff * vdcoef) - 1);

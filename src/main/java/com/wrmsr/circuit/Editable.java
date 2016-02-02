@@ -13,7 +13,7 @@
  */
 package com.wrmsr.circuit;
 
-public interface Editable
+interface Editable
 {
     EditInfo getEditInfo(int n);
 

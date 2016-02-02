@@ -1,12 +1,5 @@
 package com.wrmsr.circuit;
 
-import com.wrmsr.circuit.elements.CircuitElm;
-import com.wrmsr.circuit.elements.LogicOutputElm;
-import com.wrmsr.circuit.elements.MemristorElm;
-import com.wrmsr.circuit.elements.OutputElm;
-import com.wrmsr.circuit.elements.ProbeElm;
-import com.wrmsr.circuit.elements.TransistorElm;
-
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.PopupMenu;
@@ -18,17 +11,17 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.StringTokenizer;
 
-public class Scope
+class Scope
 {
-    public static final int VAL_POWER = 1;
-    public static final int VAL_IB = 1;
-    public static final int VAL_IC = 2;
-    public static final int VAL_IE = 3;
-    public static final int VAL_VBE = 4;
-    public static final int VAL_VBC = 5;
-    public static final int VAL_VCE = 6;
-    public static final int VAL_R = 2;
-    public final int FLAG_YELM = 32;
+    static final int VAL_POWER = 1;
+    static final int VAL_IB = 1;
+    static final int VAL_IC = 2;
+    static final int VAL_IE = 3;
+    static final int VAL_VBE = 4;
+    static final int VAL_VBC = 5;
+    static final int VAL_VCE = 6;
+    static final int VAL_R = 2;
+    final int FLAG_YELM = 32;
     double minV[], maxV[], minMaxV;
     double minI[], maxI[], minMaxI;
     int scopePointCount = 128;
@@ -706,7 +699,7 @@ public class Scope
         if (sim.useBufferedImage) {
             try {
         /* simulate the following code using reflection:
-           dbimage = new BufferedImage(d.width, d.height,
+		   dbimage = new BufferedImage(d.width, d.height,
 		   BufferedImage.TYPE_INT_RGB);
 		   DataBuffer db = (DataBuffer)(((BufferedImage)dbimage).
 		   getRaster().getDataBuffer());
