@@ -11,11 +11,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.wrmsr.circuit;
+package com.wrmsr.circuit.elements;
 
-public interface Editable
+public class PJfetElm
+        extends JfetElm
 {
-    EditInfo getEditInfo(int n);
+    public PJfetElm(int xx, int yy) { super(xx, yy, true); }
 
-    void setEditValue(int n, EditInfo ei);
+    public Class getDumpClass() { return JfetElm.class; }
 }

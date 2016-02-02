@@ -3,6 +3,18 @@ package com.wrmsr.circuit;
 
 // For information about the theory behind this, see Electronic Circuit & System Simulation Methods by Pillage
 
+import com.wrmsr.circuit.elements.CapacitorElm;
+import com.wrmsr.circuit.elements.CircuitElm;
+import com.wrmsr.circuit.elements.CurrentElm;
+import com.wrmsr.circuit.elements.GraphicElm;
+import com.wrmsr.circuit.elements.GroundElm;
+import com.wrmsr.circuit.elements.InductorElm;
+import com.wrmsr.circuit.elements.RailElm;
+import com.wrmsr.circuit.elements.ResistorElm;
+import com.wrmsr.circuit.elements.SwitchElm;
+import com.wrmsr.circuit.elements.VoltageElm;
+import com.wrmsr.circuit.elements.WireElm;
+
 import java.awt.Button;
 import java.awt.Checkbox;
 import java.awt.CheckboxMenuItem;
@@ -57,7 +69,7 @@ public class CirSim
         implements ComponentListener, ActionListener, AdjustmentListener,
         MouseMotionListener, MouseListener, ItemListener, KeyListener
 {
-    Dimension winSize;
+    public Dimension winSize;
     Image dbimage;
 
     Random random;
@@ -69,24 +81,23 @@ public class CirSim
         return "Circuit by Paul Falstad";
     }
 
-    static Container main;
+    public static Container main;
     Label titleLabel;
     Button resetButton;
     Button dumpMatrixButton;
-    MenuItem exportItem, exportLinkItem, importItem, exitItem, undoItem, redoItem,
-            cutItem, copyItem, pasteItem, selectAllItem, optionsItem;
+    MenuItem exportItem, exportLinkItem, importItem, exitItem, undoItem, redoItem, cutItem, copyItem, pasteItem, selectAllItem, optionsItem;
     Menu optionsMenu;
-    Checkbox stoppedCheck;
-    CheckboxMenuItem dotsCheckItem;
-    CheckboxMenuItem voltsCheckItem;
-    CheckboxMenuItem powerCheckItem;
-    CheckboxMenuItem smallGridCheckItem;
-    CheckboxMenuItem showValuesCheckItem;
-    CheckboxMenuItem conductanceCheckItem;
-    CheckboxMenuItem euroResistorCheckItem;
-    CheckboxMenuItem printableCheckItem;
-    CheckboxMenuItem conventionCheckItem;
-    CheckboxMenuItem idealWireCheckItem;
+    public Checkbox stoppedCheck;
+    public CheckboxMenuItem dotsCheckItem;
+    public CheckboxMenuItem voltsCheckItem;
+    public CheckboxMenuItem powerCheckItem;
+    public CheckboxMenuItem smallGridCheckItem;
+    public CheckboxMenuItem showValuesCheckItem;
+    public CheckboxMenuItem conductanceCheckItem;
+    public CheckboxMenuItem euroResistorCheckItem;
+    public CheckboxMenuItem printableCheckItem;
+    public CheckboxMenuItem conventionCheckItem;
+    public CheckboxMenuItem idealWireCheckItem;
     Scrollbar speedBar;
     Scrollbar currentBar;
     Label powerLabel;
@@ -118,46 +129,46 @@ public class CirSim
     CheckboxMenuItem scopeVceIcMenuItem;
     MenuItem scopeSelectYMenuItem;
     Class addingClass;
-    int mouseMode = MODE_SELECT;
-    int tempMouseMode = MODE_SELECT;
+    public int mouseMode = MODE_SELECT;
+    public int tempMouseMode = MODE_SELECT;
     String mouseModeStr = "Select";
     static final double pi = 3.14159265358979323846;
     static final int MODE_ADD_ELM = 0;
     static final int MODE_DRAG_ALL = 1;
-    static final int MODE_DRAG_ROW = 2;
-    static final int MODE_DRAG_COLUMN = 3;
-    static final int MODE_DRAG_SELECTED = 4;
-    static final int MODE_DRAG_POST = 5;
-    static final int MODE_SELECT = 6;
+    public static final int MODE_DRAG_ROW = 2;
+    public static final int MODE_DRAG_COLUMN = 3;
+    public static final int MODE_DRAG_SELECTED = 4;
+    public static final int MODE_DRAG_POST = 5;
+    public static final int MODE_SELECT = 6;
     static final int infoWidth = 120;
     int dragX, dragY, initDragX, initDragY;
     int selectedSource;
     Rectangle selectedArea;
-    int gridSize, gridMask, gridRound;
+    public int gridSize, gridMask, gridRound;
     boolean dragging;
-    boolean analyzeFlag;
+    public boolean analyzeFlag;
     boolean dumpMatrix;
     boolean useBufferedImage;
     boolean isMac;
     String ctrlMetaKey;
-    double t;
+    public double t;
     int pause = 10;
     int scopeSelected = -1;
     int menuScope = -1;
     int hintType = -1, hintItem1, hintItem2;
     String stopMessage;
-    double timeStep;
+    public double timeStep;
     static final int HINT_LC = 1;
     static final int HINT_RC = 2;
     static final int HINT_3DB_C = 3;
     static final int HINT_TWINT = 4;
     static final int HINT_3DB_L = 5;
-    Vector<CircuitElm> elmList;
+    public Vector<CircuitElm> elmList;
     //    Vector setupList;
-    CircuitElm dragElm, menuElm, mouseElm, stopElm;
+    public CircuitElm dragElm, menuElm, mouseElm, stopElm;
     boolean didSwitch = false;
     int mousePost = -1;
-    CircuitElm plotXElm, plotYElm;
+    public CircuitElm plotXElm, plotYElm;
     int draggingPost;
     SwitchElm heldSwitchElm;
     double circuitMatrix[][], circuitRightSide[],
@@ -175,14 +186,14 @@ public class CirSim
     static EditDialog editDialog;
     static ImportExportDialog impDialog, expDialog;
     Class dumpTypes[], shortcuts[];
-    static String muString = "u";
-    static String ohmString = "ohm";
+    public static String muString = "u";
+    public static String ohmString = "ohm";
     String clipboard;
     Rectangle circuitArea;
     int circuitBottom;
     Vector<String> undoStack, redoStack;
 
-    int getrand(int x)
+    public int getrand(int x)
     {
         int q = random.nextInt();
         if (q < 0) {
@@ -615,13 +626,14 @@ public class CirSim
         }
         requestFocus();
 
-        addWindowListener(new WindowAdapter()
-                          {
-                              public void windowClosing(WindowEvent we)
-                              {
-                                  destroyFrame();
-                              }
-                          }
+        addWindowListener(
+                new WindowAdapter()
+                {
+                    public void windowClosing(WindowEvent we)
+                    {
+                        destroyFrame();
+                    }
+                }
         );
     }
 
@@ -776,7 +788,7 @@ public class CirSim
         dbimage = main.createImage(winSize.width, winSize.height);
         int h = winSize.height / 5;
     /*if (h < 128 && winSize.height > 300)
-	  h = 128;*/
+      h = 128;*/
         circuitArea = new Rectangle(0, 0, winSize.width, winSize.height - h);
         int i;
         int minx = 1000, maxx = 0, miny = 1000, maxy = 0;
@@ -916,8 +928,8 @@ public class CirSim
             if (powerCheckItem.getState()) {
                 g.setColor(Color.gray);
             }
-	    /*else if (conductanceCheckItem.getState())
-	      g.setColor(Color.white);*/
+        /*else if (conductanceCheckItem.getState())
+          g.setColor(Color.white);*/
             getElm(i).draw(g);
         }
         if (tempMouseMode == MODE_DRAG_ROW || tempMouseMode == MODE_DRAG_COLUMN ||
@@ -1235,7 +1247,7 @@ public class CirSim
         cv.repaint();
     }
 
-    Vector<CircuitNode> nodeList;
+    public Vector<CircuitNode> nodeList;
     CircuitElm voltageSources[];
 
     public CircuitNode getCircuitNode(int n)
@@ -1842,7 +1854,7 @@ public class CirSim
         }
     }
 
-    void stop(String s, CircuitElm ce)
+    public void stop(String s, CircuitElm ce)
     {
         stopMessage = s;
         circuitMatrix = null;
@@ -1854,7 +1866,7 @@ public class CirSim
 
     // control voltage source vs with voltage from n1 to n2 (must
     // also call stampVoltageSource())
-    void stampVCVS(int n1, int n2, double coef, int vs)
+    public void stampVCVS(int n1, int n2, double coef, int vs)
     {
         int vn = nodeList.size() + vs;
         stampMatrix(vn, n1, coef);
@@ -1862,7 +1874,7 @@ public class CirSim
     }
 
     // stamp independent voltage source #vs, from n1 to n2, amount v
-    void stampVoltageSource(int n1, int n2, int vs, double v)
+    public void stampVoltageSource(int n1, int n2, int vs, double v)
     {
         int vn = nodeList.size() + vs;
         stampMatrix(vn, n1, -1);
@@ -1873,7 +1885,7 @@ public class CirSim
     }
 
     // use this if the amount of voltage is going to be updated in doStep()
-    void stampVoltageSource(int n1, int n2, int vs)
+    public void stampVoltageSource(int n1, int n2, int vs)
     {
         int vn = nodeList.size() + vs;
         stampMatrix(vn, n1, -1);
@@ -1883,13 +1895,13 @@ public class CirSim
         stampMatrix(n2, vn, -1);
     }
 
-    void updateVoltageSource(int n1, int n2, int vs, double v)
+    public void updateVoltageSource(int n1, int n2, int vs, double v)
     {
         int vn = nodeList.size() + vs;
         stampRightSide(vn, v);
     }
 
-    void stampResistor(int n1, int n2, double r)
+    public void stampResistor(int n1, int n2, double r)
     {
         double r0 = 1 / r;
         if (Double.isNaN(r0) || Double.isInfinite(r0)) {
@@ -1903,7 +1915,7 @@ public class CirSim
         stampMatrix(n2, n1, -r0);
     }
 
-    void stampConductance(int n1, int n2, double r0)
+    public void stampConductance(int n1, int n2, double r0)
     {
         stampMatrix(n1, n1, r0);
         stampMatrix(n2, n2, r0);
@@ -1912,7 +1924,7 @@ public class CirSim
     }
 
     // current from cn1 to cn2 is equal to voltage from vn1 to 2, divided by g
-    void stampVCCurrentSource(int cn1, int cn2, int vn1, int vn2, double g)
+    public void stampVCCurrentSource(int cn1, int cn2, int vn1, int vn2, double g)
     {
         stampMatrix(cn1, vn1, g);
         stampMatrix(cn2, vn2, g);
@@ -1920,14 +1932,14 @@ public class CirSim
         stampMatrix(cn2, vn1, -g);
     }
 
-    void stampCurrentSource(int n1, int n2, double i)
+    public void stampCurrentSource(int n1, int n2, double i)
     {
         stampRightSide(n1, -i);
         stampRightSide(n2, i);
     }
 
     // stamp a current source from n1 to n2 depending on current through vs
-    void stampCCCS(int n1, int n2, int vs, double gain)
+    public void stampCCCS(int n1, int n2, int vs, double gain)
     {
         int vn = nodeList.size() + vs;
         stampMatrix(n1, vn, gain);
@@ -1937,7 +1949,7 @@ public class CirSim
     // stamp value x in row i, column j, meaning that a voltage change
     // of dv in node j will increase the current into node i by x dv.
     // (Unless i or j is a voltage source node.)
-    void stampMatrix(int i, int j, double x)
+    public void stampMatrix(int i, int j, double x)
     {
         if (i > 0 && j > 0) {
             if (circuitNeedsMap) {
@@ -1961,7 +1973,7 @@ public class CirSim
 
     // stamp value x on the right side of row i, representing an
     // independent current source flowing into node i
-    void stampRightSide(int i, double x)
+    public void stampRightSide(int i, double x)
     {
         if (i > 0) {
             if (circuitNeedsMap) {
@@ -1976,7 +1988,7 @@ public class CirSim
     }
 
     // indicate that the value on the right side of row i changes in doStep()
-    void stampRightSide(int i)
+    public void stampRightSide(int i)
     {
         //System.out.println("rschanges true " + (i-1));
         if (i > 0) {
@@ -1985,7 +1997,7 @@ public class CirSim
     }
 
     // indicate that the values on the left side of row i change in doStep()
-    void stampNonLinear(int i)
+    public void stampNonLinear(int i)
     {
         if (i > 0) {
             circuitRowInfo[i - 1].lsChanges = true;
@@ -2001,8 +2013,8 @@ public class CirSim
         return .1 * Math.exp((speedBar.getValue() - 61) / 24.);
     }
 
-    boolean converged;
-    int subIterations;
+    public boolean converged;
+    public int subIterations;
 
     void runCircuit()
     {
@@ -2708,7 +2720,7 @@ public class CirSim
         setGrid();
     }
 
-    int snapGrid(int x)
+    public int snapGrid(int x)
     {
         return (x + gridRound) & gridMask;
     }
