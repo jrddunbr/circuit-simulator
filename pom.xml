@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.wrmsr.circuit</groupId>
+    <artifactId>circuit-simulator</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>circuit-simulator</name>
+    <url>http://maven.apache.org</url>
+
+    <dependencyManagement>
+        <dependencies>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+
+                <plugin>
+                    <groupId>com.rimerosolutions.maven.plugins</groupId>
+                    <artifactId>wrapper-maven-plugin</artifactId>
+                    <version>0.0.4</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.0</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <showWarnings>true</showWarnings>
+                        <fork>true</fork>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                    <executions>
+                        <execution>
+                            <id>attach-tests</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>test-jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!-- do not build an empty jar if the project is
+                             e.g. a pom project -->
+                        <skipIfEmpty>true</skipIfEmpty>
+                        <archive>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                <addClasspath>false</addClasspath>
+                            </manifest>
+                            <manifestEntries>
+                                <!-- This is actually the time when the build was done -->
+                                <Build-Time>${git.build.time}</Build-Time>
+                                <Git-Commit-Id>${git.commit.id}</Git-Commit-Id>
+                                <Implementation-Version>${git.commit.id.describe}</Implementation-Version>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>2.3</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <configuration>
+                                <createDependencyReducedPom>false</createDependencyReducedPom>
+                                <shadedArtifactAttached>true</shadedArtifactAttached>
+                                <shadedClassifierName>executable</shadedClassifierName>
+                                <transformers>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                        <manifestEntries>
+                                            <Main-Class>${main-class}</Main-Class>
+                                        </manifestEntries>
+                                    </transformer>
+                                </transformers>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
