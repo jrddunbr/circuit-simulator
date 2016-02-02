@@ -3,7 +3,7 @@ package com.wrmsr.circuit;
 import java.util.StringTokenizer;
 
 class ADCElm
-		extends ChipElm
+        extends ChipElm
 {
     public ADCElm(int xx, int yy) { super(xx, yy); }
 
@@ -40,9 +40,9 @@ class ADCElm
         int ival = (int) val;
         ival = min(imax, max(0, ival));
         int i;
-		for (i = 0; i != bits; i++) {
-			pins[i].value = ((ival & (1 << i)) != 0);
-		}
+        for (i = 0; i != bits; i++) {
+            pins[i].value = ((ival & (1 << i)) != 0);
+        }
     }
 
     int getVoltageSourceCount() { return bits; }

@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class LampElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double resistance;
     final double roomTemp = 300;
@@ -72,23 +72,23 @@ class LampElm
     {
         if (temp < 1200) {
             int x = (int) (255 * (temp - 800) / 400);
-			if (x < 0) {
-				x = 0;
-			}
+            if (x < 0) {
+                x = 0;
+            }
             return new Color(x, 0, 0);
         }
         if (temp < 1700) {
             int x = (int) (255 * (temp - 1200) / 500);
-			if (x < 0) {
-				x = 0;
-			}
+            if (x < 0) {
+                x = 0;
+            }
             return new Color(255, x, 0);
         }
         if (temp < 2400) {
             int x = (int) (255 * (temp - 1700) / 700);
-			if (x < 0) {
-				x = 0;
-			}
+            if (x < 0) {
+                x = 0;
+            }
             return new Color(255, 255, x);
         }
         return Color.white;
@@ -179,34 +179,34 @@ class LampElm
     public EditInfo getEditInfo(int n)
     {
         // ohmString doesn't work here on linux
-		if (n == 0) {
-			return new EditInfo("Nominal Power", nom_pow, 0, 0);
-		}
-		if (n == 1) {
-			return new EditInfo("Nominal Voltage", nom_v, 0, 0);
-		}
-		if (n == 2) {
-			return new EditInfo("Warmup Time (s)", warmTime, 0, 0);
-		}
-		if (n == 3) {
-			return new EditInfo("Cooldown Time (s)", coolTime, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Nominal Power", nom_pow, 0, 0);
+        }
+        if (n == 1) {
+            return new EditInfo("Nominal Voltage", nom_v, 0, 0);
+        }
+        if (n == 2) {
+            return new EditInfo("Warmup Time (s)", warmTime, 0, 0);
+        }
+        if (n == 3) {
+            return new EditInfo("Cooldown Time (s)", coolTime, 0, 0);
+        }
         return null;
     }
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0 && ei.value > 0) {
-			nom_pow = ei.value;
-		}
-		if (n == 1 && ei.value > 0) {
-			nom_v = ei.value;
-		}
-		if (n == 2 && ei.value > 0) {
-			warmTime = ei.value;
-		}
-		if (n == 3 && ei.value > 0) {
-			coolTime = ei.value;
-		}
+        if (n == 0 && ei.value > 0) {
+            nom_pow = ei.value;
+        }
+        if (n == 1 && ei.value > 0) {
+            nom_v = ei.value;
+        }
+        if (n == 2 && ei.value > 0) {
+            warmTime = ei.value;
+        }
+        if (n == 3 && ei.value > 0) {
+            coolTime = ei.value;
+        }
     }
 }

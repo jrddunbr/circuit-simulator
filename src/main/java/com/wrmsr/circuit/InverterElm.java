@@ -6,7 +6,7 @@ import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 class InverterElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double slewRate; // V/ns
 
@@ -56,9 +56,9 @@ class InverterElm
         super.setPoints();
         int hs = 16;
         int ww = 16;
-		if (ww > dn / 2) {
-			ww = (int) (dn / 2);
-		}
+        if (ww > dn / 2) {
+            ww = (int) (dn / 2);
+        }
         lead1 = interpPoint(point1, point2, .5 - ww / dn);
         lead2 = interpPoint(point1, point2, .5 + (ww + 2) / dn);
         pcircle = interpPoint(point1, point2, .5 + (ww - 2) / dn);
@@ -96,9 +96,9 @@ class InverterElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Slew Rate (V/ns)", slewRate, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Slew Rate (V/ns)", slewRate, 0, 0);
+        }
         return null;
     }
 

@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.util.StringTokenizer;
 
 class RailElm
-		extends VoltageElm
+        extends VoltageElm
 {
     public RailElm(int xx, int yy) { super(xx, yy, WF_DC); }
 
@@ -42,18 +42,18 @@ class RailElm
             setPowerColor(g, false);
             double v = getVoltage();
             String s = getShortUnitText(v, "V");
-			if (Math.abs(v) < 1) {
-				s = showFormat.format(v) + "V";
-			}
-			if (getVoltage() > 0) {
-				s = "+" + s;
-			}
-			if (this instanceof AntennaElm) {
-				s = "Ant";
-			}
-			if (clock) {
-				s = "CLK";
-			}
+            if (Math.abs(v) < 1) {
+                s = showFormat.format(v) + "V";
+            }
+            if (getVoltage() > 0) {
+                s = "+" + s;
+            }
+            if (this instanceof AntennaElm) {
+                s = "Ant";
+            }
+            if (clock) {
+                s = "CLK";
+            }
             drawCenteredText(g, s, x2, y2, true);
         }
         else {
@@ -61,28 +61,28 @@ class RailElm
         }
         drawPosts(g);
         curcount = updateDotCount(-current, curcount);
-		if (sim.dragElm != this) {
-			drawDots(g, point1, lead1, curcount);
-		}
+        if (sim.dragElm != this) {
+            drawDots(g, point1, lead1, curcount);
+        }
     }
 
     double getVoltageDiff() { return volts[0]; }
 
     void stamp()
     {
-		if (waveform == WF_DC) {
-			sim.stampVoltageSource(0, nodes[0], voltSource, getVoltage());
-		}
-		else {
-			sim.stampVoltageSource(0, nodes[0], voltSource);
-		}
+        if (waveform == WF_DC) {
+            sim.stampVoltageSource(0, nodes[0], voltSource, getVoltage());
+        }
+        else {
+            sim.stampVoltageSource(0, nodes[0], voltSource);
+        }
     }
 
     void doStep()
     {
-		if (waveform != WF_DC) {
-			sim.updateVoltageSource(0, nodes[0], voltSource, getVoltage());
-		}
+        if (waveform != WF_DC) {
+            sim.updateVoltageSource(0, nodes[0], voltSource, getVoltage());
+        }
     }
 
     boolean hasGroundConnection(int n1) { return true; }

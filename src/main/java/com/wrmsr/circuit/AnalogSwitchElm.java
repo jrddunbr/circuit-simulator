@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class AnalogSwitchElm
-		extends CircuitElm
+        extends CircuitElm
 {
     final int FLAG_INVERT = 1;
     double resistance, r_on, r_off;
@@ -68,9 +68,9 @@ class AnalogSwitchElm
         setVoltageColor(g, volts[2]);
         drawThickLine(g, point3, lead3);
 
-		if (!open) {
-			doDots(g);
-		}
+        if (!open) {
+            doDots(g);
+        }
         drawPosts(g);
     }
 
@@ -91,9 +91,9 @@ class AnalogSwitchElm
     void doStep()
     {
         open = (volts[2] < 2.5);
-		if ((flags & FLAG_INVERT) != 0) {
-			open = !open;
-		}
+        if ((flags & FLAG_INVERT) != 0) {
+            open = !open;
+        }
         resistance = (open) ? r_off : r_on;
         sim.stampResistor(nodes[0], nodes[1], resistance);
     }
@@ -102,17 +102,17 @@ class AnalogSwitchElm
     {
         xx = sim.snapGrid(xx);
         yy = sim.snapGrid(yy);
-		if (abs(x - xx) < abs(y - yy)) {
-			xx = x;
-		}
-		else {
-			yy = y;
-		}
+        if (abs(x - xx) < abs(y - yy)) {
+            xx = x;
+        }
+        else {
+            yy = y;
+        }
         int q1 = abs(x - xx) + abs(y - yy);
         int q2 = (q1 / 2) % sim.gridSize;
-		if (q2 != 0) {
-			return;
-		}
+        if (q2 != 0) {
+            return;
+        }
         x2 = xx;
         y2 = yy;
         setPoints();
@@ -138,9 +138,9 @@ class AnalogSwitchElm
     // might cause singular matrix errors
     boolean getConnection(int n1, int n2)
     {
-		if (n1 == 2 || n2 == 2) {
-			return false;
-		}
+        if (n1 == 2 || n2 == 2) {
+            return false;
+        }
         return true;
     }
 
@@ -152,28 +152,28 @@ class AnalogSwitchElm
                     (flags & FLAG_INVERT) != 0);
             return ei;
         }
-		if (n == 1) {
-			return new EditInfo("On Resistance (ohms)", r_on, 0, 0);
-		}
-		if (n == 2) {
-			return new EditInfo("Off Resistance (ohms)", r_off, 0, 0);
-		}
+        if (n == 1) {
+            return new EditInfo("On Resistance (ohms)", r_on, 0, 0);
+        }
+        if (n == 2) {
+            return new EditInfo("Off Resistance (ohms)", r_off, 0, 0);
+        }
         return null;
     }
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0) {
-			flags = (ei.checkbox.getState()) ?
-					(flags | FLAG_INVERT) :
-					(flags & ~FLAG_INVERT);
-		}
-		if (n == 1 && ei.value > 0) {
-			r_on = ei.value;
-		}
-		if (n == 2 && ei.value > 0) {
-			r_off = ei.value;
-		}
+        if (n == 0) {
+            flags = (ei.checkbox.getState()) ?
+                    (flags | FLAG_INVERT) :
+                    (flags & ~FLAG_INVERT);
+        }
+        if (n == 1 && ei.value > 0) {
+            r_on = ei.value;
+        }
+        if (n == 2 && ei.value > 0) {
+            r_off = ei.value;
+        }
     }
 }
 

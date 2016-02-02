@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class AnalogSwitch2Elm
-		extends AnalogSwitchElm
+        extends AnalogSwitchElm
 {
     public AnalogSwitch2Elm(int xx, int yy)
     {
@@ -70,12 +70,12 @@ class AnalogSwitch2Elm
 
     void calculateCurrent()
     {
-		if (open) {
-			current = (volts[0] - volts[2]) / r_on;
-		}
-		else {
-			current = (volts[0] - volts[1]) / r_on;
-		}
+        if (open) {
+            current = (volts[0] - volts[2]) / r_on;
+        }
+        else {
+            current = (volts[0] - volts[1]) / r_on;
+        }
     }
 
     void stamp()
@@ -88,9 +88,9 @@ class AnalogSwitch2Elm
     void doStep()
     {
         open = (volts[3] < 2.5);
-		if ((flags & FLAG_INVERT) != 0) {
-			open = !open;
-		}
+        if ((flags & FLAG_INVERT) != 0) {
+            open = !open;
+        }
         if (open) {
             sim.stampResistor(nodes[0], nodes[2], r_on);
             sim.stampResistor(nodes[0], nodes[1], r_off);
@@ -103,9 +103,9 @@ class AnalogSwitch2Elm
 
     boolean getConnection(int n1, int n2)
     {
-		if (n1 == 3 || n2 == 3) {
-			return false;
-		}
+        if (n1 == 3 || n2 == 3) {
+            return false;
+        }
         return true;
     }
 

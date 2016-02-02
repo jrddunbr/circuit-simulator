@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class ImportExportClipboardDialog
-		extends Dialog
+        extends Dialog
         implements ImportExportDialog, ActionListener
 {
     CirSim cframe;
@@ -28,12 +28,12 @@ class ImportExportClipboardDialog
         cframe = f;
         setLayout(new ImportExportDialogLayout());
         add(text = new TextArea("", 10, 60, TextArea.SCROLLBARS_BOTH));
-		if (type == Action.EXPORT) {
-			importButton = new Button("Copy to clipboard");
-		}
-		else {
-			importButton = new Button("Import");
-		}
+        if (type == Action.EXPORT) {
+            importButton = new Button("Copy to clipboard");
+        }
+        else {
+            importButton = new Button("Import");
+        }
         this.type = type;
         add(importButton);
         importButton.addActionListener(this);
@@ -53,9 +53,9 @@ class ImportExportClipboardDialog
 
     public void execute()
     {
-		if (type == Action.EXPORT) {
-			text.selectAll();
-		}
+        if (type == Action.EXPORT) {
+            text.selectAll();
+        }
         setVisible(true);
     }
 
@@ -64,9 +64,9 @@ class ImportExportClipboardDialog
         int i;
         Object src = e.getSource();
         if (src == importButton) {
-			if (clipboard == null) {
-				clipboard = getToolkit().getSystemClipboard();
-			}
+            if (clipboard == null) {
+                clipboard = getToolkit().getSystemClipboard();
+            }
             if (type == Action.EXPORT) {
                 StringSelection data = new StringSelection(text.getText());
                 clipboard.setContents(data, data);
@@ -75,9 +75,9 @@ class ImportExportClipboardDialog
                 cframe.readSetup(text.getText());
             }
         }
-		if (src == closeButton) {
-			setVisible(false);
-		}
+        if (src == closeButton) {
+            setVisible(false);
+        }
     }
 
     public boolean handleEvent(Event ev)

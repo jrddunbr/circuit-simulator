@@ -3,7 +3,7 @@ package com.wrmsr.circuit;
 import java.util.StringTokenizer;
 
 class DecadeElm
-		extends ChipElm
+        extends ChipElm
 {
     public DecadeElm(int xx, int yy) { super(xx, yy); }
 
@@ -43,21 +43,21 @@ class DecadeElm
     {
         int i;
         if (pins[0].value && !lastClock) {
-			for (i = 0; i != bits; i++) {
-				if (pins[i + 2].value) {
-					break;
-				}
-			}
-			if (i < bits) {
-				pins[i++ + 2].value = false;
-			}
+            for (i = 0; i != bits; i++) {
+                if (pins[i + 2].value) {
+                    break;
+                }
+            }
+            if (i < bits) {
+                pins[i++ + 2].value = false;
+            }
             i %= bits;
             pins[i + 2].value = true;
         }
         if (!pins[1].value) {
-			for (i = 1; i != bits; i++) {
-				pins[i + 2].value = false;
-			}
+            for (i = 1; i != bits; i++) {
+                pins[i + 2].value = false;
+            }
             pins[2].value = true;
         }
         lastClock = pins[0].value;

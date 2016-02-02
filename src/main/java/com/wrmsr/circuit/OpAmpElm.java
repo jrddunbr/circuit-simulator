@@ -7,7 +7,7 @@ import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 class OpAmpElm
-		extends CircuitElm
+        extends CircuitElm
 {
     int opsize, opheight, opwidth, opaddtext;
     double maxOut, minOut, gain, gbw;
@@ -99,18 +99,18 @@ class OpAmpElm
     void setPoints()
     {
         super.setPoints();
-		if (dn > 150 && this == sim.dragElm) {
-			setSize(2);
-		}
+        if (dn > 150 && this == sim.dragElm) {
+            setSize(2);
+        }
         int ww = opwidth;
-		if (ww > dn / 2) {
-			ww = (int) (dn / 2);
-		}
+        if (ww > dn / 2) {
+            ww = (int) (dn / 2);
+        }
         calcLeads(ww * 2);
         int hs = opheight * dsign;
-		if ((flags & FLAG_SWAP) != 0) {
-			hs = -hs;
-		}
+        if ((flags & FLAG_SWAP) != 0) {
+            hs = -hs;
+        }
         in1p = newPointArray(2);
         in2p = newPointArray(2);
         textp = newPointArray(2);
@@ -158,12 +158,12 @@ class OpAmpElm
     void doStep()
     {
         double vd = volts[1] - volts[0];
-		if (Math.abs(lastvd - vd) > .1) {
-			sim.converged = false;
-		}
-		else if (volts[2] > maxOut + .1 || volts[2] < minOut - .1) {
-			sim.converged = false;
-		}
+        if (Math.abs(lastvd - vd) > .1) {
+            sim.converged = false;
+        }
+        else if (volts[2] > maxOut + .1 || volts[2] < minOut - .1) {
+            sim.converged = false;
+        }
         double x = 0;
         int vn = sim.nodeList.size() + voltSource;
         double dx = 0;
@@ -172,12 +172,12 @@ class OpAmpElm
             x = maxOut - dx * maxOut / gain;
         }
         else if (vd <= minOut / gain && (lastvd <= 0 || sim.getrand(4) == 1)) {
-			dx = 1e-4;
-			x = minOut - dx * minOut / gain;
-		}
-		else {
-			dx = gain;
-		}
+            dx = 1e-4;
+            x = minOut - dx * minOut / gain;
+        }
+        else {
+            dx = gain;
+        }
         //System.out.println("opamp " + vd + " " + volts[2] + " " + dx + " "  + x + " " + lastvd + " " + sim.converged);
 
         // newton-raphson
@@ -187,7 +187,7 @@ class OpAmpElm
         sim.stampRightSide(vn, x);
 
         lastvd = vd;
-	    /*if (sim.converged)
+        /*if (sim.converged)
 	      System.out.println((volts[1]-volts[0]) + " " + volts[2] + " " + initvd);*/
     }
 
@@ -206,22 +206,22 @@ class OpAmpElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Max Output (V)", maxOut, 1, 20);
-		}
-		if (n == 1) {
-			return new EditInfo("Min Output (V)", minOut, -20, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Max Output (V)", maxOut, 1, 20);
+        }
+        if (n == 1) {
+            return new EditInfo("Min Output (V)", minOut, -20, 0);
+        }
         return null;
     }
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0) {
-			maxOut = ei.value;
-		}
-		if (n == 1) {
-			minOut = ei.value;
-		}
+        if (n == 0) {
+            maxOut = ei.value;
+        }
+        if (n == 1) {
+            minOut = ei.value;
+        }
     }
 }

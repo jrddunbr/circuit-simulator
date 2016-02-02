@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.util.StringTokenizer;
 
 class VCOElm
-		extends ChipElm
+        extends ChipElm
 {
     public VCOElm(int xx, int yy) { super(xx, yy); }
 
@@ -86,9 +86,9 @@ class VCOElm
     // we get pins[4].current and pins[5].current, which we need
     void computeCurrent()
     {
-		if (cResistance == 0) {
-			return;
-		}
+        if (cResistance == 0) {
+            return;
+        }
         double c = cDir * (pins[4].current + pins[5].current) +
                 (volts[3] - volts[2]) / cResistance;
         pins[2].current = -c;

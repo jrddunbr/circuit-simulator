@@ -11,7 +11,7 @@ import java.awt.LayoutManager;
 import java.awt.Scrollbar;
 
 class EditDialogLayout
-		implements LayoutManager
+        implements LayoutManager
 {
     public EditDialogLayout() {}
 
@@ -43,47 +43,47 @@ class EditDialogLayout
             boolean newline = true;
             if (m.isVisible()) {
                 Dimension d = m.getPreferredSize();
-				if (pw < d.width) {
-					pw = d.width;
-				}
+                if (pw < d.width) {
+                    pw = d.width;
+                }
                 if (m instanceof Scrollbar) {
                     h += 10;
                     d.width = targetw - x;
                 }
-				if (m instanceof Choice && d.width > targetw) {
-					d.width = targetw - x;
-				}
+                if (m instanceof Choice && d.width > targetw) {
+                    d.width = targetw - x;
+                }
                 if (m instanceof Label) {
                     Dimension d2 =
                             target.getComponent(i + 1).getPreferredSize();
-					if (d.height < d2.height) {
-						d.height = d2.height;
-					}
+                    if (d.height < d2.height) {
+                        d.height = d2.height;
+                    }
                     h += d.height / 5;
                     newline = false;
                 }
                 if (m instanceof Button) {
-					if (x == 0) {
-						h += 20;
-					}
-					if (i != target.getComponentCount() - 1) {
-						newline = false;
-					}
+                    if (x == 0) {
+                        h += 20;
+                    }
+                    if (i != target.getComponentCount() - 1) {
+                        newline = false;
+                    }
                 }
                 m.move(insets.left + x, h);
                 m.resize(d.width, d.height);
-				if (newline) {
-					h += d.height;
-					x = 0;
-				}
-				else {
-					x += d.width;
-				}
+                if (newline) {
+                    h += d.height;
+                    x = 0;
+                }
+                else {
+                    x += d.width;
+                }
             }
         }
-		if (target.size().height < h) {
-			target.resize(pw + insets.right, h + insets.bottom);
-		}
+        if (target.size().height < h) {
+            target.resize(pw + insets.right, h + insets.bottom);
+        }
     }
 };
 

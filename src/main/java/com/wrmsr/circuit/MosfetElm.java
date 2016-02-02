@@ -8,7 +8,7 @@ import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 class MosfetElm
-		extends CircuitElm
+        extends CircuitElm
 {
     int pnp;
     int FLAG_PNP = 1;
@@ -87,15 +87,15 @@ class MosfetElm
             setVoltageColor(g, pnp == 1 ? volts[1] : volts[2]);
             g.fillPolygon(arrowPoly);
         }
-		if (sim.powerCheckItem.getState()) {
-			g.setColor(Color.gray);
-		}
+        if (sim.powerCheckItem.getState()) {
+            g.setColor(Color.gray);
+        }
         setVoltageColor(g, volts[0]);
         drawThickLine(g, point1, gate[1]);
         drawThickLine(g, gate[0], gate[2]);
-		if (drawDigital() && pnp == -1) {
-			drawThickCircle(g, pcircle.x, pcircle.y, pcircler);
-		}
+        if (drawDigital() && pnp == -1) {
+            drawThickCircle(g, pcircle.x, pcircle.y, pcircler);
+        }
         if ((flags & FLAG_SHOWVT) != 0) {
             String s = "" + (vt * pnp);
             g.setColor(whiteColor);
@@ -150,12 +150,12 @@ class MosfetElm
         interpPoint(gate[0], gate[2], gate[1], .5);
 
         if (!drawDigital()) {
-			if (pnp == 1) {
-				arrowPoly = calcArrow(src[1], src[0], 10, 4);
-			}
-			else {
-				arrowPoly = calcArrow(drn[0], drn[1], 12, 5);
-			}
+            if (pnp == 1) {
+                arrowPoly = calcArrow(src[1], src[0], 10, 4);
+            }
+            else {
+                arrowPoly = calcArrow(drn[0], drn[1], 12, 5);
+            }
         }
         else if (pnp == -1) {
             interpPoint(point1, point2, gate[1], 1 - 36 / dn);
@@ -182,18 +182,18 @@ class MosfetElm
         vs[0] = volts[0];
         vs[1] = volts[1];
         vs[2] = volts[2];
-		if (vs[1] > lastv1 + .5) {
-			vs[1] = lastv1 + .5;
-		}
-		if (vs[1] < lastv1 - .5) {
-			vs[1] = lastv1 - .5;
-		}
-		if (vs[2] > lastv2 + .5) {
-			vs[2] = lastv2 + .5;
-		}
-		if (vs[2] < lastv2 - .5) {
-			vs[2] = lastv2 - .5;
-		}
+        if (vs[1] > lastv1 + .5) {
+            vs[1] = lastv1 + .5;
+        }
+        if (vs[1] < lastv1 - .5) {
+            vs[1] = lastv1 - .5;
+        }
+        if (vs[2] > lastv2 + .5) {
+            vs[2] = lastv2 + .5;
+        }
+        if (vs[2] < lastv2 - .5) {
+            vs[2] = lastv2 - .5;
+        }
         int source = 1;
         int drain = 2;
         if (pnp * vs[1] > pnp * vs[2]) {
@@ -203,10 +203,10 @@ class MosfetElm
         int gate = 0;
         double vgs = vs[gate] - vs[source];
         double vds = vs[drain] - vs[source];
-		if (Math.abs(lastv1 - vs[1]) > .01 ||
-				Math.abs(lastv2 - vs[2]) > .01) {
-			sim.converged = false;
-		}
+        if (Math.abs(lastv1 - vs[1]) > .01 ||
+                Math.abs(lastv2 - vs[2]) > .01) {
+            sim.converged = false;
+        }
         lastv1 = vs[1];
         lastv2 = vs[2];
         double realvgs = vgs;
@@ -255,10 +255,10 @@ class MosfetElm
 
         sim.stampRightSide(nodes[drain], rs);
         sim.stampRightSide(nodes[source], -rs);
-		if (source == 2 && pnp == 1 ||
-				source == 1 && pnp == -1) {
-			ids = -ids;
-		}
+        if (source == 2 && pnp == 1 ||
+                source == 1 && pnp == -1) {
+            ids = -ids;
+        }
     }
 
     void getFetInfo(String arr[], String n)
@@ -289,9 +289,9 @@ class MosfetElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Threshold Voltage", pnp * vt, .01, 5);
-		}
+        if (n == 0) {
+            return new EditInfo("Threshold Voltage", pnp * vt, .01, 5);
+        }
         if (n == 1) {
             EditInfo ei = new EditInfo("", 0, -1, -1);
             ei.checkbox = new Checkbox("Digital Symbol", drawDigital());
@@ -303,9 +303,9 @@ class MosfetElm
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0) {
-			vt = pnp * ei.value;
-		}
+        if (n == 0) {
+            vt = pnp * ei.value;
+        }
         if (n == 1) {
             flags = (ei.checkbox.getState()) ? (flags | FLAG_DIGITAL) :
                     (flags & ~FLAG_DIGITAL);

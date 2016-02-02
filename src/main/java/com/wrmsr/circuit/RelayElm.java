@@ -15,7 +15,7 @@ import java.util.StringTokenizer;
 // 3n+2 = end of coil resistor
 
 class RelayElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double inductance;
     Inductor ind;
@@ -100,14 +100,14 @@ class RelayElm
         // draw lines
         g.setColor(Color.darkGray);
         for (i = 0; i != poleCount; i++) {
-			if (i == 0) {
-				interpPoint(point1, point2, lines[i * 2], .5,
-						openhs * 2 + 5 * dsign - i * openhs * 3);
-			}
-			else {
-				interpPoint(point1, point2, lines[i * 2], .5,
-						(int) (openhs * (-i * 3 + 3 - .5 + d_position)) + 5 * dsign);
-			}
+            if (i == 0) {
+                interpPoint(point1, point2, lines[i * 2], .5,
+                        openhs * 2 + 5 * dsign - i * openhs * 3);
+            }
+            else {
+                interpPoint(point1, point2, lines[i * 2], .5,
+                        (int) (openhs * (-i * 3 + 3 - .5 + d_position)) + 5 * dsign);
+            }
             interpPoint(point1, point2, lines[i * 2 + 1], .5,
                     (int) (openhs * (-i * 3 - .5 + d_position)) - 5 * dsign);
             g.drawLine(lines[i * 2].x, lines[i * 2].y, lines[i * 2 + 1].x, lines[i * 2 + 1].y);
@@ -129,10 +129,10 @@ class RelayElm
                     switchCurCount[p]);
             drawDots(g, swposts[p][0], swpoles[p][0], switchCurCount[p]);
 
-			if (i_position != 2) {
-				drawDots(g, swpoles[p][i_position + 1], swposts[p][i_position + 1],
-						switchCurCount[p]);
-			}
+            if (i_position != 2) {
+                drawDots(g, swpoles[p][i_position + 1], swposts[p][i_position + 1],
+                        switchCurCount[p]);
+            }
         }
 
         coilCurCount = updateDotCount(coilCurrent, coilCurCount);
@@ -188,9 +188,9 @@ class RelayElm
 
     Point getPost(int n)
     {
-		if (n < 3 * poleCount) {
-			return swposts[n / 3][n % 3];
-		}
+        if (n < 3 * poleCount) {
+            return swposts[n / 3][n % 3];
+        }
         return coilPosts[n - 3 * poleCount];
     }
 
@@ -204,9 +204,9 @@ class RelayElm
         ind.reset();
         coilCurrent = coilCurCount = 0;
         int i;
-		for (i = 0; i != poleCount; i++) {
-			switchCurrent[i] = switchCurCount[i] = 0;
-		}
+        for (i = 0; i != poleCount; i++) {
+            switchCurrent[i] = switchCurCount[i] = 0;
+        }
     }
 
     double a1, a2, a3, a4;
@@ -219,9 +219,9 @@ class RelayElm
         sim.stampResistor(nodes[nCoil3], nodes[nCoil2], coilR);
 
         int i;
-		for (i = 0; i != poleCount * 3; i++) {
-			sim.stampNonLinear(nodes[nSwitch0 + i]);
-		}
+        for (i = 0; i != poleCount * 3; i++) {
+            sim.stampNonLinear(nodes[nSwitch0 + i]);
+        }
     }
 
     void startIteration()
@@ -233,21 +233,21 @@ class RelayElm
         double pmult = Math.sqrt(magic + 1);
         double p = coilCurrent * pmult / onCurrent;
         d_position = Math.abs(p * p) - 1.3;
-		if (d_position < 0) {
-			d_position = 0;
-		}
-		if (d_position > 1) {
-			d_position = 1;
-		}
-		if (d_position < .1) {
-			i_position = 0;
-		}
-		else if (d_position > .9) {
-			i_position = 1;
-		}
-		else {
-			i_position = 2;
-		}
+        if (d_position < 0) {
+            d_position = 0;
+        }
+        if (d_position > 1) {
+            d_position = 1;
+        }
+        if (d_position < .1) {
+            i_position = 0;
+        }
+        else if (d_position > .9) {
+            i_position = 1;
+        }
+        else {
+            i_position = 2;
+        }
         //System.out.println("ind " + this + " " + current + " " + voltdiff);
     }
 
@@ -276,13 +276,13 @@ class RelayElm
         // of current through the switch when off
         int p;
         for (p = 0; p != poleCount; p++) {
-			if (i_position == 2) {
-				switchCurrent[p] = 0;
-			}
-			else {
-				switchCurrent[p] =
-						(volts[nSwitch0 + p * 3] - volts[nSwitch1 + p * 3 + i_position]) / r_on;
-			}
+            if (i_position == 2) {
+                switchCurrent[p] = 0;
+            }
+            else {
+                switchCurrent[p] =
+                        (volts[nSwitch0 + p * 3] - volts[nSwitch1 + p * 3 + i_position]) / r_on;
+            }
         }
     }
 
@@ -292,9 +292,9 @@ class RelayElm
                 i_position == 1 ? "relay (on)" : "relay";
         int i;
         int ln = 1;
-		for (i = 0; i != poleCount; i++) {
-			arr[ln++] = "I" + (i + 1) + " = " + getCurrentDText(switchCurrent[i]);
-		}
+        for (i = 0; i != poleCount; i++) {
+            arr[ln++] = "I" + (i + 1) + " = " + getCurrentDText(switchCurrent[i]);
+        }
         arr[ln++] = "coil I = " + getCurrentDText(coilCurrent);
         arr[ln++] = "coil Vd = " +
                 getVoltageDText(volts[nCoil1] - volts[nCoil2]);
@@ -302,25 +302,25 @@ class RelayElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Inductance (H)", inductance, 0, 0);
-		}
-		if (n == 1) {
-			return new EditInfo("On Resistance (ohms)", r_on, 0, 0);
-		}
-		if (n == 2) {
-			return new EditInfo("Off Resistance (ohms)", r_off, 0, 0);
-		}
-		if (n == 3) {
-			return new EditInfo("On Current (A)", onCurrent, 0, 0);
-		}
-		if (n == 4) {
-			return new EditInfo("Number of Poles", poleCount, 1, 4).
-					setDimensionless();
-		}
-		if (n == 5) {
-			return new EditInfo("Coil Resistance (ohms)", coilR, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Inductance (H)", inductance, 0, 0);
+        }
+        if (n == 1) {
+            return new EditInfo("On Resistance (ohms)", r_on, 0, 0);
+        }
+        if (n == 2) {
+            return new EditInfo("Off Resistance (ohms)", r_off, 0, 0);
+        }
+        if (n == 3) {
+            return new EditInfo("On Current (A)", onCurrent, 0, 0);
+        }
+        if (n == 4) {
+            return new EditInfo("Number of Poles", poleCount, 1, 4).
+                    setDimensionless();
+        }
+        if (n == 5) {
+            return new EditInfo("Coil Resistance (ohms)", coilR, 0, 0);
+        }
         if (n == 6) {
             EditInfo ei = new EditInfo("", 0, -1, -1);
             ei.checkbox = new Checkbox("Swap Coil Direction",
@@ -336,29 +336,29 @@ class RelayElm
             inductance = ei.value;
             ind.setup(inductance, coilCurrent, Inductor.FLAG_BACK_EULER);
         }
-		if (n == 1 && ei.value > 0) {
-			r_on = ei.value;
-		}
-		if (n == 2 && ei.value > 0) {
-			r_off = ei.value;
-		}
-		if (n == 3 && ei.value > 0) {
-			onCurrent = ei.value;
-		}
+        if (n == 1 && ei.value > 0) {
+            r_on = ei.value;
+        }
+        if (n == 2 && ei.value > 0) {
+            r_off = ei.value;
+        }
+        if (n == 3 && ei.value > 0) {
+            onCurrent = ei.value;
+        }
         if (n == 4 && ei.value >= 1) {
             poleCount = (int) ei.value;
             setPoints();
         }
-		if (n == 5 && ei.value > 0) {
-			coilR = ei.value;
-		}
+        if (n == 5 && ei.value > 0) {
+            coilR = ei.value;
+        }
         if (n == 6) {
-			if (ei.checkbox.getState()) {
-				flags |= FLAG_SWAP_COIL;
-			}
-			else {
-				flags &= ~FLAG_SWAP_COIL;
-			}
+            if (ei.checkbox.getState()) {
+                flags |= FLAG_SWAP_COIL;
+            }
+            else {
+                flags &= ~FLAG_SWAP_COIL;
+            }
             setPoints();
         }
     }

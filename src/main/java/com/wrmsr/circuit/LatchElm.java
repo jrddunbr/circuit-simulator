@@ -3,7 +3,7 @@ package com.wrmsr.circuit;
 import java.util.StringTokenizer;
 
 class LatchElm
-		extends ChipElm
+        extends ChipElm
 {
     public LatchElm(int xx, int yy) { super(xx, yy); }
 
@@ -25,9 +25,9 @@ class LatchElm
         sizeY = bits + 1;
         pins = new Pin[getPostCount()];
         int i;
-		for (i = 0; i != bits; i++) {
-			pins[i] = new Pin(bits - 1 - i, SIDE_W, "I" + i);
-		}
+        for (i = 0; i != bits; i++) {
+            pins[i] = new Pin(bits - 1 - i, SIDE_W, "I" + i);
+        }
         for (i = 0; i != bits; i++) {
             pins[i + bits] = new Pin(bits - 1 - i, SIDE_E, "O");
             pins[i + bits].output = true;
@@ -41,11 +41,11 @@ class LatchElm
     void execute()
     {
         int i;
-		if (pins[loadPin].value && !lastLoad) {
-			for (i = 0; i != bits; i++) {
-				pins[i + bits].value = pins[i].value;
-			}
-		}
+        if (pins[loadPin].value && !lastLoad) {
+            for (i = 0; i != bits; i++) {
+                pins[i + bits].value = pins[i].value;
+            }
+        }
         lastLoad = pins[loadPin].value;
     }
 

@@ -5,7 +5,7 @@ import java.awt.Scrollbar;
 import java.util.StringTokenizer;
 
 class VarRailElm
-		extends RailElm
+        extends RailElm
 {
     Scrollbar slider;
     Label label;
@@ -24,9 +24,9 @@ class VarRailElm
     {
         super(xa, ya, xb, yb, f, st);
         sliderText = st.nextToken();
-		while (st.hasMoreTokens()) {
-			sliderText += ' ' + st.nextToken();
-		}
+        while (st.hasMoreTokens()) {
+            sliderText += ' ' + st.nextToken();
+        }
         createSlider();
     }
 
@@ -60,12 +60,12 @@ class VarRailElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Min Voltage", bias, -20, 20);
-		}
-		if (n == 1) {
-			return new EditInfo("Max Voltage", maxVoltage, -20, 20);
-		}
+        if (n == 0) {
+            return new EditInfo("Min Voltage", bias, -20, 20);
+        }
+        if (n == 1) {
+            return new EditInfo("Max Voltage", maxVoltage, -20, 20);
+        }
         if (n == 2) {
             EditInfo ei = new EditInfo("Slider Text", 0, -1, -1);
             ei.text = sliderText;
@@ -76,12 +76,12 @@ class VarRailElm
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0) {
-			bias = ei.value;
-		}
-		if (n == 1) {
-			maxVoltage = ei.value;
-		}
+        if (n == 0) {
+            bias = ei.value;
+        }
+        if (n == 1) {
+            maxVoltage = ei.value;
+        }
         if (n == 2) {
             sliderText = ei.textf.getText();
             label.setText(sliderText);

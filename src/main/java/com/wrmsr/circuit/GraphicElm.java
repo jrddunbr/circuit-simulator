@@ -3,7 +3,6 @@ package com.wrmsr.circuit;
 class GraphicElm
         extends CircuitElm
 {
-
     public GraphicElm(int xx, int yy)
     {
         super(xx, yy);

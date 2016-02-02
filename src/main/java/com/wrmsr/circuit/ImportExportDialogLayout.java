@@ -7,7 +7,7 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 
 class ImportExportDialogLayout
-		implements LayoutManager
+        implements LayoutManager
 {
     public ImportExportDialogLayout() {}
 
@@ -32,9 +32,9 @@ class ImportExportDialogLayout
         int targeth = target.size().height - (insets.top + insets.bottom);
         int i;
         int pw = 300;
-		if (target.getComponentCount() == 0) {
-			return;
-		}
+        if (target.getComponentCount() == 0) {
+            return;
+        }
         Component cl = target.getComponent(target.getComponentCount() - 1);
         Dimension dl = cl.getPreferredSize();
         target.getComponent(0).move(insets.left, insets.top);

@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class Switch2Elm
-		extends SwitchElm
+        extends SwitchElm
 {
     int link;
     static final int FLAG_CENTER_OFF = 1;
@@ -70,16 +70,16 @@ class Switch2Elm
         drawThickLine(g, swpoles[1], swposts[1]);
 
         // draw switch
-		if (!needsHighlight()) {
-			g.setColor(whiteColor);
-		}
+        if (!needsHighlight()) {
+            g.setColor(whiteColor);
+        }
         drawThickLine(g, lead1, swpoles[position]);
 
         updateDotCount();
         drawDots(g, point1, lead1, curcount);
-		if (position != 2) {
-			drawDots(g, swpoles[position], swposts[position], curcount);
-		}
+        if (position != 2) {
+            drawDots(g, swpoles[position], swposts[position], curcount);
+        }
         drawPosts(g);
     }
 
@@ -92,17 +92,17 @@ class Switch2Elm
 
     void calculateCurrent()
     {
-		if (position == 2) {
-			current = 0;
-		}
+        if (position == 2) {
+            current = 0;
+        }
     }
 
     void stamp()
     {
-		if (position == 2) // in center?
-		{
-			return;
-		}
+        if (position == 2) // in center?
+        {
+            return;
+        }
         sim.stampVoltageSource(nodes[0], nodes[position + 1], voltSource, 0);
     }
 
@@ -120,9 +120,9 @@ class Switch2Elm
                 Object o = sim.elmList.elementAt(i);
                 if (o instanceof Switch2Elm) {
                     Switch2Elm s2 = (Switch2Elm) o;
-					if (s2.link == link) {
-						s2.position = position;
-					}
+                    if (s2.link == link) {
+                        s2.position = position;
+                    }
                 }
             }
         }
@@ -130,9 +130,9 @@ class Switch2Elm
 
     boolean getConnection(int n1, int n2)
     {
-		if (position == 2) {
-			return false;
-		}
+        if (position == 2) {
+            return false;
+        }
         return comparePair(n1, n2, 0, 1 + position);
     }
 
@@ -154,19 +154,19 @@ class Switch2Elm
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 1) {
-			flags &= ~FLAG_CENTER_OFF;
-			if (ei.checkbox.getState()) {
-				flags |= FLAG_CENTER_OFF;
-			}
-			if (hasCenterOff()) {
-				momentary = false;
-			}
-			setPoints();
-		}
-		else {
-			super.setEditValue(n, ei);
-		}
+        if (n == 1) {
+            flags &= ~FLAG_CENTER_OFF;
+            if (ei.checkbox.getState()) {
+                flags |= FLAG_CENTER_OFF;
+            }
+            if (hasCenterOff()) {
+                momentary = false;
+            }
+            setPoints();
+        }
+        else {
+            super.setEditValue(n, ei);
+        }
     }
 
     boolean hasCenterOff() { return (flags & FLAG_CENTER_OFF) != 0; }

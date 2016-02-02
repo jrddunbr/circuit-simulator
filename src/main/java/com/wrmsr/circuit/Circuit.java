@@ -7,7 +7,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 public class Circuit
-		extends Applet
+        extends Applet
         implements ComponentListener
 {
     static CirSim ogf;
@@ -15,9 +15,9 @@ public class Circuit
 
     void destroyFrame()
     {
-		if (ogf != null) {
-			ogf.dispose();
-		}
+        if (ogf != null) {
+            ogf.dispose();
+        }
         ogf = null;
         repaint();
         finished = true;
@@ -53,9 +53,9 @@ public class Circuit
 
     public void hideFrame()
     {
-		if (finished) {
-			return;
-		}
+        if (finished) {
+            return;
+        }
         ogf.setVisible(false);
         repaint();
     }
@@ -65,18 +65,18 @@ public class Circuit
     public void paint(Graphics g)
     {
         String s = "Applet is open in a separate window.";
-		if (ogf != null && !ogf.isVisible()) {
-			s = "Applet window is hidden.";
-		}
-		if (!started) {
-			s = "Applet is starting.";
-		}
-		else if (ogf == null || finished) {
-			s = "Applet is finished.";
-		}
-		else if (ogf != null && ogf.useFrame) {
-			ogf.triggerShow();
-		}
+        if (ogf != null && !ogf.isVisible()) {
+            s = "Applet window is hidden.";
+        }
+        if (!started) {
+            s = "Applet is starting.";
+        }
+        else if (ogf == null || finished) {
+            s = "Applet is finished.";
+        }
+        else if (ogf != null && ogf.useFrame) {
+            ogf.triggerShow();
+        }
         g.drawString(s, 10, 30);
     }
 
@@ -88,16 +88,16 @@ public class Circuit
 
     public void componentResized(ComponentEvent e)
     {
-		if (ogf != null) {
-			ogf.componentResized(e);
-		}
+        if (ogf != null) {
+            ogf.componentResized(e);
+        }
     }
 
     public void destroy()
     {
-		if (ogf != null) {
-			ogf.dispose();
-		}
+        if (ogf != null) {
+            ogf.dispose();
+        }
         ogf = null;
         repaint();
     }

@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class TriodeElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double mu, kg1;
     double curcountp, curcountc, curcountg, currentp, currentg, currentc;
@@ -96,14 +96,14 @@ class TriodeElm
         // draw grid
         setVoltageColor(g, volts[1]);
         int i;
-		for (i = 0; i != 8; i += 2) {
-			drawThickLine(g, grid[i], grid[i + 1]);
-		}
+        for (i = 0; i != 8; i += 2) {
+            drawThickLine(g, grid[i], grid[i + 1]);
+        }
         // draw cathode
         setVoltageColor(g, volts[2]);
-		for (i = 0; i != 3; i++) {
-			drawThickLine(g, cath[i], cath[i + 1]);
-		}
+        for (i = 0; i != 3; i++) {
+            drawThickLine(g, cath[i], cath[i + 1]);
+        }
         // draw dots
         curcountp = updateDotCount(currentp, curcountp);
         curcountc = updateDotCount(currentc, curcountc);
@@ -135,28 +135,28 @@ class TriodeElm
         vs[0] = volts[0];
         vs[1] = volts[1];
         vs[2] = volts[2];
-		if (vs[1] > lastv1 + .5) {
-			vs[1] = lastv1 + .5;
-		}
-		if (vs[1] < lastv1 - .5) {
-			vs[1] = lastv1 - .5;
-		}
-		if (vs[2] > lastv2 + .5) {
-			vs[2] = lastv2 + .5;
-		}
-		if (vs[2] < lastv2 - .5) {
-			vs[2] = lastv2 - .5;
-		}
+        if (vs[1] > lastv1 + .5) {
+            vs[1] = lastv1 + .5;
+        }
+        if (vs[1] < lastv1 - .5) {
+            vs[1] = lastv1 - .5;
+        }
+        if (vs[2] > lastv2 + .5) {
+            vs[2] = lastv2 + .5;
+        }
+        if (vs[2] < lastv2 - .5) {
+            vs[2] = lastv2 - .5;
+        }
         int grid = 1;
         int cath = 2;
         int plate = 0;
         double vgk = vs[grid] - vs[cath];
         double vpk = vs[plate] - vs[cath];
-		if (Math.abs(lastv0 - vs[0]) > .01 ||
-				Math.abs(lastv1 - vs[1]) > .01 ||
-				Math.abs(lastv2 - vs[2]) > .01) {
-			sim.converged = false;
-		}
+        if (Math.abs(lastv0 - vs[0]) > .01 ||
+                Math.abs(lastv1 - vs[1]) > .01 ||
+                Math.abs(lastv2 - vs[2]) > .01) {
+            sim.converged = false;
+        }
         lastv0 = vs[0];
         lastv1 = vs[1];
         lastv2 = vs[2];

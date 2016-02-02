@@ -8,7 +8,7 @@ import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 class TransistorElm
-		extends CircuitElm
+        extends CircuitElm
 {
     int pnp;
     double beta;
@@ -84,9 +84,9 @@ class TransistorElm
         g.fillPolygon(arrowPoly);
         // draw base
         setVoltageColor(g, volts[0]);
-		if (sim.powerCheckItem.getState()) {
-			g.setColor(Color.gray);
-		}
+        if (sim.powerCheckItem.getState()) {
+            g.setColor(Color.gray);
+        }
         drawThickLine(g, point1, base);
         // draw dots
         curcount_b = updateDotCount(-ib, curcount_b);
@@ -129,9 +129,9 @@ class TransistorElm
     {
         super.setPoints();
         int hs = 16;
-		if ((flags & FLAG_FLIP) != 0) {
-			dsign = -dsign;
-		}
+        if ((flags & FLAG_FLIP) != 0) {
+            dsign = -dsign;
+        }
         int hs2 = hs * dsign * pnp;
         // calc collector, emitter posts
         coll = newPointArray(2);
@@ -151,13 +151,13 @@ class TransistorElm
         rectPoly = createPolygon(rect[0], rect[2], rect[3], rect[1]);
 
         // arrow
-		if (pnp == 1) {
-			arrowPoly = calcArrow(emit[1], emit[0], 8, 4);
-		}
-		else {
-			Point pt = interpPoint(point1, point2, 1 - 11 / dn, -5 * dsign * pnp);
-			arrowPoly = calcArrow(emit[0], pt, 8, 4);
-		}
+        if (pnp == 1) {
+            arrowPoly = calcArrow(emit[1], emit[0], 8, 4);
+        }
+        else {
+            Point pt = interpPoint(point1, point2, 1 - 11 / dn, -5 * dsign * pnp);
+            arrowPoly = calcArrow(emit[0], pt, 8, 4);
+        }
     }
 
     static final double leakage = 1e-13; // 1e-6;
@@ -202,18 +202,18 @@ class TransistorElm
     {
         double vbc = volts[0] - volts[1]; // typically negative
         double vbe = volts[0] - volts[2]; // typically positive
-		if (Math.abs(vbc - lastvbc) > .01 || // .01
-				Math.abs(vbe - lastvbe) > .01) {
-			sim.converged = false;
-		}
+        if (Math.abs(vbc - lastvbc) > .01 || // .01
+                Math.abs(vbe - lastvbe) > .01) {
+            sim.converged = false;
+        }
         gmin = 0;
         if (sim.subIterations > 100) {
             // if we have trouble converging, put a conductance in parallel with all P-N junctions.
             // Gradually increase the conductance value for each iteration.
             gmin = Math.exp(-9 * Math.log(10) * (1 - sim.subIterations / 3000.));
-			if (gmin > .1) {
-				gmin = .1;
-			}
+            if (gmin > .1) {
+                gmin = .1;
+            }
         }
         //System.out.print("T " + vbc + " " + vbe + "\n");
         vbc = pnp * limitStep(pnp * vbc, pnp * lastvbc);
@@ -222,12 +222,12 @@ class TransistorElm
         lastvbe = vbe;
         double pcoef = vdcoef * pnp;
         double expbc = Math.exp(vbc * pcoef);
-	    /*if (expbc > 1e13 || Double.isInfinite(expbc))
+        /*if (expbc > 1e13 || Double.isInfinite(expbc))
 	      expbc = 1e13;*/
         double expbe = Math.exp(vbe * pcoef);
-		if (expbe < 1) {
-			expbe = 1;
-		}
+        if (expbe < 1) {
+            expbe = 1;
+        }
 	    /*if (expbe > 1e13 || Double.isInfinite(expbe))
 	      expbe = 1e13;*/
         ie = pnp * leakage * (-(expbe - 1) + rgain * (expbc - 1));
@@ -274,12 +274,12 @@ class TransistorElm
         double vbc = volts[0] - volts[1];
         double vbe = volts[0] - volts[2];
         double vce = volts[1] - volts[2];
-		if (vbc * pnp > .2) {
-			arr[1] = vbe * pnp > .2 ? "saturation" : "reverse active";
-		}
-		else {
-			arr[1] = vbe * pnp > .2 ? "fwd active" : "cutoff";
-		}
+        if (vbc * pnp > .2) {
+            arr[1] = vbe * pnp > .2 ? "saturation" : "reverse active";
+        }
+        else {
+            arr[1] = vbe * pnp > .2 ? "fwd active" : "cutoff";
+        }
         arr[2] = "Ic = " + getCurrentText(ic);
         arr[3] = "Ib = " + getCurrentText(ib);
         arr[4] = "Vbe = " + getVoltageText(vbe);
@@ -320,10 +320,10 @@ class TransistorElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Beta/hFE", beta, 10, 1000).
-					setDimensionless();
-		}
+        if (n == 0) {
+            return new EditInfo("Beta/hFE", beta, 10, 1000).
+                    setDimensionless();
+        }
         if (n == 1) {
             EditInfo ei = new EditInfo("", 0, -1, -1);
             ei.checkbox = new Checkbox("Swap E/C", (flags & FLAG_FLIP) != 0);
@@ -339,12 +339,12 @@ class TransistorElm
             setup();
         }
         if (n == 1) {
-			if (ei.checkbox.getState()) {
-				flags |= FLAG_FLIP;
-			}
-			else {
-				flags &= ~FLAG_FLIP;
-			}
+            if (ei.checkbox.getState()) {
+                flags |= FLAG_FLIP;
+            }
+            else {
+                flags &= ~FLAG_FLIP;
+            }
             setPoints();
         }
     }

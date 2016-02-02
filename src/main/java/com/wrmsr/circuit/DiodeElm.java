@@ -6,7 +6,7 @@ import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 class DiodeElm
-		extends CircuitElm
+        extends CircuitElm
 {
     Diode diode;
     static final int FLAG_FWDROP = 1;
@@ -124,9 +124,9 @@ class DiodeElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Fwd Voltage @ 1A", fwdrop, 10, 1000);
-		}
+        if (n == 0) {
+            return new EditInfo("Fwd Voltage @ 1A", fwdrop, 10, 1000);
+        }
         return null;
     }
 

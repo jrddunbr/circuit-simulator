@@ -5,7 +5,7 @@ import netscape.javascript.JSObject;
 import java.awt.Dialog;
 
 class ImportExportAppletDialog
-		extends Dialog
+        extends Dialog
         implements ImportExportDialog
 {
     Action type;
@@ -18,9 +18,9 @@ class ImportExportAppletDialog
         super(f, (type == Action.EXPORT) ? "Export" : "Import", false);
         this.type = type;
         cframe = f;
-		if (cframe.applet == null) {
-			throw new Exception("Not running as an applet!");
-		}
+        if (cframe.applet == null) {
+            throw new Exception("Not running as an applet!");
+        }
     }
 
     public void setDump(String dump)

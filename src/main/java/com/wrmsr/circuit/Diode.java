@@ -2,7 +2,7 @@ package com.wrmsr.circuit;
 
 class Diode
 {
-	int nodes[];
+    int nodes[];
     CirSim sim;
 
     Diode(CirSim s)
@@ -20,14 +20,14 @@ class Diode
         // critical voltage for limiting; current is vt/sqrt(2) at
         // this voltage
         vcrit = vt * Math.log(vt / (Math.sqrt(2) * leakage));
-		if (zvoltage == 0) {
-			zoffset = 0;
-		}
-		else {
-			// calculate offset which will give us 5mA at zvoltage
-			double i = -.005;
-			zoffset = zvoltage - Math.log(-(1 + i / leakage)) / vdcoef;
-		}
+        if (zvoltage == 0) {
+            zoffset = 0;
+        }
+        else {
+            // calculate offset which will give us 5mA at zvoltage
+            double i = -.005;
+            zoffset = zvoltage - Math.log(-(1 + i / leakage)) / vdcoef;
+        }
     }
 
     void reset()
@@ -110,9 +110,9 @@ class Diode
     void doStep(double voltdiff)
     {
         // used to have .1 here, but needed .01 for peak detector
-		if (Math.abs(voltdiff - lastvoltdiff) > .01) {
-			sim.converged = false;
-		}
+        if (Math.abs(voltdiff - lastvoltdiff) > .01) {
+            sim.converged = false;
+        }
         voltdiff = limitStep(voltdiff, lastvoltdiff);
         lastvoltdiff = voltdiff;
 
@@ -120,9 +120,9 @@ class Diode
             // regular diode or forward-biased zener
             double eval = Math.exp(voltdiff * vdcoef);
             // make diode linear with negative voltages; aids convergence
-			if (voltdiff < 0) {
-				eval = 1;
-			}
+            if (voltdiff < 0) {
+                eval = 1;
+            }
             double geq = vdcoef * leakage * eval;
             double nc = (eval - 1) * leakage - geq * voltdiff;
             sim.stampConductance(nodes[0], nodes[1], geq);
@@ -130,7 +130,7 @@ class Diode
         }
         else {
             // Zener diode
-	    
+
 	    /* 
 	     * I(Vd) = Is * (exp[Vd*C] - exp[(-Vd-Vz)*C] - 1 )
 	     *
@@ -155,9 +155,9 @@ class Diode
 
     double calculateCurrent(double voltdiff)
     {
-		if (voltdiff >= 0 || zvoltage == 0) {
-			return leakage * (Math.exp(voltdiff * vdcoef) - 1);
-		}
+        if (voltdiff >= 0 || zvoltage == 0) {
+            return leakage * (Math.exp(voltdiff * vdcoef) - 1);
+        }
         return leakage * (
                 Math.exp(voltdiff * vdcoef)
                         - Math.exp((-voltdiff - zoffset) * vdcoef)

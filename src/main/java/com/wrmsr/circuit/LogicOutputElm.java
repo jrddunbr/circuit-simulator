@@ -7,7 +7,7 @@ import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 class LogicOutputElm
-		extends CircuitElm
+        extends CircuitElm
 {
     final int FLAG_TERNARY = 1;
     final int FLAG_NUMERIC = 2;
@@ -66,19 +66,19 @@ class LogicOutputElm
         g.setColor(lightGrayColor);
         String s = (volts[0] < threshold) ? "L" : "H";
         if (isTernary()) {
-			if (volts[0] > 3.75) {
-				s = "2";
-			}
-			else if (volts[0] > 1.25) {
-				s = "1";
-			}
-			else {
-				s = "0";
-			}
+            if (volts[0] > 3.75) {
+                s = "2";
+            }
+            else if (volts[0] > 1.25) {
+                s = "1";
+            }
+            else {
+                s = "0";
+            }
         }
         else if (isNumeric()) {
-			s = (volts[0] < threshold) ? "0" : "1";
-		}
+            s = (volts[0] < threshold) ? "0" : "1";
+        }
         value = s;
         setBbox(point1, lead1, 0);
         drawCenteredText(g, s, x2, y2, true);
@@ -90,9 +90,9 @@ class LogicOutputElm
 
     void stamp()
     {
-		if (needsPullDown()) {
-			sim.stampResistor(nodes[0], 0, 1e6);
-		}
+        if (needsPullDown()) {
+            sim.stampResistor(nodes[0], 0, 1e6);
+        }
     }
 
     double getVoltageDiff() { return volts[0]; }
@@ -101,17 +101,17 @@ class LogicOutputElm
     {
         arr[0] = "logic output";
         arr[1] = (volts[0] < threshold) ? "low" : "high";
-		if (isNumeric()) {
-			arr[1] = value;
-		}
+        if (isNumeric()) {
+            arr[1] = value;
+        }
         arr[2] = "V = " + getVoltageText(volts[0]);
     }
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Threshold", threshold, 10, -10);
-		}
+        if (n == 0) {
+            return new EditInfo("Threshold", threshold, 10, -10);
+        }
         if (n == 1) {
             EditInfo ei = new EditInfo("", 0, -1, -1);
             ei.checkbox = new Checkbox("Current Required", needsPullDown());
@@ -122,16 +122,16 @@ class LogicOutputElm
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0) {
-			threshold = ei.value;
-		}
+        if (n == 0) {
+            threshold = ei.value;
+        }
         if (n == 1) {
-			if (ei.checkbox.getState()) {
-				flags = FLAG_PULLDOWN;
-			}
-			else {
-				flags &= ~FLAG_PULLDOWN;
-			}
+            if (ei.checkbox.getState()) {
+                flags = FLAG_PULLDOWN;
+            }
+            else {
+                flags &= ~FLAG_PULLDOWN;
+            }
         }
     }
 

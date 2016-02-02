@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public abstract class CircuitElm
-		implements Editable
+        implements Editable
 {
     static double voltageRange = 5;
     static int colorScaleCount = 32;
@@ -117,9 +117,9 @@ public abstract class CircuitElm
     void reset()
     {
         int i;
-		for (i = 0; i != getPostCount() + getInternalNodeCount(); i++) {
-			volts[i] = 0;
-		}
+        for (i = 0; i != getPostCount() + getInternalNodeCount(); i++) {
+            volts[i] = 0;
+        }
         curcount = 0;
     }
 
@@ -179,7 +179,7 @@ public abstract class CircuitElm
     {
         int xpd = b.x - a.x;
         int ypd = b.y - a.y;
-	/*double q = (a.x*(1-f)+b.x*f+.48);
+    /*double q = (a.x*(1-f)+b.x*f+.48);
 	  System.out.println(q + " " + (int) q);*/
         c.x = (int) Math.floor(a.x * (1 - f) + b.x * f + .48);
         c.y = (int) Math.floor(a.y * (1 - f) + b.y * f + .48);
@@ -230,26 +230,26 @@ public abstract class CircuitElm
     Point[] newPointArray(int n)
     {
         Point a[] = new Point[n];
-		while (n > 0) {
-			a[--n] = new Point();
-		}
+        while (n > 0) {
+            a[--n] = new Point();
+        }
         return a;
     }
 
     void drawDots(Graphics g, Point pa, Point pb, double pos)
     {
-		if (sim.stoppedCheck.getState() || pos == 0 || !sim.dotsCheckItem.getState()) {
-			return;
-		}
+        if (sim.stoppedCheck.getState() || pos == 0 || !sim.dotsCheckItem.getState()) {
+            return;
+        }
         int dx = pb.x - pa.x;
         int dy = pb.y - pa.y;
         double dn = Math.sqrt(dx * dx + dy * dy);
         g.setColor(Color.yellow);
         int ds = 16;
         pos %= ds;
-		if (pos < 0) {
-			pos += ds;
-		}
+        if (pos < 0) {
+            pos += ds;
+        }
         double di = 0;
         for (di = pos; di < dn; di += ds) {
             int x0 = (int) (pa.x + di * dx / dn);
@@ -319,9 +319,9 @@ public abstract class CircuitElm
     {
         Polygon p = new Polygon();
         int i;
-		for (i = 0; i != a.length; i++) {
-			p.addPoint(a[i].x, a[i].y);
-		}
+        for (i = 0; i != a.length; i++) {
+            p.addPoint(a[i].x, a[i].y);
+        }
         return p;
     }
 
@@ -362,12 +362,12 @@ public abstract class CircuitElm
         int i;
         for (i = 0; i != sim.elmList.size(); i++) {
             CircuitElm ce = sim.getElm(i);
-			if (ce.x == nx && ce.y == ny && ce.x2 == nx2 && ce.y2 == ny2) {
-				return false;
-			}
-			if (ce.x == nx2 && ce.y == ny2 && ce.x2 == nx && ce.y2 == ny) {
-				return false;
-			}
+            if (ce.x == nx && ce.y == ny && ce.x2 == nx2 && ce.y2 == ny2) {
+                return false;
+            }
+            if (ce.x == nx2 && ce.y == ny2 && ce.x2 == nx && ce.y2 == ny) {
+                return false;
+            }
         }
         return true;
     }
@@ -424,14 +424,14 @@ public abstract class CircuitElm
 
     void drawPost(Graphics g, int x0, int y0, int n)
     {
-		if (sim.dragElm == null && !needsHighlight() &&
-				sim.getCircuitNode(n).links.size() == 2) {
-			return;
-		}
-		if (sim.mouseMode == CirSim.MODE_DRAG_ROW ||
-				sim.mouseMode == CirSim.MODE_DRAG_COLUMN) {
-			return;
-		}
+        if (sim.dragElm == null && !needsHighlight() &&
+                sim.getCircuitNode(n).links.size() == 2) {
+            return;
+        }
+        if (sim.mouseMode == CirSim.MODE_DRAG_ROW ||
+                sim.mouseMode == CirSim.MODE_DRAG_COLUMN) {
+            return;
+        }
         drawPost(g, x0, y0);
     }
 
@@ -496,9 +496,9 @@ public abstract class CircuitElm
     {
         FontMetrics fm = g.getFontMetrics();
         int w = fm.stringWidth(s);
-		if (cx) {
-			x -= w / 2;
-		}
+        if (cx) {
+            x -= w / 2;
+        }
         g.drawString(s, x, y + fm.getAscent() / 2);
         adjustBbox(x, y - fm.getAscent() / 2,
                 x + w, y + fm.getAscent() / 2 + fm.getDescent());
@@ -506,9 +506,9 @@ public abstract class CircuitElm
 
     void drawValues(Graphics g, String s, double hs)
     {
-		if (s == null) {
-			return;
-		}
+        if (s == null) {
+            return;
+        }
         g.setFont(unitsFont);
         FontMetrics fm = g.getFontMetrics();
         int w = fm.stringWidth(s);
@@ -530,9 +530,9 @@ public abstract class CircuitElm
         }
         else {
             int xx = xc + abs(dpx) + 2;
-			if (this instanceof VoltageElm || (x < x2 && y > y2)) {
-				xx = xc - (w + abs(dpx) + 2);
-			}
+            if (this instanceof VoltageElm || (x < x2 && y > y2)) {
+                xx = xc - (w + abs(dpx) + 2);
+            }
             g.drawString(s, xx, yc + dpy + ya);
         }
     }
@@ -549,9 +549,9 @@ public abstract class CircuitElm
         for (i = 0; i != segments; i++) {
             double cx = (((i + 1) * 6. * segf) % 2) - 1;
             double hsx = Math.sqrt(1 - cx * cx);
-			if (hsx < 0) {
-				hsx = -hsx;
-			}
+            if (hsx < 0) {
+                hsx = -hsx;
+            }
             interpPoint(p1, p2, ps2, i * segf, hsx * hs);
             double v = v1 + (v2 - v1) * i / segments;
             setVoltageColor(g, v);
@@ -579,9 +579,9 @@ public abstract class CircuitElm
     static void drawThickPolygon(Graphics g, int xs[], int ys[], int c)
     {
         int i;
-		for (i = 0; i != c - 1; i++) {
-			drawThickLine(g, xs[i], ys[i], xs[i + 1], ys[i + 1]);
-		}
+        for (i = 0; i != c - 1; i++) {
+            drawThickLine(g, xs[i], ys[i], xs[i + 1], ys[i + 1]);
+        }
         drawThickLine(g, xs[i], ys[i], xs[0], ys[0]);
     }
 
@@ -617,60 +617,60 @@ public abstract class CircuitElm
     static String getUnitText(double v, String u)
     {
         double va = Math.abs(v);
-		if (va < 1e-14) {
-			return "0 " + u;
-		}
-		if (va < 1e-9) {
-			return showFormat.format(v * 1e12) + " p" + u;
-		}
-		if (va < 1e-6) {
-			return showFormat.format(v * 1e9) + " n" + u;
-		}
-		if (va < 1e-3) {
-			return showFormat.format(v * 1e6) + " " + CirSim.muString + u;
-		}
-		if (va < 1) {
-			return showFormat.format(v * 1e3) + " m" + u;
-		}
-		if (va < 1e3) {
-			return showFormat.format(v) + " " + u;
-		}
-		if (va < 1e6) {
-			return showFormat.format(v * 1e-3) + " k" + u;
-		}
-		if (va < 1e9) {
-			return showFormat.format(v * 1e-6) + " M" + u;
-		}
+        if (va < 1e-14) {
+            return "0 " + u;
+        }
+        if (va < 1e-9) {
+            return showFormat.format(v * 1e12) + " p" + u;
+        }
+        if (va < 1e-6) {
+            return showFormat.format(v * 1e9) + " n" + u;
+        }
+        if (va < 1e-3) {
+            return showFormat.format(v * 1e6) + " " + CirSim.muString + u;
+        }
+        if (va < 1) {
+            return showFormat.format(v * 1e3) + " m" + u;
+        }
+        if (va < 1e3) {
+            return showFormat.format(v) + " " + u;
+        }
+        if (va < 1e6) {
+            return showFormat.format(v * 1e-3) + " k" + u;
+        }
+        if (va < 1e9) {
+            return showFormat.format(v * 1e-6) + " M" + u;
+        }
         return showFormat.format(v * 1e-9) + " G" + u;
     }
 
     static String getShortUnitText(double v, String u)
     {
         double va = Math.abs(v);
-		if (va < 1e-13) {
-			return null;
-		}
-		if (va < 1e-9) {
-			return shortFormat.format(v * 1e12) + "p" + u;
-		}
-		if (va < 1e-6) {
-			return shortFormat.format(v * 1e9) + "n" + u;
-		}
-		if (va < 1e-3) {
-			return shortFormat.format(v * 1e6) + CirSim.muString + u;
-		}
-		if (va < 1) {
-			return shortFormat.format(v * 1e3) + "m" + u;
-		}
-		if (va < 1e3) {
-			return shortFormat.format(v) + u;
-		}
-		if (va < 1e6) {
-			return shortFormat.format(v * 1e-3) + "k" + u;
-		}
-		if (va < 1e9) {
-			return shortFormat.format(v * 1e-6) + "M" + u;
-		}
+        if (va < 1e-13) {
+            return null;
+        }
+        if (va < 1e-9) {
+            return shortFormat.format(v * 1e12) + "p" + u;
+        }
+        if (va < 1e-6) {
+            return shortFormat.format(v * 1e9) + "n" + u;
+        }
+        if (va < 1e-3) {
+            return shortFormat.format(v * 1e6) + CirSim.muString + u;
+        }
+        if (va < 1) {
+            return shortFormat.format(v * 1e3) + "m" + u;
+        }
+        if (va < 1e3) {
+            return shortFormat.format(v) + u;
+        }
+        if (va < 1e6) {
+            return shortFormat.format(v * 1e-3) + "k" + u;
+        }
+        if (va < 1e9) {
+            return shortFormat.format(v * 1e-6) + "M" + u;
+        }
         return shortFormat.format(v * 1e-9) + "G" + u;
     }
 
@@ -691,9 +691,9 @@ public abstract class CircuitElm
 
     double updateDotCount(double cur, double cc)
     {
-		if (sim.stoppedCheck.getState()) {
-			return cc;
-		}
+        if (sim.stoppedCheck.getState()) {
+            return cc;
+        }
         double cadd = cur * currentMult;
 	/*if (cur != 0 && cadd <= .05 && cadd >= -.05)
 	  cadd = (cadd < 0) ? -.05 : .05;*/
@@ -708,9 +708,9 @@ public abstract class CircuitElm
     void doDots(Graphics g)
     {
         updateDotCount();
-		if (sim.dragElm != this) {
-			drawDots(g, point1, point2, curcount);
-		}
+        if (sim.dragElm != this) {
+            drawDots(g, point1, point2, curcount);
+        }
     }
 
     void doAdjust() {}
@@ -735,20 +735,20 @@ public abstract class CircuitElm
             return;
         }
         if (!sim.voltsCheckItem.getState()) {
-			if (!sim.powerCheckItem.getState()) // && !conductanceCheckItem.getState())
-			{
-				g.setColor(whiteColor);
-			}
+            if (!sim.powerCheckItem.getState()) // && !conductanceCheckItem.getState())
+            {
+                g.setColor(whiteColor);
+            }
             return;
         }
         int c = (int) ((volts + voltageRange) * (colorScaleCount - 1) /
                 (voltageRange * 2));
-		if (c < 0) {
-			c = 0;
-		}
-		if (c >= colorScaleCount) {
-			c = colorScaleCount - 1;
-		}
+        if (c < 0) {
+            c = 0;
+        }
+        if (c >= colorScaleCount) {
+            c = colorScaleCount - 1;
+        }
         g.setColor(colorScale[c]);
     }
 
@@ -758,9 +758,9 @@ public abstract class CircuitElm
 	  setConductanceColor(g, current/getVoltageDiff());
 	  return;
 	  }*/
-		if (!sim.powerCheckItem.getState()) {
-			return;
-		}
+        if (!sim.powerCheckItem.getState()) {
+            return;
+        }
         setPowerColor(g, getPower());
     }
 
@@ -769,20 +769,20 @@ public abstract class CircuitElm
         w0 *= powerMult;
         //System.out.println(w);
         double w = (w0 < 0) ? -w0 : w0;
-		if (w > 1) {
-			w = 1;
-		}
+        if (w > 1) {
+            w = 1;
+        }
         int rg = 128 + (int) (w * 127);
         int b = (int) (128 * (1 - w));
 	/*if (yellow)
 	  g.setColor(new Color(rg, rg, b));
 	  else */
-		if (w0 > 0) {
-			g.setColor(new Color(rg, b, b));
-		}
-		else {
-			g.setColor(new Color(b, rg, b));
-		}
+        if (w0 > 0) {
+            g.setColor(new Color(rg, b, b));
+        }
+        else {
+            g.setColor(new Color(b, rg, b));
+        }
     }
 
     void setConductanceColor(Graphics g, double w0)
@@ -790,9 +790,9 @@ public abstract class CircuitElm
         w0 *= powerMult;
         //System.out.println(w);
         double w = (w0 < 0) ? -w0 : w0;
-		if (w > 1) {
-			w = 1;
-		}
+        if (w > 1) {
+            w = 1;
+        }
         int rg = (int) (w * 255);
         g.setColor(new Color(rg, rg, rg));
     }

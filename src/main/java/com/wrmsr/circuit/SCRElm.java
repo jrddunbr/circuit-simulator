@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 // 2, 1 = 50 ohm resistor
 
 class SCRElm
-		extends CircuitElm
+        extends CircuitElm
 {
     final int anode = 0;
     final int cnode = 1;
@@ -99,9 +99,9 @@ class SCRElm
             dir = sign(dy) * sign(dx);
             point2.x = point1.x;
         }
-		if (dir == 0) {
-			dir = 1;
-		}
+        if (dir == 0) {
+            dir = 1;
+        }
         calcLeads(16);
         cathode = newPointArray(2);
         Point pa[] = newPointArray(2);
@@ -186,10 +186,10 @@ class SCRElm
     {
         double vac = volts[anode] - volts[cnode]; // typically negative
         double vag = volts[anode] - volts[gnode]; // typically positive
-		if (Math.abs(vac - lastvac) > .01 ||
-				Math.abs(vag - lastvag) > .01) {
-			sim.converged = false;
-		}
+        if (Math.abs(vac - lastvac) > .01 ||
+                Math.abs(vag - lastvag) > .01) {
+            sim.converged = false;
+        }
         lastvac = vac;
         lastvag = vag;
         diode.doStep(volts[inode] - volts[gnode]);
@@ -224,29 +224,29 @@ class SCRElm
     public EditInfo getEditInfo(int n)
     {
         // ohmString doesn't work here on linux
-		if (n == 0) {
-			return new EditInfo("Trigger Current (A)", triggerI, 0, 0);
-		}
-		if (n == 1) {
-			return new EditInfo("Holding Current (A)", holdingI, 0, 0);
-		}
-		if (n == 2) {
-			return new EditInfo("Gate-Cathode Resistance (ohms)", cresistance, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Trigger Current (A)", triggerI, 0, 0);
+        }
+        if (n == 1) {
+            return new EditInfo("Holding Current (A)", holdingI, 0, 0);
+        }
+        if (n == 2) {
+            return new EditInfo("Gate-Cathode Resistance (ohms)", cresistance, 0, 0);
+        }
         return null;
     }
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0 && ei.value > 0) {
-			triggerI = ei.value;
-		}
-		if (n == 1 && ei.value > 0) {
-			holdingI = ei.value;
-		}
-		if (n == 2 && ei.value > 0) {
-			cresistance = ei.value;
-		}
+        if (n == 0 && ei.value > 0) {
+            triggerI = ei.value;
+        }
+        if (n == 1 && ei.value > 0) {
+            holdingI = ei.value;
+        }
+        if (n == 2 && ei.value > 0) {
+            cresistance = ei.value;
+        }
     }
 }
 

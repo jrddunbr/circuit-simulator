@@ -6,7 +6,7 @@ import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 class SparkGapElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double resistance, onresistance, offresistance, breakdown, holdcurrent;
     boolean state;
@@ -67,9 +67,9 @@ class SparkGapElm
         g.fillPolygon(arrow1);
         setVoltageColor(g, volts[1]);
         g.fillPolygon(arrow2);
-		if (state) {
-			doDots(g);
-		}
+        if (state) {
+            doDots(g);
+        }
         drawPosts(g);
     }
 
@@ -87,13 +87,13 @@ class SparkGapElm
 
     void startIteration()
     {
-		if (Math.abs(current) < holdcurrent) {
-			state = false;
-		}
+        if (Math.abs(current) < holdcurrent) {
+            state = false;
+        }
         double vd = volts[0] - volts[1];
-		if (Math.abs(vd) > breakdown) {
-			state = true;
-		}
+        if (Math.abs(vd) > breakdown) {
+            state = true;
+        }
     }
 
     void doStep()
@@ -121,35 +121,35 @@ class SparkGapElm
     public EditInfo getEditInfo(int n)
     {
         // ohmString doesn't work here on linux
-		if (n == 0) {
-			return new EditInfo("On resistance (ohms)", onresistance, 0, 0);
-		}
-		if (n == 1) {
-			return new EditInfo("Off resistance (ohms)", offresistance, 0, 0);
-		}
-		if (n == 2) {
-			return new EditInfo("Breakdown voltage", breakdown, 0, 0);
-		}
-		if (n == 3) {
-			return new EditInfo("Holding current (A)", holdcurrent, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("On resistance (ohms)", onresistance, 0, 0);
+        }
+        if (n == 1) {
+            return new EditInfo("Off resistance (ohms)", offresistance, 0, 0);
+        }
+        if (n == 2) {
+            return new EditInfo("Breakdown voltage", breakdown, 0, 0);
+        }
+        if (n == 3) {
+            return new EditInfo("Holding current (A)", holdcurrent, 0, 0);
+        }
         return null;
     }
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (ei.value > 0 && n == 0) {
-			onresistance = ei.value;
-		}
-		if (ei.value > 0 && n == 1) {
-			offresistance = ei.value;
-		}
-		if (ei.value > 0 && n == 2) {
-			breakdown = ei.value;
-		}
-		if (ei.value > 0 && n == 3) {
-			holdcurrent = ei.value;
-		}
+        if (ei.value > 0 && n == 0) {
+            onresistance = ei.value;
+        }
+        if (ei.value > 0 && n == 1) {
+            offresistance = ei.value;
+        }
+        if (ei.value > 0 && n == 2) {
+            breakdown = ei.value;
+        }
+        if (ei.value > 0 && n == 3) {
+            holdcurrent = ei.value;
+        }
     }
 }
 

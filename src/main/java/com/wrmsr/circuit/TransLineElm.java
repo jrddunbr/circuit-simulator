@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class TransLineElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double delay, imped;
     double voltageL[], voltageR[];
@@ -68,18 +68,18 @@ class TransLineElm
 
     void reset()
     {
-		if (sim.timeStep == 0) {
-			return;
-		}
+        if (sim.timeStep == 0) {
+            return;
+        }
         lenSteps = (int) (delay / sim.timeStep);
         System.out.println(lenSteps + " steps");
-		if (lenSteps > 100000) {
-			voltageL = voltageR = null;
-		}
-		else {
-			voltageL = new double[lenSteps];
-			voltageR = new double[lenSteps];
-		}
+        if (lenSteps > 100000) {
+            voltageL = voltageR = null;
+        }
+        else {
+            voltageL = new double[lenSteps];
+            voltageR = new double[lenSteps];
+        }
         ptr = 0;
         super.reset();
     }
@@ -150,22 +150,22 @@ class TransLineElm
 
     void setVoltageSource(int n, int v)
     {
-		if (n == 0) {
-			voltSource1 = v;
-		}
-		else {
-			voltSource2 = v;
-		}
+        if (n == 0) {
+            voltSource1 = v;
+        }
+        else {
+            voltSource2 = v;
+        }
     }
 
     void setCurrent(int v, double c)
     {
-		if (v == voltSource1) {
-			current1 = c;
-		}
-		else {
-			current2 = c;
-		}
+        if (v == voltSource1) {
+            current1 = c;
+        }
+        else {
+            current2 = c;
+        }
     }
 
     void stamp()
@@ -186,7 +186,7 @@ class TransLineElm
         voltageL[ptr] = volts[2] - volts[0] + volts[2] - volts[4];
         voltageR[ptr] = volts[3] - volts[1] + volts[3] - volts[5];
         //System.out.println(volts[2] + " " + volts[0] + " " + (volts[2]-volts[0]) + " " + (imped*current1) + " " + voltageL[ptr]);
-	/*System.out.println("sending fwd  " + currentL[ptr] + " " + current1);
+    /*System.out.println("sending fwd  " + currentL[ptr] + " " + current1);
 	  System.out.println("sending back " + currentR[ptr] + " " + current2);*/
         //System.out.println("sending back " + voltageR[ptr]);
         ptr = (ptr + 1) % lenSteps;
@@ -236,12 +236,12 @@ class TransLineElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Delay (s)", delay, 0, 0);
-		}
-		if (n == 1) {
-			return new EditInfo("Impedance (ohms)", imped, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Delay (s)", delay, 0, 0);
+        }
+        if (n == 1) {
+            return new EditInfo("Impedance (ohms)", imped, 0, 0);
+        }
         return null;
     }
 

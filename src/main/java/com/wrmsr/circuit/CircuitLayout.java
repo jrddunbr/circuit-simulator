@@ -10,7 +10,7 @@ import java.awt.LayoutManager;
 import java.awt.Scrollbar;
 
 class CircuitLayout
-		implements LayoutManager
+        implements LayoutManager
 {
     public CircuitLayout() {}
 
@@ -44,12 +44,12 @@ class CircuitLayout
             Component m = target.getComponent(i);
             if (m.isVisible()) {
                 Dimension d = m.getPreferredSize();
-				if (m instanceof Scrollbar) {
-					d.width = barwidth;
-				}
-				if (m instanceof Choice && d.width > barwidth) {
-					d.width = barwidth;
-				}
+                if (m instanceof Scrollbar) {
+                    d.width = barwidth;
+                }
+                if (m instanceof Choice && d.width > barwidth) {
+                    d.width = barwidth;
+                }
                 if (m instanceof Label) {
                     h += d.height / 5;
                     d.width = barwidth;

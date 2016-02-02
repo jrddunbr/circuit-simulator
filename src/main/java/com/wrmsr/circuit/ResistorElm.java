@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class ResistorElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double resistance;
 
@@ -120,17 +120,17 @@ class ResistorElm
     public EditInfo getEditInfo(int n)
     {
         // ohmString doesn't work here on linux
-		if (n == 0) {
-			return new EditInfo("Resistance (ohms)", resistance, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Resistance (ohms)", resistance, 0, 0);
+        }
         return null;
     }
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (ei.value > 0) {
-			resistance = ei.value;
-		}
+        if (ei.value > 0) {
+            resistance = ei.value;
+        }
     }
 
     int getShortcut() { return 'r'; }

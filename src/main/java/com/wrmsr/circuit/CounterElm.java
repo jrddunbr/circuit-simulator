@@ -3,7 +3,7 @@ package com.wrmsr.circuit;
 import java.util.StringTokenizer;
 
 class CounterElm
-		extends ChipElm
+        extends ChipElm
 {
     final int FLAG_ENABLE = 2;
 
@@ -34,17 +34,17 @@ class CounterElm
             pins[ii] = new Pin(i, SIDE_E, "Q" + (bits - i - 1));
             pins[ii].output = pins[ii].state = true;
         }
-		if (hasEnable()) {
-			pins[bits + 2] = new Pin(sizeY - 2, SIDE_W, "En");
-		}
+        if (hasEnable()) {
+            pins[bits + 2] = new Pin(sizeY - 2, SIDE_W, "En");
+        }
         allocNodes();
     }
 
     int getPostCount()
     {
-		if (hasEnable()) {
-			return bits + 3;
-		}
+        if (hasEnable()) {
+            return bits + 3;
+        }
         return bits + 2;
     }
 
@@ -55,9 +55,9 @@ class CounterElm
     void execute()
     {
         boolean en = true;
-		if (hasEnable()) {
-			en = pins[bits + 2].value;
-		}
+        if (hasEnable()) {
+            en = pins[bits + 2].value;
+        }
         if (pins[0].value && !lastClock && en) {
             int i;
             for (i = bits - 1; i >= 0; i--) {
@@ -71,9 +71,9 @@ class CounterElm
         }
         if (!pins[1].value) {
             int i;
-			for (i = 0; i != bits; i++) {
-				pins[i + 2].value = false;
-			}
+            for (i = 0; i != bits; i++) {
+                pins[i + 2].value = false;
+            }
         }
         lastClock = pins[0].value;
     }

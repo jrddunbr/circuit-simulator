@@ -7,7 +7,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class ProbeElm
-		extends CircuitElm
+        extends CircuitElm
 {
     static final int FLAG_SHOWVOLTAGE = 1;
 
@@ -43,23 +43,23 @@ class ProbeElm
         double len = (selected || sim.dragElm == this) ? 16 : dn - 32;
         calcLeads((int) len);
         setVoltageColor(g, volts[0]);
-		if (selected) {
-			g.setColor(selectColor);
-		}
+        if (selected) {
+            g.setColor(selectColor);
+        }
         drawThickLine(g, point1, lead1);
         setVoltageColor(g, volts[1]);
-		if (selected) {
-			g.setColor(selectColor);
-		}
+        if (selected) {
+            g.setColor(selectColor);
+        }
         drawThickLine(g, lead2, point2);
         Font f = new Font("SansSerif", Font.BOLD, 14);
         g.setFont(f);
-		if (this == sim.plotXElm) {
-			drawCenteredText(g, "X", center.x, center.y, true);
-		}
-		if (this == sim.plotYElm) {
-			drawCenteredText(g, "Y", center.x, center.y, true);
-		}
+        if (this == sim.plotXElm) {
+            drawCenteredText(g, "X", center.x, center.y, true);
+        }
+        if (this == sim.plotYElm) {
+            drawCenteredText(g, "Y", center.x, center.y, true);
+        }
         if (mustShowVoltage()) {
             String s = getShortUnitText(volts[0], "V");
             drawValues(g, s, 4);
@@ -93,12 +93,12 @@ class ProbeElm
     public void setEditValue(int n, EditInfo ei)
     {
         if (n == 0) {
-			if (ei.checkbox.getState()) {
-				flags = FLAG_SHOWVOLTAGE;
-			}
-			else {
-				flags &= ~FLAG_SHOWVOLTAGE;
-			}
+            if (ei.checkbox.getState()) {
+                flags = FLAG_SHOWVOLTAGE;
+            }
+            else {
+                flags &= ~FLAG_SHOWVOLTAGE;
+            }
         }
     }
 }

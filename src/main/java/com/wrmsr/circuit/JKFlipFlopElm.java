@@ -3,7 +3,7 @@ package com.wrmsr.circuit;
 import java.util.StringTokenizer;
 
 class JKFlipFlopElm
-		extends ChipElm
+        extends ChipElm
 {
     public JKFlipFlopElm(int xx, int yy) { super(xx, yy); }
 
@@ -42,16 +42,16 @@ class JKFlipFlopElm
         if (!pins[1].value && lastClock) {
             boolean q = pins[3].value;
             if (pins[0].value) {
-				if (pins[2].value) {
-					q = !q;
-				}
-				else {
-					q = true;
-				}
+                if (pins[2].value) {
+                    q = !q;
+                }
+                else {
+                    q = true;
+                }
             }
             else if (pins[2].value) {
-				q = false;
-			}
+                q = false;
+            }
             pins[3].value = q;
             pins[4].value = !q;
         }

@@ -6,7 +6,7 @@ import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 class TunnelDiodeElm
-		extends CircuitElm
+        extends CircuitElm
 {
     public TunnelDiodeElm(int xx, int yy)
     {
@@ -80,12 +80,12 @@ class TunnelDiodeElm
     {
         // Prevent voltage changes of more than 1V when iterating.  Wow, I thought it would be
         // much harder than this to prevent convergence problems.
-		if (vnew > vold + 1) {
-			return vold + 1;
-		}
-		if (vnew < vold - 1) {
-			return vold - 1;
-		}
+        if (vnew > vold + 1) {
+            return vold + 1;
+        }
+        if (vnew < vold - 1) {
+            return vold - 1;
+        }
         return vnew;
     }
 
@@ -105,9 +105,9 @@ class TunnelDiodeElm
     void doStep()
     {
         double voltdiff = volts[0] - volts[1];
-		if (Math.abs(voltdiff - lastvoltdiff) > .01) {
-			sim.converged = false;
-		}
+        if (Math.abs(voltdiff - lastvoltdiff) > .01) {
+            sim.converged = false;
+        }
         //System.out.println(voltdiff + " " + lastvoltdiff + " " + Math.abs(voltdiff-lastvoltdiff));
         voltdiff = limitStep(voltdiff, lastvoltdiff);
         lastvoltdiff = voltdiff;

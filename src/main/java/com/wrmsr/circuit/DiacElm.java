@@ -8,7 +8,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class DiacElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double onresistance, offresistance, breakdown, holdcurrent;
     boolean state;
@@ -70,34 +70,34 @@ class DiacElm
     void calculateCurrent()
     {
         double vd = volts[0] - volts[1];
-		if (state) {
-			current = vd / onresistance;
-		}
-		else {
-			current = vd / offresistance;
-		}
+        if (state) {
+            current = vd / onresistance;
+        }
+        else {
+            current = vd / offresistance;
+        }
     }
 
     void startIteration()
     {
         double vd = volts[0] - volts[1];
-		if (Math.abs(current) < holdcurrent) {
-			state = false;
-		}
-		if (Math.abs(vd) > breakdown) {
-			state = true;
-		}
+        if (Math.abs(current) < holdcurrent) {
+            state = false;
+        }
+        if (Math.abs(vd) > breakdown) {
+            state = true;
+        }
         //System.out.print(this + " res current set to " + current + "\n");
     }
 
     void doStep()
     {
-		if (state) {
-			sim.stampResistor(nodes[0], nodes[1], onresistance);
-		}
-		else {
-			sim.stampResistor(nodes[0], nodes[1], offresistance);
-		}
+        if (state) {
+            sim.stampResistor(nodes[0], nodes[1], onresistance);
+        }
+        else {
+            sim.stampResistor(nodes[0], nodes[1], offresistance);
+        }
     }
 
     void stamp()
@@ -120,35 +120,35 @@ class DiacElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("On resistance (ohms)", onresistance, 0, 0);
-		}
-		if (n == 1) {
-			return new EditInfo("Off resistance (ohms)", offresistance, 0, 0);
-		}
-		if (n == 2) {
-			return new EditInfo("Breakdown voltage (volts)", breakdown, 0, 0);
-		}
-		if (n == 3) {
-			return new EditInfo("Hold current (amps)", holdcurrent, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("On resistance (ohms)", onresistance, 0, 0);
+        }
+        if (n == 1) {
+            return new EditInfo("Off resistance (ohms)", offresistance, 0, 0);
+        }
+        if (n == 2) {
+            return new EditInfo("Breakdown voltage (volts)", breakdown, 0, 0);
+        }
+        if (n == 3) {
+            return new EditInfo("Hold current (amps)", holdcurrent, 0, 0);
+        }
         return null;
     }
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (ei.value > 0 && n == 0) {
-			onresistance = ei.value;
-		}
-		if (ei.value > 0 && n == 1) {
-			offresistance = ei.value;
-		}
-		if (ei.value > 0 && n == 2) {
-			breakdown = ei.value;
-		}
-		if (ei.value > 0 && n == 3) {
-			holdcurrent = ei.value;
-		}
+        if (ei.value > 0 && n == 0) {
+            onresistance = ei.value;
+        }
+        if (ei.value > 0 && n == 1) {
+            offresistance = ei.value;
+        }
+        if (ei.value > 0 && n == 2) {
+            breakdown = ei.value;
+        }
+        if (ei.value > 0 && n == 3) {
+            holdcurrent = ei.value;
+        }
     }
 }
 

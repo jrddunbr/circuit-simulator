@@ -13,7 +13,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
 class ImportExportFileDialog
-		implements ImportExportDialog
+        implements ImportExportDialog
 {
     CirSim cframe;
     private static String circuitDump;
@@ -24,9 +24,9 @@ class ImportExportFileDialog
     {
         if (directory.equals(".")) {
             File file = new File("circuits");
-			if (file.isDirectory()) {
-				directory = "circuits";
-			}
+            if (file.isDirectory()) {
+                directory = "circuits";
+            }
         }
         this.type = type;
         cframe = f;
@@ -53,12 +53,12 @@ class ImportExportFileDialog
         fd.setVisible(true);
         String file = fd.getFile();
         String dir = fd.getDirectory();
-		if (dir != null) {
-			directory = dir;
-		}
-		if (file == null) {
-			return;
-		}
+        if (dir != null) {
+            directory = dir;
+        }
+        if (file == null) {
+            return;
+        }
         System.err.println(dir + File.separator + file);
         if (type == Action.EXPORT) {
             try {

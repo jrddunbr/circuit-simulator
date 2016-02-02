@@ -6,7 +6,7 @@ import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 abstract class GateElm
-		extends CircuitElm
+        extends CircuitElm
 {
     final int FLAG_SMALL = 1;
     int inputCount = 2;
@@ -54,27 +54,27 @@ abstract class GateElm
     void setPoints()
     {
         super.setPoints();
-		if (dn > 150 && this == sim.dragElm) {
-			setSize(2);
-		}
+        if (dn > 150 && this == sim.dragElm) {
+            setSize(2);
+        }
         int hs = gheight;
         int i;
         ww = gwidth2; // was 24
-		if (ww > dn / 2) {
-			ww = (int) (dn / 2);
-		}
-		if (isInverting() && ww + 8 > dn / 2) {
-			ww = (int) (dn / 2 - 8);
-		}
+        if (ww > dn / 2) {
+            ww = (int) (dn / 2);
+        }
+        if (isInverting() && ww + 8 > dn / 2) {
+            ww = (int) (dn / 2 - 8);
+        }
         calcLeads(ww * 2);
         inPosts = new Point[inputCount];
         inGates = new Point[inputCount];
         allocNodes();
         int i0 = -inputCount / 2;
         for (i = 0; i != inputCount; i++, i0++) {
-			if (i0 == 0 && (inputCount & 1) == 0) {
-				i0++;
-			}
+            if (i0 == 0 && (inputCount & 1) == 0) {
+                i0++;
+            }
             inPosts[i] = interpPoint(point1, point2, 0, hs * i0);
             inGates[i] = interpPoint(lead1, lead2, 0, hs * i0);
             volts[i] = (lastOutput ^ isInverting()) ? 5 : 0;
@@ -94,14 +94,14 @@ abstract class GateElm
         drawThickLine(g, lead2, point2);
         g.setColor(needsHighlight() ? selectColor : lightGrayColor);
         drawThickPolygon(g, gatePoly);
-		if (linePoints != null) {
-			for (i = 0; i != linePoints.length - 1; i++) {
-				drawThickLine(g, linePoints[i], linePoints[i + 1]);
-			}
-		}
-		if (isInverting()) {
-			drawThickCircle(g, pcircle.x, pcircle.y, 3);
-		}
+        if (linePoints != null) {
+            for (i = 0; i != linePoints.length - 1; i++) {
+                drawThickLine(g, linePoints[i], linePoints[i + 1]);
+            }
+        }
+        if (isInverting()) {
+            drawThickCircle(g, pcircle.x, pcircle.y, 3);
+        }
         curcount = updateDotCount(current, curcount);
         drawDots(g, lead2, point2, curcount);
         drawPosts(g);
@@ -114,9 +114,9 @@ abstract class GateElm
 
     Point getPost(int n)
     {
-		if (n == inputCount) {
-			return point2;
-		}
+        if (n == inputCount) {
+            return point2;
+        }
         return inPosts[n];
     }
 
@@ -147,9 +147,9 @@ abstract class GateElm
     {
         int i;
         boolean f = calcFunction();
-		if (isInverting()) {
-			f = !f;
-		}
+        if (isInverting()) {
+            f = !f;
+        }
         lastOutput = f;
         double res = f ? 5 : 0;
         sim.updateVoltageSource(0, nodes[inputCount], voltSource, res);
@@ -157,10 +157,10 @@ abstract class GateElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("# of Inputs", inputCount, 1, 8).
-					setDimensionless();
-		}
+        if (n == 0) {
+            return new EditInfo("# of Inputs", inputCount, 1, 8).
+                    setDimensionless();
+        }
         return null;
     }
 

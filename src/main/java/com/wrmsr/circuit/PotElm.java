@@ -9,7 +9,7 @@ import java.awt.event.AdjustmentListener;
 import java.util.StringTokenizer;
 
 class PotElm
-		extends CircuitElm
+        extends CircuitElm
         implements AdjustmentListener
 {
     double position, maxResistance, resistance1, resistance2;
@@ -36,9 +36,9 @@ class PotElm
         maxResistance = new Double(st.nextToken()).doubleValue();
         position = new Double(st.nextToken()).doubleValue();
         sliderText = st.nextToken();
-		while (st.hasMoreTokens()) {
-			sliderText += ' ' + st.nextToken();
-		}
+        while (st.hasMoreTokens()) {
+            sliderText += ' ' + st.nextToken();
+        }
         createSlider();
     }
 
@@ -102,9 +102,9 @@ class PotElm
             offset = (dy > 0) ? dx : -dx;
             point2.x = point1.x;
         }
-		if (offset == 0) {
-			offset = sim.gridSize;
-		}
+        if (offset == 0) {
+            offset = sim.gridSize;
+        }
         dn = distance(point1, point2);
         int bodyLen = 32;
         calcLeads(bodyLen);
@@ -154,9 +154,9 @@ class PotElm
                         break;
                 }
                 double v = v1 + (v3 - v1) * i / divide;
-				if (i >= divide) {
-					v = v3 + (v2 - v3) * (i - divide) / (segments - divide);
-				}
+                if (i >= divide) {
+                    v = v3 + (v2 - v3) * (i - divide) / (segments - divide);
+                }
                 setVoltageColor(g, v);
                 interpPoint(lead1, lead2, ps1, i * segf, hs * ox);
                 interpPoint(lead1, lead2, ps2, (i + 1) * segf, hs * nx);
@@ -171,9 +171,9 @@ class PotElm
             drawThickLine(g, ps1, ps2);
             for (i = 0; i != segments; i++) {
                 double v = v1 + (v3 - v1) * i / divide;
-				if (i >= divide) {
-					v = v3 + (v2 - v3) * (i - divide) / (segments - divide);
-				}
+                if (i >= divide) {
+                    v = v3 + (v2 - v3) * (i - divide) / (segments - divide);
+                }
                 setVoltageColor(g, v);
                 interpPoint2(lead1, lead2, ps1, ps2, i * segf, hs);
                 interpPoint2(lead1, lead2, ps3, ps4, (i + 1) * segf, hs);
@@ -229,9 +229,9 @@ class PotElm
     public EditInfo getEditInfo(int n)
     {
         // ohmString doesn't work here on linux
-		if (n == 0) {
-			return new EditInfo("Resistance (ohms)", maxResistance, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Resistance (ohms)", maxResistance, 0, 0);
+        }
         if (n == 1) {
             EditInfo ei = new EditInfo("Slider Text", 0, -1, -1);
             ei.text = sliderText;
@@ -242,9 +242,9 @@ class PotElm
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0) {
-			maxResistance = ei.value;
-		}
+        if (n == 0) {
+            maxResistance = ei.value;
+        }
         if (n == 1) {
             sliderText = ei.textf.getText();
             label.setText(sliderText);

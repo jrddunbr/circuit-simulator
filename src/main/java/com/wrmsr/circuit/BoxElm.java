@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.util.StringTokenizer;
 
 class BoxElm
-		extends GraphicElm
+        extends GraphicElm
 {
 
     public BoxElm(int xx, int yy)
@@ -23,7 +23,7 @@ class BoxElm
         x2 = xb;
         y2 = yb;
 /*	if ( st.hasMoreTokens() )
-		x = new Integer(st.nextToken()).intValue();
+        x = new Integer(st.nextToken()).intValue();
 	if ( st.hasMoreTokens() )
 		y = new Integer(st.nextToken()).intValue();
 	if ( st.hasMoreTokens() )
@@ -51,18 +51,18 @@ class BoxElm
         //g.setColor(needsHighlight() ? selectColor : lightGrayColor);
         g.setColor(needsHighlight() ? selectColor : Color.GRAY);
         setBbox(x, y, x2, y2);
-		if (x < x2 && y < y2) {
-			g.fillRect(x, y, x2 - x, y2 - y);
-		}
-		else if (x > x2 && y < y2) {
-			g.fillRect(x2, y, x - x2, y2 - y);
-		}
-		else if (x < x2 && y > y2) {
-			g.fillRect(x, y2, x2 - x, y - y2);
-		}
-		else {
-			g.fillRect(x2, y2, x - x2, y - y2);
-		}
+        if (x < x2 && y < y2) {
+            g.fillRect(x, y, x2 - x, y2 - y);
+        }
+        else if (x > x2 && y < y2) {
+            g.fillRect(x2, y, x - x2, y2 - y);
+        }
+        else if (x < x2 && y > y2) {
+            g.fillRect(x, y2, x2 - x, y - y2);
+        }
+        else {
+            g.fillRect(x2, y2, x - x2, y - y2);
+        }
     }
 
     public EditInfo getEditInfo(int n)

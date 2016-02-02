@@ -3,7 +3,7 @@ package com.wrmsr.circuit;
 import java.util.StringTokenizer;
 
 class TimerElm
-		extends ChipElm
+        extends ChipElm
 {
     final int FLAG_RESET = 2;
     final int N_DIS = 0;
@@ -73,12 +73,12 @@ class TimerElm
         out = volts[N_OUT] > volts[N_VIN] / 2;
         setOut = false;
         // check comparators
-		if (volts[N_CTL] / 2 > volts[N_TRIG]) {
-			setOut = out = true;
-		}
-		if (volts[N_THRES] > volts[N_CTL] || (hasReset() && volts[N_RST] < .7)) {
-			out = false;
-		}
+        if (volts[N_CTL] / 2 > volts[N_TRIG]) {
+            setOut = out = true;
+        }
+        if (volts[N_THRES] > volts[N_CTL] || (hasReset() && volts[N_RST] < .7)) {
+            out = false;
+        }
     }
 
     void doStep()
@@ -88,9 +88,9 @@ class TimerElm
         // the discharge pin to the trigger and threshold pins.
         // We check setOut to properly emulate the case where
         // trigger is low and threshold is high.
-		if (!out && !setOut) {
-			sim.stampResistor(nodes[N_DIS], 0, 10);
-		}
+        if (!out && !setOut) {
+            sim.stampResistor(nodes[N_DIS], 0, 10);
+        }
         // output
         sim.updateVoltageSource(0, nodes[N_OUT], pins[N_OUT].voltSource,
                 out ? volts[N_VIN] : 0);

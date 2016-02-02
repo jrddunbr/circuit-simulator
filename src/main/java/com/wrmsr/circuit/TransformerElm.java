@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class TransformerElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double inductance, ratio, couplingCoef;
     Point ptEnds[], ptCoil[], ptCore[];
@@ -51,9 +51,9 @@ class TransformerElm
         xx = sim.snapGrid(xx);
         yy = sim.snapGrid(yy);
         width = max(32, abs(yy - y));
-		if (xx == x) {
-			yy = y;
-		}
+        if (xx == x) {
+            yy = y;
+        }
         x2 = xx;
         y2 = yy;
         setPoints();
@@ -225,27 +225,27 @@ class TransformerElm
 
     boolean getConnection(int n1, int n2)
     {
-		if (comparePair(n1, n2, 0, 2)) {
-			return true;
-		}
-		if (comparePair(n1, n2, 1, 3)) {
-			return true;
-		}
+        if (comparePair(n1, n2, 0, 2)) {
+            return true;
+        }
+        if (comparePair(n1, n2, 1, 3)) {
+            return true;
+        }
         return false;
     }
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Primary Inductance (H)", inductance, .01, 5);
-		}
-		if (n == 1) {
-			return new EditInfo("Ratio", ratio, 1, 10).setDimensionless();
-		}
-		if (n == 2) {
-			return new EditInfo("Coupling Coefficient", couplingCoef, 0, 1).
-					setDimensionless();
-		}
+        if (n == 0) {
+            return new EditInfo("Primary Inductance (H)", inductance, .01, 5);
+        }
+        if (n == 1) {
+            return new EditInfo("Ratio", ratio, 1, 10).setDimensionless();
+        }
+        if (n == 2) {
+            return new EditInfo("Coupling Coefficient", couplingCoef, 0, 1).
+                    setDimensionless();
+        }
         if (n == 3) {
             EditInfo ei = new EditInfo("", 0, -1, -1);
             ei.checkbox = new Checkbox("Trapezoidal Approximation",
@@ -257,22 +257,22 @@ class TransformerElm
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0) {
-			inductance = ei.value;
-		}
-		if (n == 1) {
-			ratio = ei.value;
-		}
-		if (n == 2 && ei.value > 0 && ei.value < 1) {
-			couplingCoef = ei.value;
-		}
+        if (n == 0) {
+            inductance = ei.value;
+        }
+        if (n == 1) {
+            ratio = ei.value;
+        }
+        if (n == 2 && ei.value > 0 && ei.value < 1) {
+            couplingCoef = ei.value;
+        }
         if (n == 3) {
-			if (ei.checkbox.getState()) {
-				flags &= ~Inductor.FLAG_BACK_EULER;
-			}
-			else {
-				flags |= Inductor.FLAG_BACK_EULER;
-			}
+            if (ei.checkbox.getState()) {
+                flags &= ~Inductor.FLAG_BACK_EULER;
+            }
+            else {
+                flags |= Inductor.FLAG_BACK_EULER;
+            }
         }
     }
 }

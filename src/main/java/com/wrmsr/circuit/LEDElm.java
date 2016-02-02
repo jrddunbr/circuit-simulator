@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class LEDElm
-		extends DiodeElm
+        extends DiodeElm
 {
     double colorR, colorG, colorB;
 
@@ -23,9 +23,9 @@ class LEDElm
             StringTokenizer st)
     {
         super(xa, ya, xb, yb, f, st);
-		if ((f & FLAG_FWDROP) == 0) {
-			fwdrop = 2.1024259;
-		}
+        if ((f & FLAG_FWDROP) == 0) {
+            fwdrop = 2.1024259;
+        }
         setup();
         colorR = new Double(st.nextToken()).doubleValue();
         colorG = new Double(st.nextToken()).doubleValue();
@@ -66,9 +66,9 @@ class LEDElm
         drawThickCircle(g, ledCenter.x, ledCenter.y, cr);
         cr -= 4;
         double w = 255 * current / .01;
-		if (w > 255) {
-			w = 255;
-		}
+        if (w > 255) {
+            w = 255;
+        }
         Color cc = new Color((int) (colorR * w), (int) (colorG * w),
                 (int) (colorB * w));
         g.setColor(cc);
@@ -88,38 +88,38 @@ class LEDElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return super.getEditInfo(n);
-		}
-		if (n == 1) {
-			return new EditInfo("Red Value (0-1)", colorR, 0, 1).
-					setDimensionless();
-		}
-		if (n == 2) {
-			return new EditInfo("Green Value (0-1)", colorG, 0, 1).
-					setDimensionless();
-		}
-		if (n == 3) {
-			return new EditInfo("Blue Value (0-1)", colorB, 0, 1).
-					setDimensionless();
-		}
+        if (n == 0) {
+            return super.getEditInfo(n);
+        }
+        if (n == 1) {
+            return new EditInfo("Red Value (0-1)", colorR, 0, 1).
+                    setDimensionless();
+        }
+        if (n == 2) {
+            return new EditInfo("Green Value (0-1)", colorG, 0, 1).
+                    setDimensionless();
+        }
+        if (n == 3) {
+            return new EditInfo("Blue Value (0-1)", colorB, 0, 1).
+                    setDimensionless();
+        }
         return null;
     }
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0) {
-			super.setEditValue(0, ei);
-		}
-		if (n == 1) {
-			colorR = ei.value;
-		}
-		if (n == 2) {
-			colorG = ei.value;
-		}
-		if (n == 3) {
-			colorB = ei.value;
-		}
+        if (n == 0) {
+            super.setEditValue(0, ei);
+        }
+        if (n == 1) {
+            colorR = ei.value;
+        }
+        if (n == 2) {
+            colorG = ei.value;
+        }
+        if (n == 3) {
+            colorB = ei.value;
+        }
     }
 
     int getShortcut() { return 'l'; }

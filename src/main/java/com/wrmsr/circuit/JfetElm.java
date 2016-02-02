@@ -6,7 +6,7 @@ import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 class JfetElm
-		extends MosfetElm
+        extends MosfetElm
 {
     JfetElm(int xx, int yy, boolean pnpflag)
     {
@@ -68,13 +68,13 @@ class JfetElm
         interpPoint2(point1, point2, ra[0], ra[1], 1 - 13 / dn, hs);
         interpPoint2(point1, point2, ra[2], ra[3], 1 - 10 / dn, hs);
         gatePoly = createPolygon(ra[0], ra[1], ra[3], ra[2]);
-		if (pnp == -1) {
-			Point x = interpPoint(gatePt, point1, 18 / dn);
-			arrowPoly = calcArrow(gatePt, x, 8, 3);
-		}
-		else {
-			arrowPoly = calcArrow(point1, gatePt, 8, 3);
-		}
+        if (pnp == -1) {
+            Point x = interpPoint(gatePt, point1, 18 / dn);
+            arrowPoly = calcArrow(gatePt, x, 8, 3);
+        }
+        else {
+            arrowPoly = calcArrow(point1, gatePt, 8, 3);
+        }
     }
 
     int getDumpType() { return 'j'; }

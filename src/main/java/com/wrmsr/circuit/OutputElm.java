@@ -8,7 +8,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class OutputElm
-		extends CircuitElm
+        extends CircuitElm
 {
     final int FLAG_VALUE = 1;
 
@@ -38,19 +38,19 @@ class OutputElm
         g.setColor(selected ? selectColor : whiteColor);
         String s = (flags & FLAG_VALUE) != 0 ? getVoltageText(volts[0]) : "out";
         FontMetrics fm = g.getFontMetrics();
-		if (this == sim.plotXElm) {
-			s = "X";
-		}
-		if (this == sim.plotYElm) {
-			s = "Y";
-		}
+        if (this == sim.plotXElm) {
+            s = "X";
+        }
+        if (this == sim.plotYElm) {
+            s = "Y";
+        }
         interpPoint(point1, point2, lead1, 1 - (fm.stringWidth(s) / 2 + 8) / dn);
         setBbox(point1, lead1, 0);
         drawCenteredText(g, s, x2, y2, true);
         setVoltageColor(g, volts[0]);
-		if (selected) {
-			g.setColor(selectColor);
-		}
+        if (selected) {
+            g.setColor(selectColor);
+        }
         drawThickLine(g, point1, lead1);
         drawPosts(g);
     }
@@ -76,10 +76,10 @@ class OutputElm
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0) {
-			flags = (ei.checkbox.getState()) ?
-					(flags | FLAG_VALUE) :
-					(flags & ~FLAG_VALUE);
-		}
+        if (n == 0) {
+            flags = (ei.checkbox.getState()) ?
+                    (flags | FLAG_VALUE) :
+                    (flags & ~FLAG_VALUE);
+        }
     }
 }

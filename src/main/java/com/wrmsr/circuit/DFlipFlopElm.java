@@ -4,7 +4,7 @@ import java.awt.Checkbox;
 import java.util.StringTokenizer;
 
 class DFlipFlopElm
-		extends ChipElm
+        extends ChipElm
 {
     final int FLAG_RESET = 2;
 
@@ -34,9 +34,9 @@ class DFlipFlopElm
         pins[2].lineOver = true;
         pins[3] = new Pin(1, SIDE_W, "");
         pins[3].clock = true;
-		if (hasReset()) {
-			pins[4] = new Pin(2, SIDE_W, "R");
-		}
+        if (hasReset()) {
+            pins[4] = new Pin(2, SIDE_W, "R");
+        }
     }
 
     int getPostCount()
@@ -74,12 +74,12 @@ class DFlipFlopElm
     public void setEditValue(int n, EditInfo ei)
     {
         if (n == 2) {
-			if (ei.checkbox.getState()) {
-				flags |= FLAG_RESET;
-			}
-			else {
-				flags &= ~FLAG_RESET;
-			}
+            if (ei.checkbox.getState()) {
+                flags |= FLAG_RESET;
+            }
+            else {
+                flags &= ~FLAG_RESET;
+            }
             setupPins();
             allocNodes();
             setPoints();

@@ -7,7 +7,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class CapacitorElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double capacitance;
     double compResistance, voltdiff;
@@ -74,9 +74,9 @@ class CapacitorElm
         drawThickLine(g, point1, lead1);
         setPowerColor(g, false);
         drawThickLine(g, plate1[0], plate1[1]);
-		if (sim.powerCheckItem.getState()) {
-			g.setColor(Color.gray);
-		}
+        if (sim.powerCheckItem.getState()) {
+            g.setColor(Color.gray);
+        }
 
         // draw second lead and plate
         setVoltageColor(g, volts[1]);
@@ -103,12 +103,12 @@ class CapacitorElm
         // parallel with a resistor.  Trapezoidal is more accurate
         // than backward euler but can cause oscillatory behavior
         // if RC is small relative to the timestep.
-		if (isTrapezoidal()) {
-			compResistance = sim.timeStep / (2 * capacitance);
-		}
-		else {
-			compResistance = sim.timeStep / capacitance;
-		}
+        if (isTrapezoidal()) {
+            compResistance = sim.timeStep / (2 * capacitance);
+        }
+        else {
+            compResistance = sim.timeStep / capacitance;
+        }
         sim.stampResistor(nodes[0], nodes[1], compResistance);
         sim.stampRightSide(nodes[0]);
         sim.stampRightSide(nodes[1]);
@@ -116,12 +116,12 @@ class CapacitorElm
 
     void startIteration()
     {
-		if (isTrapezoidal()) {
-			curSourceValue = -voltdiff / compResistance - current;
-		}
-		else {
-			curSourceValue = -voltdiff / compResistance;
-		}
+        if (isTrapezoidal()) {
+            curSourceValue = -voltdiff / compResistance - current;
+        }
+        else {
+            curSourceValue = -voltdiff / compResistance;
+        }
         //System.out.println("cap " + compResistance + " " + curSourceValue + " " + current + " " + voltdiff);
     }
 
@@ -131,9 +131,9 @@ class CapacitorElm
         // we check compResistance because this might get called
         // before stamp(), which sets compResistance, causing
         // infinite current
-		if (compResistance > 0) {
-			current = voltdiff / compResistance + curSourceValue;
-		}
+        if (compResistance > 0) {
+            current = voltdiff / compResistance + curSourceValue;
+        }
     }
 
     double curSourceValue;
@@ -155,9 +155,9 @@ class CapacitorElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Capacitance (F)", capacitance, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Capacitance (F)", capacitance, 0, 0);
+        }
         if (n == 1) {
             EditInfo ei = new EditInfo("", 0, -1, -1);
             ei.checkbox = new Checkbox("Trapezoidal Approximation", isTrapezoidal());
@@ -168,16 +168,16 @@ class CapacitorElm
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0 && ei.value > 0) {
-			capacitance = ei.value;
-		}
+        if (n == 0 && ei.value > 0) {
+            capacitance = ei.value;
+        }
         if (n == 1) {
-			if (ei.checkbox.getState()) {
-				flags &= ~FLAG_BACK_EULER;
-			}
-			else {
-				flags |= FLAG_BACK_EULER;
-			}
+            if (ei.checkbox.getState()) {
+                flags &= ~FLAG_BACK_EULER;
+            }
+            else {
+                flags |= FLAG_BACK_EULER;
+            }
         }
     }
 

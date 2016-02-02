@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class TappedTransformerElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double inductance, ratio;
     Point ptEnds[], ptCoil[], ptCore[];
@@ -61,9 +61,9 @@ class TappedTransformerElm
             drawThickLine(g, ptEnds[i], ptCoil[i]);
         }
         for (i = 0; i != 4; i++) {
-			if (i == 1) {
-				continue;
-			}
+            if (i == 1) {
+                continue;
+            }
             setPowerColor(g, current[i] * (volts[i] - volts[i + 1]));
             drawCoil(g, i > 1 ? -6 : 6,
                     ptCoil[i], ptCoil[i + 1], volts[i], volts[i + 1]);
@@ -74,9 +74,9 @@ class TappedTransformerElm
         }
         // calc current of tap wire
         current[3] = current[1] - current[2];
-		for (i = 0; i != 4; i++) {
-			curcount[i] = updateDotCount(current[i], curcount[i]);
-		}
+        for (i = 0; i != 4; i++) {
+            curcount[i] = updateDotCount(current[i], curcount[i]);
+        }
 
         // primary dots
         drawDots(g, ptEnds[0], ptCoil[0], curcount[0]);
@@ -175,9 +175,9 @@ class TappedTransformerElm
         a[4] = a[8] = -4 * (1 + cc) / ((2 * cc * cc - cc - 1) * l1 * ratio * ratio);
         a[5] = a[7] = 4 * cc / ((2 * cc * cc - cc - 1) * l1 * ratio * ratio);
         int i;
-		for (i = 0; i != 9; i++) {
-			a[i] *= sim.timeStep / 2;
-		}
+        for (i = 0; i != 9; i++) {
+            a[i] *= sim.timeStep / 2;
+        }
         sim.stampConductance(nodes[0], nodes[1], a[0]);
         sim.stampVCCurrentSource(nodes[0], nodes[1], nodes[2], nodes[3], a[1]);
         sim.stampVCCurrentSource(nodes[0], nodes[1], nodes[3], nodes[4], a[2]);
@@ -190,9 +190,9 @@ class TappedTransformerElm
         sim.stampVCCurrentSource(nodes[3], nodes[4], nodes[2], nodes[3], a[7]);
         sim.stampConductance(nodes[3], nodes[4], a[8]);
 
-		for (i = 0; i != 5; i++) {
-			sim.stampRightSide(nodes[i]);
-		}
+        for (i = 0; i != 5; i++) {
+            sim.stampRightSide(nodes[i]);
+        }
     }
 
     void startIteration()
@@ -203,9 +203,9 @@ class TappedTransformerElm
         int i, j;
         for (i = 0; i != 3; i++) {
             curSourceValue[i] = current[i];
-			for (j = 0; j != 3; j++) {
-				curSourceValue[i] += a[i * 3 + j] * voltdiff[j];
-			}
+            for (j = 0; j != 3; j++) {
+                curSourceValue[i] += a[i * 3 + j] * voltdiff[j];
+            }
         }
     }
 
@@ -226,9 +226,9 @@ class TappedTransformerElm
         int i, j;
         for (i = 0; i != 3; i++) {
             current[i] = curSourceValue[i];
-			for (j = 0; j != 3; j++) {
-				current[i] += a[i * 3 + j] * voltdiff[j];
-			}
+            for (j = 0; j != 3; j++) {
+                current[i] += a[i * 3 + j] * voltdiff[j];
+            }
         }
     }
 
@@ -245,39 +245,39 @@ class TappedTransformerElm
 
     boolean getConnection(int n1, int n2)
     {
-		if (comparePair(n1, n2, 0, 1)) {
-			return true;
-		}
-		if (comparePair(n1, n2, 2, 3)) {
-			return true;
-		}
-		if (comparePair(n1, n2, 3, 4)) {
-			return true;
-		}
-		if (comparePair(n1, n2, 2, 4)) {
-			return true;
-		}
+        if (comparePair(n1, n2, 0, 1)) {
+            return true;
+        }
+        if (comparePair(n1, n2, 2, 3)) {
+            return true;
+        }
+        if (comparePair(n1, n2, 3, 4)) {
+            return true;
+        }
+        if (comparePair(n1, n2, 2, 4)) {
+            return true;
+        }
         return false;
     }
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Primary Inductance (H)", inductance, .01, 5);
-		}
-		if (n == 1) {
-			return new EditInfo("Ratio", ratio, 1, 10).setDimensionless();
-		}
+        if (n == 0) {
+            return new EditInfo("Primary Inductance (H)", inductance, .01, 5);
+        }
+        if (n == 1) {
+            return new EditInfo("Ratio", ratio, 1, 10).setDimensionless();
+        }
         return null;
     }
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0) {
-			inductance = ei.value;
-		}
-		if (n == 1) {
-			ratio = ei.value;
-		}
+        if (n == 0) {
+            inductance = ei.value;
+        }
+        if (n == 1) {
+            ratio = ei.value;
+        }
     }
 }

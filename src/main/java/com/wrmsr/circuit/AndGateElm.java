@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.StringTokenizer;
 
 class AndGateElm
-		extends GateElm
+        extends GateElm
 {
     public AndGateElm(int xx, int yy) { super(xx, yy); }
 
@@ -44,9 +44,9 @@ class AndGateElm
     {
         int i;
         boolean f = true;
-		for (i = 0; i != inputCount; i++) {
-			f &= getInput(i);
-		}
+        for (i = 0; i != inputCount; i++) {
+            f &= getInput(i);
+        }
         return f;
     }
 

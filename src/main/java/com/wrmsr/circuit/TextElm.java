@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 class TextElm
-		extends GraphicElm
+        extends GraphicElm
 {
     String text;
     Vector<String> lines;
@@ -31,9 +31,9 @@ class TextElm
         super(xa, ya, xb, yb, f);
         size = new Integer(st.nextToken()).intValue();
         text = st.nextToken();
-		while (st.hasMoreTokens()) {
-			text += ' ' + st.nextToken();
-		}
+        while (st.hasMoreTokens()) {
+            text += ' ' + st.nextToken();
+        }
         split();
     }
 
@@ -86,17 +86,17 @@ class TextElm
         int maxw = -1;
         for (i = 0; i != lines.size(); i++) {
             int w = fm.stringWidth((String) (lines.elementAt(i)));
-			if (w > maxw) {
-				maxw = w;
-			}
+            if (w > maxw) {
+                maxw = w;
+            }
         }
         int cury = y;
         setBbox(x, y, x, y);
         for (i = 0; i != lines.size(); i++) {
             String s = (String) (lines.elementAt(i));
-			if ((flags & FLAG_CENTER) != 0) {
-				x = (sim.winSize.width - fm.stringWidth(s)) / 2;
-			}
+            if ((flags & FLAG_CENTER) != 0) {
+                x = (sim.winSize.width - fm.stringWidth(s)) / 2;
+            }
             g.drawString(s, x, cury);
             if ((flags & FLAG_BAR) != 0) {
                 int by = cury - fm.getAscent();
@@ -117,9 +117,9 @@ class TextElm
             ei.text = text;
             return ei;
         }
-		if (n == 1) {
-			return new EditInfo("Size", size, 5, 100);
-		}
+        if (n == 1) {
+            return new EditInfo("Size", size, 5, 100);
+        }
         if (n == 2) {
             EditInfo ei = new EditInfo("", 0, -1, -1);
             ei.checkbox =
@@ -141,24 +141,24 @@ class TextElm
             text = ei.textf.getText();
             split();
         }
-		if (n == 1) {
-			size = (int) ei.value;
-		}
+        if (n == 1) {
+            size = (int) ei.value;
+        }
         if (n == 3) {
-			if (ei.checkbox.getState()) {
-				flags |= FLAG_BAR;
-			}
-			else {
-				flags &= ~FLAG_BAR;
-			}
+            if (ei.checkbox.getState()) {
+                flags |= FLAG_BAR;
+            }
+            else {
+                flags &= ~FLAG_BAR;
+            }
         }
         if (n == 2) {
-			if (ei.checkbox.getState()) {
-				flags |= FLAG_CENTER;
-			}
-			else {
-				flags &= ~FLAG_CENTER;
-			}
+            if (ei.checkbox.getState()) {
+                flags |= FLAG_CENTER;
+            }
+            else {
+                flags &= ~FLAG_CENTER;
+            }
         }
     }
 

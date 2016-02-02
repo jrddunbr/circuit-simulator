@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.util.StringTokenizer;
 
 class SweepElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double maxV, maxF, minF, sweepTime, frequency;
     final int FLAG_LOG = 1;
@@ -70,33 +70,33 @@ class SweepElm
         long tm = System.currentTimeMillis();
         //double w = (this == mouseElm ? 3 : 2);
         tm %= 2000;
-		if (tm > 1000) {
-			tm = 2000 - tm;
-		}
+        if (tm > 1000) {
+            tm = 2000 - tm;
+        }
         double w = 1 + tm * .002;
-		if (!sim.stoppedCheck.getState()) {
-			w = 1 + 2 * (frequency - minF) / (maxF - minF);
-		}
+        if (!sim.stoppedCheck.getState()) {
+            w = 1 + 2 * (frequency - minF) / (maxF - minF);
+        }
         for (i = -xl; i <= xl; i++) {
             int yy = yc + (int) (.95 * Math.sin(i * pi * w / xl) * wl);
-			if (ox != -1) {
-				drawThickLine(g, ox, oy, xc + i, yy);
-			}
+            if (ox != -1) {
+                drawThickLine(g, ox, oy, xc + i, yy);
+            }
             ox = xc + i;
             oy = yy;
         }
         if (sim.showValuesCheckItem.getState()) {
             String s = getShortUnitText(frequency, "Hz");
-			if (dx == 0 || dy == 0) {
-				drawValues(g, s, circleSize);
-			}
+            if (dx == 0 || dy == 0) {
+                drawValues(g, s, circleSize);
+            }
         }
 
         drawPosts(g);
         curcount = updateDotCount(-current, curcount);
-		if (sim.dragElm != this) {
-			drawDots(g, point1, lead1, curcount);
-		}
+        if (sim.dragElm != this) {
+            drawDots(g, point1, lead1, curcount);
+        }
     }
 
     void stamp()
@@ -138,21 +138,21 @@ class SweepElm
     void startIteration()
     {
         // has timestep been changed?
-		if (sim.timeStep != savedTimeStep) {
-			setParams();
-		}
+        if (sim.timeStep != savedTimeStep) {
+            setParams();
+        }
         v = Math.sin(freqTime) * maxV;
         freqTime += frequency * 2 * pi * sim.timeStep;
         frequency = frequency * fmul + fadd;
         if (frequency >= maxF && dir == 1) {
-			if ((flags & FLAG_BIDIR) != 0) {
-				fadd = -fadd;
-				fmul = 1 / fmul;
-				dir = -1;
-			}
-			else {
-				frequency = minF;
-			}
+            if ((flags & FLAG_BIDIR) != 0) {
+                fadd = -fadd;
+                fmul = 1 / fmul;
+                dir = -1;
+            }
+            else {
+                frequency = minF;
+            }
         }
         if (frequency <= minF && dir == -1) {
             fadd = -fadd;
@@ -185,23 +185,23 @@ class SweepElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Min Frequency (Hz)", minF, 0, 0);
-		}
-		if (n == 1) {
-			return new EditInfo("Max Frequency (Hz)", maxF, 0, 0);
-		}
-		if (n == 2) {
-			return new EditInfo("Sweep Time (s)", sweepTime, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Min Frequency (Hz)", minF, 0, 0);
+        }
+        if (n == 1) {
+            return new EditInfo("Max Frequency (Hz)", maxF, 0, 0);
+        }
+        if (n == 2) {
+            return new EditInfo("Sweep Time (s)", sweepTime, 0, 0);
+        }
         if (n == 3) {
             EditInfo ei = new EditInfo("", 0, -1, -1);
             ei.checkbox = new Checkbox("Logarithmic", (flags & FLAG_LOG) != 0);
             return ei;
         }
-		if (n == 4) {
-			return new EditInfo("Max Voltage", maxV, 0, 0);
-		}
+        if (n == 4) {
+            return new EditInfo("Max Voltage", maxV, 0, 0);
+        }
         if (n == 5) {
             EditInfo ei = new EditInfo("", 0, -1, -1);
             ei.checkbox = new Checkbox("Bidirectional", (flags & FLAG_BIDIR) != 0);
@@ -215,33 +215,33 @@ class SweepElm
         double maxfreq = 1 / (8 * sim.timeStep);
         if (n == 0) {
             minF = ei.value;
-			if (minF > maxfreq) {
-				minF = maxfreq;
-			}
+            if (minF > maxfreq) {
+                minF = maxfreq;
+            }
         }
         if (n == 1) {
             maxF = ei.value;
-			if (maxF > maxfreq) {
-				maxF = maxfreq;
-			}
+            if (maxF > maxfreq) {
+                maxF = maxfreq;
+            }
         }
-		if (n == 2) {
-			sweepTime = ei.value;
-		}
+        if (n == 2) {
+            sweepTime = ei.value;
+        }
         if (n == 3) {
             flags &= ~FLAG_LOG;
-			if (ei.checkbox.getState()) {
-				flags |= FLAG_LOG;
-			}
+            if (ei.checkbox.getState()) {
+                flags |= FLAG_LOG;
+            }
         }
-		if (n == 4) {
-			maxV = ei.value;
-		}
+        if (n == 4) {
+            maxV = ei.value;
+        }
         if (n == 5) {
             flags &= ~FLAG_BIDIR;
-			if (ei.checkbox.getState()) {
-				flags |= FLAG_BIDIR;
-			}
+            if (ei.checkbox.getState()) {
+                flags |= FLAG_BIDIR;
+            }
         }
         setParams();
     }

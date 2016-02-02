@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.util.StringTokenizer;
 
 class InductorElm
-		extends CircuitElm
+        extends CircuitElm
 {
     Inductor ind;
     double inductance;
@@ -96,9 +96,9 @@ class InductorElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Inductance (H)", inductance, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Inductance (H)", inductance, 0, 0);
+        }
         if (n == 1) {
             EditInfo ei = new EditInfo("", 0, -1, -1);
             ei.checkbox = new Checkbox("Trapezoidal Approximation",
@@ -110,16 +110,16 @@ class InductorElm
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (n == 0) {
-			inductance = ei.value;
-		}
+        if (n == 0) {
+            inductance = ei.value;
+        }
         if (n == 1) {
-			if (ei.checkbox.getState()) {
-				flags &= ~Inductor.FLAG_BACK_EULER;
-			}
-			else {
-				flags |= Inductor.FLAG_BACK_EULER;
-			}
+            if (ei.checkbox.getState()) {
+                flags &= ~Inductor.FLAG_BACK_EULER;
+            }
+            else {
+                flags |= Inductor.FLAG_BACK_EULER;
+            }
         }
         ind.setup(inductance, current, flags);
     }

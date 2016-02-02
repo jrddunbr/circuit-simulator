@@ -6,7 +6,7 @@ import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 class CurrentElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double currentValue;
 
@@ -64,9 +64,9 @@ class CurrentElm
         doDots(g);
         if (sim.showValuesCheckItem.getState()) {
             String s = getShortUnitText(currentValue, "A");
-			if (dx == 0 || dy == 0) {
-				drawValues(g, s, cr);
-			}
+            if (dx == 0 || dy == 0) {
+                drawValues(g, s, cr);
+            }
         }
         drawPosts(g);
     }
@@ -79,9 +79,9 @@ class CurrentElm
 
     public EditInfo getEditInfo(int n)
     {
-		if (n == 0) {
-			return new EditInfo("Current (A)", currentValue, 0, .1);
-		}
+        if (n == 0) {
+            return new EditInfo("Current (A)", currentValue, 0, .1);
+        }
         return null;
     }
 

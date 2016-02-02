@@ -10,7 +10,7 @@ import java.awt.Scrollbar;
 import java.util.StringTokenizer;
 
 class ThermistorElm
-		extends CircuitElm
+        extends CircuitElm
 {
     double minresistance, maxresistance;
     double resistance;
@@ -118,23 +118,23 @@ class ThermistorElm
     public EditInfo getEditInfo(int n)
     {
         // ohmString doesn't work here on linux
-		if (n == 0) {
-			return new EditInfo("Min resistance (ohms)", minresistance, 0, 0);
-		}
-		if (n == 1) {
-			return new EditInfo("Max resistance (ohms)", maxresistance, 0, 0);
-		}
+        if (n == 0) {
+            return new EditInfo("Min resistance (ohms)", minresistance, 0, 0);
+        }
+        if (n == 1) {
+            return new EditInfo("Max resistance (ohms)", maxresistance, 0, 0);
+        }
         return null;
     }
 
     public void setEditValue(int n, EditInfo ei)
     {
-		if (ei.value > 0 && n == 0) {
-			minresistance = ei.value;
-		}
-		if (ei.value > 0 && n == 1) {
-			maxresistance = ei.value;
-		}
+        if (ei.value > 0 && n == 0) {
+            minresistance = ei.value;
+        }
+        if (ei.value > 0 && n == 1) {
+            maxresistance = ei.value;
+        }
     }
 }
 
