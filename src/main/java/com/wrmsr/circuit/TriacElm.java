@@ -3,9 +3,6 @@ package com.wrmsr.circuit;
 // FIXME need to add TriacElm to srclist
 // FIXME need to uncomment TriacElm line from CirSim.java
 
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 // Silicon-Controlled Rectifier
@@ -15,33 +12,29 @@ import java.util.StringTokenizer;
 // 3, 2 = diode
 // 2, 1 = 50 ohm resistor
 
-class TriacElm
+public class TriacElm
         extends CircuitElm
 {
-    final int anode = 0;
-    final int cnode = 1;
-    final int gnode = 2;
-    final int inode = 3;
-    final int hs = 8;
-    Diode diode;
-    double ia, ic, ig, curcount_a, curcount_c, curcount_g;
-    double lastvac, lastvag;
-    double cresistance, triggerI, holdingI;
-    Polygon poly;
-    Point cathode[], gate[];
-    double aresistance;
+    public final int anode = 0;
+    public final int cnode = 1;
+    public final int gnode = 2;
+    public final int inode = 3;
+    public final int hs = 8;
+    public Diode diode;
+    public double ia, ic, ig, curcount_a, curcount_c, curcount_g;
+    public double lastvac, lastvag;
+    public double cresistance, triggerI, holdingI;
+    public double aresistance;
 
-    public TriacElm(int xx, int yy)
+    public TriacElm()
     {
-        super(xx, yy);
         setDefaults();
         setup();
     }
 
-    public TriacElm(int xa, int ya, int xb, int yb, int f,
-            StringTokenizer st)
+    public TriacElm(int f, StringTokenizer st)
     {
-        super(xa, ya, xb, yb, f);
+        super(f);
         setDefaults();
         try {
             lastvac = new Double(st.nextToken()).doubleValue();
@@ -58,121 +51,47 @@ class TriacElm
         setup();
     }
 
-    void setDefaults()
+    public void setDefaults()
     {
         cresistance = 50;
         holdingI = .0082;
         triggerI = .01;
     }
 
-    void setup()
+    public void setup()
     {
         diode = new Diode(sim);
         diode.setup(.8, 0);
     }
 
-    boolean nonLinear() { return true; }
+    public boolean nonLinear() { return true; }
 
-    void reset()
+    public void reset()
     {
         volts[anode] = volts[cnode] = volts[gnode] = 0;
         diode.reset();
         lastvag = lastvac = curcount_a = curcount_c = curcount_g = 0;
     }
 
-    int getDumpType() { return 206; }
+    public int getDumpType() { return 206; }
 
-    String dump()
+    public String dump()
     {
         return super.dump() + " " + (volts[anode] - volts[cnode]) + " " +
                 (volts[anode] - volts[gnode]) + " " + triggerI + " " + holdingI + " " +
                 cresistance;
     }
 
-    void setPoints()
-    {
-        super.setPoints();
-        int dir = 0;
-        if (abs(dx) > abs(dy)) {
-            dir = -sign(dx) * sign(dy);
-            point2.y = point1.y;
-        }
-        else {
-            dir = sign(dy) * sign(dx);
-            point2.x = point1.x;
-        }
-        if (dir == 0) {
-            dir = 1;
-        }
-        calcLeads(16);
-        cathode = newPointArray(2);
-        Point pa[] = newPointArray(2);
-        interpPoint2(lead1, lead2, pa[0], pa[1], 0, hs);
-        interpPoint2(lead1, lead2, cathode[0], cathode[1], 1, hs);
-        poly = createPolygon(pa[0], pa[1], lead2);
+    public int getPostCount() { return 3; }
 
-        gate = newPointArray(2);
-        double leadlen = (dn - 16) / 2;
-        int gatelen = sim.gridSize;
-        gatelen += leadlen % sim.gridSize;
-        if (leadlen < gatelen) {
-            x2 = x;
-            y2 = y;
-            return;
-        }
-        interpPoint(lead2, point2, gate[0], gatelen / leadlen, gatelen * dir);
-        interpPoint(lead2, point2, gate[1], gatelen / leadlen, sim.gridSize * 2 * dir);
-    }
+    public int getInternalNodeCount() { return 1; }
 
-    void draw(Graphics g)
-    {
-        setBbox(point1, point2, hs);
-        adjustBbox(gate[0], gate[1]);
-
-        double v1 = volts[anode];
-        double v2 = volts[cnode];
-
-        draw2Leads(g);
-
-        // draw arrow thingy
-        setPowerColor(g, true);
-        setVoltageColor(g, v1);
-        g.fillPolygon(poly);
-
-        // draw thing arrow is pointing to
-        setVoltageColor(g, v2);
-        drawThickLine(g, cathode[0], cathode[1]);
-
-        drawThickLine(g, lead2, gate[0]);
-        drawThickLine(g, gate[0], gate[1]);
-
-        curcount_a = updateDotCount(ia, curcount_a);
-        curcount_c = updateDotCount(ic, curcount_c);
-        curcount_g = updateDotCount(ig, curcount_g);
-        if (sim.dragElm != this) {
-            drawDots(g, point1, lead2, curcount_a);
-            drawDots(g, point2, lead2, curcount_c);
-            drawDots(g, gate[1], gate[0], curcount_g);
-            drawDots(g, gate[0], lead2, curcount_g + distance(gate[1], gate[0]));
-        }
-        drawPosts(g);
-    }
-
-    Point getPost(int n)
-    {
-        return (n == 0) ? point1 : (n == 1) ? point2 : gate[1];
-    }
-
-    int getPostCount() { return 3; }
-
-    int getInternalNodeCount() { return 1; }
-
-    double getPower()
+    public double getPower()
     {
         return (volts[anode] - volts[gnode]) * ia + (volts[cnode] - volts[gnode]) * ic;
     }
 
-    void stamp()
+    public void stamp()
     {
         sim.stampNonLinear(nodes[anode]);
         sim.stampNonLinear(nodes[cnode]);
@@ -182,7 +101,7 @@ class TriacElm
         diode.stamp(nodes[inode], nodes[gnode]);
     }
 
-    void doStep()
+    public void doStep()
     {
         double vac = volts[anode] - volts[cnode]; // typically negative
         double vag = volts[anode] - volts[gnode]; // typically positive
@@ -201,7 +120,7 @@ class TriacElm
         sim.stampResistor(nodes[anode], nodes[inode], aresistance);
     }
 
-    void getInfo(String arr[])
+    public void getInfo(String arr[])
     {
         arr[0] = "SCR";
         double vac = volts[anode] - volts[cnode];
@@ -214,39 +133,10 @@ class TriacElm
         arr[5] = "Vgc = " + getVoltageText(vgc);
     }
 
-    void calculateCurrent()
-    {
+    public void calculateCurrent() {
         ic = (volts[cnode] - volts[gnode]) / cresistance;
         ia = (volts[anode] - volts[inode]) / aresistance;
         ig = -ic - ia;
-    }
-
-    public EditInfo getEditInfo(int n)
-    {
-        // ohmString doesn't work here on linux
-        if (n == 0) {
-            return new EditInfo("Trigger Current (A)", triggerI, 0, 0);
-        }
-        if (n == 1) {
-            return new EditInfo("Holding Current (A)", holdingI, 0, 0);
-        }
-        if (n == 2) {
-            return new EditInfo("Gate-Cathode Resistance (ohms)", cresistance, 0, 0);
-        }
-        return null;
-    }
-
-    public void setEditValue(int n, EditInfo ei)
-    {
-        if (n == 0 && ei.value > 0) {
-            triggerI = ei.value;
-        }
-        if (n == 1 && ei.value > 0) {
-            holdingI = ei.value;
-        }
-        if (n == 2 && ei.value > 0) {
-            cresistance = ei.value;
-        }
     }
 }
 

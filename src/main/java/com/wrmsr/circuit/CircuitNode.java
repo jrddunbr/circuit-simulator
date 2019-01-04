@@ -2,11 +2,11 @@ package com.wrmsr.circuit;
 
 import java.util.Vector;
 
-class CircuitNode
+public class CircuitNode
 {
-    int x, y;
-    Vector<CircuitNodeLink> links;
-    boolean internal;
+    public int x, y;
+    public Vector<CircuitNodeLink> links;
+    public boolean internal;
 
-    CircuitNode() { links = new Vector<CircuitNodeLink>(); }
+    public CircuitNode() { links = new Vector<CircuitNodeLink>(); }
 }

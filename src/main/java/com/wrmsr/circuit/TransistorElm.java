@@ -1,42 +1,33 @@
 package com.wrmsr.circuit;
 
-import java.awt.Checkbox;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Polygon;
 import java.util.StringTokenizer;
 
-class TransistorElm
+public class TransistorElm
         extends CircuitElm
 {
-    static final double leakage = 1e-13; // 1e-6;
-    static final double vt = .025;
-    static final double vdcoef = 1 / vt;
-    static final double rgain = .5;
-    final int FLAG_FLIP = 1;
-    int pnp;
-    double beta;
-    double fgain;
-    double gmin;
-    double ic, ie, ib, curcount_c, curcount_e, curcount_b;
-    Polygon rectPoly, arrowPoly;
-    Point rect[], coll[], emit[], base;
-    double vcrit;
-    double lastvbc, lastvbe;
+    public static final double leakage = 1e-13; // 1e-6;
+    public static final double vt = .025;
+    public static final double vdcoef = 1 / vt;
+    public static final double rgain = .5;
+    public final int FLAG_FLIP = 1;
+    public int pnp;
+    public double beta;
+    public double fgain;
+    public double gmin;
+    public double ic, ie, ib, curcount_c, curcount_e, curcount_b;
+    public double vcrit;
+    public double lastvbc, lastvbe;
 
-    TransistorElm(int xx, int yy, boolean pnpflag)
+    public TransistorElm(boolean pnpflag)
     {
-        super(xx, yy);
         pnp = (pnpflag) ? -1 : 1;
         beta = 100;
         setup();
     }
 
-    public TransistorElm(int xa, int ya, int xb, int yb, int f,
-            StringTokenizer st)
+    public TransistorElm(int f, StringTokenizer st)
     {
-        super(xa, ya, xb, yb, f);
+        super(f);
         pnp = new Integer(st.nextToken()).intValue();
         beta = 100;
         try {
@@ -52,119 +43,37 @@ class TransistorElm
         setup();
     }
 
-    void setup()
+    public void setup()
     {
         vcrit = vt * Math.log(vt / (Math.sqrt(2) * leakage));
         fgain = beta / (beta + 1);
         noDiagonal = true;
     }
 
-    boolean nonLinear() { return true; }
+    public boolean nonLinear() { return true; }
 
-    void reset()
+    public void reset()
     {
         volts[0] = volts[1] = volts[2] = 0;
         lastvbc = lastvbe = curcount_c = curcount_e = curcount_b = 0;
     }
 
-    int getDumpType() { return 't'; }
+    public int getDumpType() { return 't'; }
 
-    String dump()
+    public String dump()
     {
         return super.dump() + " " + pnp + " " + (volts[0] - volts[1]) + " " +
                 (volts[0] - volts[2]) + " " + beta;
     }
 
-    void draw(Graphics g)
-    {
-        setBbox(point1, point2, 16);
-        setPowerColor(g, true);
-        // draw collector
-        setVoltageColor(g, volts[1]);
-        drawThickLine(g, coll[0], coll[1]);
-        // draw emitter
-        setVoltageColor(g, volts[2]);
-        drawThickLine(g, emit[0], emit[1]);
-        // draw arrow
-        g.setColor(lightGrayColor);
-        g.fillPolygon(arrowPoly);
-        // draw base
-        setVoltageColor(g, volts[0]);
-        if (sim.powerCheckItem.getState()) {
-            g.setColor(Color.gray);
-        }
-        drawThickLine(g, point1, base);
-        // draw dots
-        curcount_b = updateDotCount(-ib, curcount_b);
-        drawDots(g, base, point1, curcount_b);
-        curcount_c = updateDotCount(-ic, curcount_c);
-        drawDots(g, coll[1], coll[0], curcount_c);
-        curcount_e = updateDotCount(-ie, curcount_e);
-        drawDots(g, emit[1], emit[0], curcount_e);
-        // draw base rectangle
-        setVoltageColor(g, volts[0]);
-        setPowerColor(g, true);
-        g.fillPolygon(rectPoly);
+    public int getPostCount() { return 3; }
 
-        if ((needsHighlight() || sim.dragElm == this) && dy == 0) {
-            g.setColor(Color.white);
-            g.setFont(unitsFont);
-            int ds = sign(dx);
-            g.drawString("B", base.x - 10 * ds, base.y - 5);
-            g.drawString("C", coll[0].x - 3 + 9 * ds, coll[0].y + 4); // x+6 if ds=1, -12 if -1
-            g.drawString("E", emit[0].x - 3 + 9 * ds, emit[0].y + 4);
-        }
-        drawPosts(g);
-    }
-
-    Point getPost(int n)
-    {
-        return (n == 0) ? point1 : (n == 1) ? coll[0] : emit[0];
-    }
-
-    int getPostCount() { return 3; }
-
-    double getPower()
+    public double getPower()
     {
         return (volts[0] - volts[2]) * ib + (volts[1] - volts[2]) * ic;
     }
 
-    void setPoints()
-    {
-        super.setPoints();
-        int hs = 16;
-        if ((flags & FLAG_FLIP) != 0) {
-            dsign = -dsign;
-        }
-        int hs2 = hs * dsign * pnp;
-        // calc collector, emitter posts
-        coll = newPointArray(2);
-        emit = newPointArray(2);
-        interpPoint2(point1, point2, coll[0], emit[0], 1, hs2);
-        // calc rectangle edges
-        rect = newPointArray(4);
-        interpPoint2(point1, point2, rect[0], rect[1], 1 - 16 / dn, hs);
-        interpPoint2(point1, point2, rect[2], rect[3], 1 - 13 / dn, hs);
-        // calc points where collector/emitter leads contact rectangle
-        interpPoint2(point1, point2, coll[1], emit[1], 1 - 13 / dn, 6 * dsign * pnp);
-        // calc point where base lead contacts rectangle
-        base = new Point();
-        interpPoint(point1, point2, base, 1 - 16 / dn);
-
-        // rectangle
-        rectPoly = createPolygon(rect[0], rect[2], rect[3], rect[1]);
-
-        // arrow
-        if (pnp == 1) {
-            arrowPoly = calcArrow(emit[1], emit[0], 8, 4);
-        }
-        else {
-            Point pt = interpPoint(point1, point2, 1 - 11 / dn, -5 * dsign * pnp);
-            arrowPoly = calcArrow(emit[0], pt, 8, 4);
-        }
-    }
-
-    double limitStep(double vnew, double vold)
+    public double limitStep(double vnew, double vold)
     {
         double arg;
         double oo = vnew;
@@ -188,14 +97,14 @@ class TransistorElm
         return (vnew);
     }
 
-    void stamp()
+    public void stamp()
     {
         sim.stampNonLinear(nodes[0]);
         sim.stampNonLinear(nodes[1]);
         sim.stampNonLinear(nodes[2]);
     }
 
-    void doStep()
+    public void doStep()
     {
         double vbc = volts[0] - volts[1]; // typically negative
         double vbe = volts[0] - volts[2]; // typically positive
@@ -264,7 +173,7 @@ class TransistorElm
         sim.stampRightSide(nodes[2], -ie + gee * vbe + gec * vbc);
     }
 
-    void getInfo(String arr[])
+    public void getInfo(String arr[])
     {
         arr[0] = "transistor (" + ((pnp == -1) ? "PNP)" : "NPN)") + " beta=" +
                 showFormat.format(beta);
@@ -284,67 +193,5 @@ class TransistorElm
         arr[6] = "Vce = " + getVoltageText(vce);
     }
 
-    double getScopeValue(int x)
-    {
-        switch (x) {
-            case Scope.VAL_IB:
-                return ib;
-            case Scope.VAL_IC:
-                return ic;
-            case Scope.VAL_IE:
-                return ie;
-            case Scope.VAL_VBE:
-                return volts[0] - volts[2];
-            case Scope.VAL_VBC:
-                return volts[0] - volts[1];
-            case Scope.VAL_VCE:
-                return volts[1] - volts[2];
-        }
-        return 0;
-    }
-
-    String getScopeUnits(int x)
-    {
-        switch (x) {
-            case Scope.VAL_IB:
-            case Scope.VAL_IC:
-            case Scope.VAL_IE:
-                return "A";
-            default:
-                return "V";
-        }
-    }
-
-    public EditInfo getEditInfo(int n)
-    {
-        if (n == 0) {
-            return new EditInfo("Beta/hFE", beta, 10, 1000).
-                    setDimensionless();
-        }
-        if (n == 1) {
-            EditInfo ei = new EditInfo("", 0, -1, -1);
-            ei.checkbox = new Checkbox("Swap E/C", (flags & FLAG_FLIP) != 0);
-            return ei;
-        }
-        return null;
-    }
-
-    public void setEditValue(int n, EditInfo ei)
-    {
-        if (n == 0) {
-            beta = ei.value;
-            setup();
-        }
-        if (n == 1) {
-            if (ei.checkbox.getState()) {
-                flags |= FLAG_FLIP;
-            }
-            else {
-                flags &= ~FLAG_FLIP;
-            }
-            setPoints();
-        }
-    }
-
-    boolean canViewInScope() { return true; }
+    public boolean canViewInScope() { return true; }
 }

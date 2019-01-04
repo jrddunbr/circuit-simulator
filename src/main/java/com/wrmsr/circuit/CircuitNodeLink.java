@@ -1,7 +1,7 @@
 package com.wrmsr.circuit;
 
-class CircuitNodeLink
+public class CircuitNodeLink
 {
-    int num;
-    CircuitElm elm;
+    public int num;
+    public CircuitElm elm;
 }

@@ -4,33 +4,31 @@ import java.util.StringTokenizer;
 
 // contributed by Edward Calver
 
-class SRAMElm
+public class SRAMElm
         extends ChipElm
 {
-    short data[] = new short[256];//Fuck this lack of unsigned types. That's twice as much data as I'd need in C
+    public short data[] = new short[256];//Fuck this lack of unsigned types. That's twice as much data as I'd need in C
 
-    public SRAMElm(int xx, int yy)
+    public SRAMElm()
     {
-        super(xx, yy);
         short i;
         for (i = 0; i < 256; i++) {
             data[i] = 0;
         }
     }
 
-    public SRAMElm(int xa, int ya, int xb, int yb, int f,
-            StringTokenizer st)
+    public SRAMElm(int f, StringTokenizer st)
     {
-        super(xa, ya, xb, yb, f, st);
+        super(f, st);
         short i;
         for (i = 0; i < 256; i++) {
             data[i] = 0;//Initialise data
         }
     }
 
-    String getChipName() { return "SRAM"; }
+    public String getChipName() { return "SRAM"; }
 
-    void setupPins()
+    public void setupPins()
     {
         sizeX = 4;
         sizeY = 9;
@@ -64,14 +62,14 @@ class SRAMElm
         pins[17].output = true;
     }
 
-    int getPostCount()
+    public int getPostCount()
     {
         return 18;
     }
 
-    int getVoltageSourceCount() {return 8;}
+    public int getVoltageSourceCount() {return 8;}
 
-    void execute()
+    public void execute()
     {
         short index = 0;
         if (pins[8].value || pins[9].value) {
@@ -179,7 +177,7 @@ class SRAMElm
         }
     }
 
-    void doStep()
+    public void doStep()
     {
         int i;
         for (i = 0; i != getPostCount(); i++) {
@@ -200,5 +198,5 @@ class SRAMElm
         }
     }
 
-    int getDumpType() { return 204; }
+    public int getDumpType() { return 204; }
 }

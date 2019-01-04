@@ -3,20 +3,16 @@ package com.wrmsr.circuit;
 // FIXME need to add DiacElm.java to srclist
 // FIXME need to uncomment DiacElm line from CirSim.java
 
-import java.awt.Graphics;
-import java.awt.Point;
 import java.util.StringTokenizer;
 
-class DiacElm
+public class DiacElm
         extends CircuitElm
 {
-    double onresistance, offresistance, breakdown, holdcurrent;
-    boolean state;
-    Point ps3, ps4;
+    public double onresistance, offresistance, breakdown, holdcurrent;
+    public boolean state;
 
-    public DiacElm(int xx, int yy)
+    public DiacElm()
     {
-        super(xx, yy);
         // FIXME need to adjust defaults to make sense for diac
         offresistance = 1e9;
         onresistance = 1e3;
@@ -25,48 +21,26 @@ class DiacElm
         state = false;
     }
 
-    public DiacElm(int xa, int ya, int xb, int yb, int f,
-            StringTokenizer st)
+    public DiacElm(int f, StringTokenizer st)
     {
-        super(xa, ya, xb, yb, f);
+        super(f);
         onresistance = new Double(st.nextToken()).doubleValue();
         offresistance = new Double(st.nextToken()).doubleValue();
         breakdown = new Double(st.nextToken()).doubleValue();
         holdcurrent = new Double(st.nextToken()).doubleValue();
     }
 
-    boolean nonLinear() {return true;}
+    public boolean nonLinear() {return true;}
 
-    int getDumpType() { return 203; }
+    public int getDumpType() { return 203; }
 
-    String dump()
+    public String dump()
     {
         return super.dump() + " " + onresistance + " " + offresistance + " "
                 + breakdown + " " + holdcurrent;
     }
 
-    void setPoints()
-    {
-        super.setPoints();
-        calcLeads(32);
-        ps3 = new Point();
-        ps4 = new Point();
-    }
-
-    void draw(Graphics g)
-    {
-        // FIXME need to draw Diac
-        int i;
-        double v1 = volts[0];
-        double v2 = volts[1];
-        setBbox(point1, point2, 6);
-        draw2Leads(g);
-        setPowerColor(g, true);
-        doDots(g);
-        drawPosts(g);
-    }
-
-    void calculateCurrent()
+    public void calculateCurrent()
     {
         double vd = volts[0] - volts[1];
         if (state) {
@@ -77,7 +51,7 @@ class DiacElm
         }
     }
 
-    void startIteration()
+    public void startIteration()
     {
         double vd = volts[0] - volts[1];
         if (Math.abs(current) < holdcurrent) {
@@ -89,7 +63,7 @@ class DiacElm
         //System.out.print(this + " res current set to " + current + "\n");
     }
 
-    void doStep()
+    public void doStep()
     {
         if (state) {
             sim.stampResistor(nodes[0], nodes[1], onresistance);
@@ -99,13 +73,13 @@ class DiacElm
         }
     }
 
-    void stamp()
+    public void stamp()
     {
         sim.stampNonLinear(nodes[0]);
         sim.stampNonLinear(nodes[1]);
     }
 
-    void getInfo(String arr[])
+    public void getInfo(String arr[])
     {
         // FIXME
         arr[0] = "spark gap";
@@ -115,39 +89,6 @@ class DiacElm
         arr[5] = "Roff = " + getUnitText(offresistance, sim.ohmString);
         arr[6] = "Vbrkdn = " + getUnitText(breakdown, "V");
         arr[7] = "Ihold = " + getUnitText(holdcurrent, "A");
-    }
-
-    public EditInfo getEditInfo(int n)
-    {
-        if (n == 0) {
-            return new EditInfo("On resistance (ohms)", onresistance, 0, 0);
-        }
-        if (n == 1) {
-            return new EditInfo("Off resistance (ohms)", offresistance, 0, 0);
-        }
-        if (n == 2) {
-            return new EditInfo("Breakdown voltage (volts)", breakdown, 0, 0);
-        }
-        if (n == 3) {
-            return new EditInfo("Hold current (amps)", holdcurrent, 0, 0);
-        }
-        return null;
-    }
-
-    public void setEditValue(int n, EditInfo ei)
-    {
-        if (ei.value > 0 && n == 0) {
-            onresistance = ei.value;
-        }
-        if (ei.value > 0 && n == 1) {
-            offresistance = ei.value;
-        }
-        if (ei.value > 0 && n == 2) {
-            breakdown = ei.value;
-        }
-        if (ei.value > 0 && n == 3) {
-            holdcurrent = ei.value;
-        }
     }
 }
 
