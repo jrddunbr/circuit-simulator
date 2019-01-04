@@ -2,7 +2,7 @@ package com.wrmsr.circuit.io;
 
 import java.util.StringTokenizer;
 
-import com.wrmsr.circuit.VoltageElm;
+import com.wrmsr.circuit.generic.VoltageElm;
 
 public class RailElm
         extends VoltageElm

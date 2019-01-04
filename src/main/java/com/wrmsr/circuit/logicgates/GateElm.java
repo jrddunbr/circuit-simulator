@@ -1,6 +1,6 @@
 package com.wrmsr.circuit.logicgates;
 
-import com.wrmsr.circuit.CircuitElm;
+import com.wrmsr.circuit.generic.CircuitElm;
 
 import java.util.StringTokenizer;
 

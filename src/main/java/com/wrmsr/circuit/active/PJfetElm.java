@@ -13,7 +13,7 @@
  */
 package com.wrmsr.circuit.active;
 
-import com.wrmsr.circuit.JfetElm;
+import com.wrmsr.circuit.generic.JfetElm;
 
 public class PJfetElm
         extends JfetElm

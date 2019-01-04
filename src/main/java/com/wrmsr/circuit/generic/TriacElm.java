@@ -1,4 +1,4 @@
-package com.wrmsr.circuit;
+package com.wrmsr.circuit.generic;
 // stub implementation of TriacElm, based on SCRElm
 // FIXME need to add TriacElm to srclist
 // FIXME need to uncomment TriacElm line from CirSim.java

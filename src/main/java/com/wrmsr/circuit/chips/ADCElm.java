@@ -2,7 +2,7 @@ package com.wrmsr.circuit.chips;
 
 import java.util.StringTokenizer;
 
-import com.wrmsr.circuit.ChipElm;
+import com.wrmsr.circuit.generic.ChipElm;
 
 public class ADCElm
         extends ChipElm

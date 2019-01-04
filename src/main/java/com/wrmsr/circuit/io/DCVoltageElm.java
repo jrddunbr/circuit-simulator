@@ -1,6 +1,6 @@
 package com.wrmsr.circuit.io;
 
-import com.wrmsr.circuit.VoltageElm;
+import com.wrmsr.circuit.generic.VoltageElm;
 
 public class DCVoltageElm
         extends VoltageElm

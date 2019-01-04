@@ -1,4 +1,4 @@
-package com.wrmsr.circuit;
+package com.wrmsr.circuit.generic;
 
 import java.util.Vector;
 

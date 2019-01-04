@@ -1,4 +1,4 @@
-package com.wrmsr.circuit;
+package com.wrmsr.circuit.generic;
 
 // info about each row/column of the matrix for simplification purposes
 public class RowInfo

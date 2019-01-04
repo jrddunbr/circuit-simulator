@@ -1,6 +1,6 @@
 package com.wrmsr.circuit.active;
 
-import com.wrmsr.circuit.MosfetElm;
+import com.wrmsr.circuit.generic.MosfetElm;
 
 public class NMosfetElm
         extends MosfetElm

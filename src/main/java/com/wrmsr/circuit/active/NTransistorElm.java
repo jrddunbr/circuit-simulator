@@ -1,6 +1,6 @@
 package com.wrmsr.circuit.active;
 
-import com.wrmsr.circuit.TransistorElm;
+import com.wrmsr.circuit.generic.TransistorElm;
 
 class NTransistorElm
         extends TransistorElm

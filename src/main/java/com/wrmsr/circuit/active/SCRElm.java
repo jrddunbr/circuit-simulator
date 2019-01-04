@@ -2,8 +2,8 @@ package com.wrmsr.circuit.active;
 
 import java.util.StringTokenizer;
 
-import com.wrmsr.circuit.CircuitElm;
-import com.wrmsr.circuit.Diode;
+import com.wrmsr.circuit.generic.CircuitElm;
+import com.wrmsr.circuit.generic.Diode;
 
 // Silicon-Controlled Rectifier
 // 3 nodes, 1 internal node

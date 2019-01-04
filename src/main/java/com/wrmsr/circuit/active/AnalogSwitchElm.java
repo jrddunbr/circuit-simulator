@@ -2,7 +2,7 @@ package com.wrmsr.circuit.active;
 
 import java.util.StringTokenizer;
 
-import com.wrmsr.circuit.CircuitElm;
+import com.wrmsr.circuit.generic.CircuitElm;
 
 public class AnalogSwitchElm
         extends CircuitElm

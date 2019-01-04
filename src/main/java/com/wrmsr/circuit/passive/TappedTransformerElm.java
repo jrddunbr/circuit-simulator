@@ -2,7 +2,7 @@ package com.wrmsr.circuit.passive;
 
 import java.util.StringTokenizer;
 
-import com.wrmsr.circuit.CircuitElm;
+import com.wrmsr.circuit.generic.CircuitElm;
 
 public class TappedTransformerElm
         extends CircuitElm

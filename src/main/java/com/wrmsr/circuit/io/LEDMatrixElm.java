@@ -2,7 +2,7 @@ package com.wrmsr.circuit.io;
 
 import java.util.StringTokenizer;
 
-import com.wrmsr.circuit.ChipElm;
+import com.wrmsr.circuit.generic.ChipElm;
 
 public class LEDMatrixElm
         extends ChipElm

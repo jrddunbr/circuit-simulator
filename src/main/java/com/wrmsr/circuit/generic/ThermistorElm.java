@@ -1,24 +1,23 @@
-package com.wrmsr.circuit;
-// stub PhotoResistorElm based on SparkGapElm
-// FIXME need to uncomment PhotoResistorElm line from CirSim.java
-// FIXME need to add PhotoResistorElm.java to srclist
-
+package com.wrmsr.circuit.generic;
+// stub ThermistorElm based on SparkGapElm
+// FIXME need to uncomment ThermistorElm line from CirSim.java
+// FIXME need to add ThermistorElm.java to srclist
 
 import java.util.StringTokenizer;
 
-public class PhotoResistorElm
+public class ThermistorElm
         extends CircuitElm
 {
-    public double minresistance, maxresistance;
-    public double resistance;
+    double minresistance, maxresistance;
+    double resistance;
 
-    public PhotoResistorElm()
+    public ThermistorElm()
     {
         maxresistance = 1e9;
         minresistance = 1e3;
     }
 
-    public PhotoResistorElm(int f, StringTokenizer st)
+    public ThermistorElm(int f, StringTokenizer st)
     {
         super(f);
         minresistance = new Double(st.nextToken()).doubleValue();
@@ -27,7 +26,7 @@ public class PhotoResistorElm
 
     public boolean nonLinear() {return true;}
 
-    public int getDumpType() { return 190; }
+    public int getDumpType() { return 192; }
 
     public String dump()
     {
@@ -59,5 +58,14 @@ public class PhotoResistorElm
         sim.stampNonLinear(nodes[1]);
     }
 
+    public void getInfo(String arr[])
+    {
+        // FIXME
+        arr[0] = "spark gap";
+        getBasicInfo(arr);
+        arr[3] = "R = " + getUnitText(resistance, sim.ohmString);
+        arr[4] = "Ron = " + getUnitText(minresistance, sim.ohmString);
+        arr[5] = "Roff = " + getUnitText(maxresistance, sim.ohmString);
+    }
 }
 

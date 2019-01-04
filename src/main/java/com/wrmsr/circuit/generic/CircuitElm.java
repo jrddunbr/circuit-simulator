@@ -1,4 +1,6 @@
-package com.wrmsr.circuit;
+package com.wrmsr.circuit.generic;
+
+import com.wrmsr.circuit.CirSim;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -8,7 +10,7 @@ public abstract class CircuitElm
     public static final double pi = 3.14159265358979323846;
     public static NumberFormat showFormat, shortFormat, noCommaFormat;
     public static double voltageRange = 5;
-    static double currentMult, powerMult;
+    public static double currentMult, powerMult;
     public static CirSim sim;
     public int x, y, x2, y2, flags, nodes[], voltSource;
     public int dx, dy, dsign;

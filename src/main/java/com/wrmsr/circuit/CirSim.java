@@ -3,23 +3,14 @@ package com.wrmsr.circuit;
 
 // For information about the theory behind this, see Electronic Circuit & System Simulation Methods by Pillage
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FilterInputStream;
 import java.lang.reflect.Constructor;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import com.wrmsr.circuit.active.*;
 import com.wrmsr.circuit.basic.*;
-import com.wrmsr.circuit.chips.*;
+import com.wrmsr.circuit.generic.*;
 import com.wrmsr.circuit.io.*;
-import com.wrmsr.circuit.logicgates.*;
-import com.wrmsr.circuit.otherelements.*;
 import com.wrmsr.circuit.passive.*;
 
 public class CirSim

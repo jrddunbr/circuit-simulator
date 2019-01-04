@@ -1,4 +1,4 @@
-package com.wrmsr.circuit;
+package com.wrmsr.circuit.generic;
 // stub implementation of DiacElm, based on SparkGapElm
 // FIXME need to add DiacElm.java to srclist
 // FIXME need to uncomment DiacElm line from CirSim.java

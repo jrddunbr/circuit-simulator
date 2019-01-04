@@ -1,8 +1,8 @@
-package com.wrmsr.circuit.otherelements;
+package com.wrmsr.circuit.passive;
 
 import java.util.StringTokenizer;
 
-import com.wrmsr.circuit.CircuitElm;
+import com.wrmsr.circuit.generic.CircuitElm;
 
 public class ProbeElm
         extends CircuitElm

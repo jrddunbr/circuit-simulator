@@ -1,4 +1,6 @@
-package com.wrmsr.circuit;
+package com.wrmsr.circuit.generic;
+
+import com.wrmsr.circuit.CirSim;
 
 public class Diode
 {
