@@ -13,32 +13,22 @@ import com.wrmsr.circuit.generic.*;
 import com.wrmsr.circuit.io.*;
 import com.wrmsr.circuit.passive.*;
 
-public class CirSim
-{
+public class CirSim {
     public static final double pi = 3.14159265358979323846;
-    public static final int infoWidth = 120;
     public static final int HINT_LC = 1;
     public static final int HINT_RC = 2;
     public static final int HINT_3DB_C = 3;
     public static final int HINT_TWINT = 4;
     public static final int HINT_3DB_L = 5;
-    public static final int resct = 6;
     public static String muString = "u";
     public static String ohmString = "ohm";
-    public boolean useFrame;
     public Random random;
     public boolean analyzeFlag;
     public boolean dumpMatrix;
-    public boolean useBufferedImage;
     public double t;
-    public int scopeSelected = -1;
     public int hintType = -1, hintItem1, hintItem2;
-    public String stopMessage;
     public double timeStep;
     public Vector<CircuitElm> elmList;
-    public CircuitElm dragElm, menuElm, mouseElm, stopElm;
-    public CircuitElm plotXElm, plotYElm;
-    public SwitchElm heldSwitchElm;
     public double circuitMatrix[][], circuitRightSide[],
             origRightSide[], origMatrix[][];
     public RowInfo circuitRowInfo[];
@@ -50,14 +40,6 @@ public class CirSim
     public int scopeCount;
     public int scopeColCount[];
     public Class dumpTypes[];
-    public String clipboard;
-    public int circuitBottom;
-    public Vector<String> undoStack, redoStack;
-    public Circuit applet;
-    public String startCircuit = null;
-    public String startLabel = null;
-    public String startCircuitText = null;
-    public String baseURL = "http://www.falstad.com/circuit/";
     public long lastTime = 0, lastFrameTime, lastIterTime, secTime = 0;
     public int steps = 0;
     public Vector<CircuitNode> nodeList;
@@ -65,14 +47,10 @@ public class CirSim
     public boolean converged;
     public int subIterations;
 
-    public CirSim(Circuit a)
-    {
-        applet = a;
-        useFrame = false;
+    public CirSim() {
     }
 
-    public int getrand(int x)
-    {
+    public int getrand(int x) {
         int q = random.nextInt();
         if (q < 0) {
             q = -q;
@@ -80,17 +58,8 @@ public class CirSim
         return q % x;
     }
 
-    public void init()
-    {
-        String euroResistor = null;
-        String useFrameStr = null;
-        boolean printable = false;
-        boolean convention = true;
-
+    public void init() {
         CircuitElm.initClass(this);
-
-        boolean euro = (euroResistor != null && euroResistor.equalsIgnoreCase("true"));
-
         dumpTypes = new Class[300];
 
         /*
@@ -211,32 +180,16 @@ public class CirSim
         //otherMenu.add(getClassCheckItem("Add Scope Probe", "ProbeElm"));
 
         elmList = new Vector<CircuitElm>();
-//	setupList = new Vector();
-        undoStack = new Vector<String>();
-        redoStack = new Vector<String>();
 
         scopeColCount = new int[20];
         scopeCount = 0;
 
         random = new Random();
-
-
-        if (startCircuitText != null) {
-            readSetup(startCircuitText);
-        }
-        else if (stopMessage == null && startCircuit != null) {
-            //readSetupFile(startCircuit, startLabel);
-        }
-        else {
-            readSetup(null, 0, false);
-        }
-
-
+        readSetup(null, 0, false);
     }
 
 
-    public void register(Class c, CircuitElm elm)
-    {
+    public void register(Class c, CircuitElm elm) {
         int t = elm.getDumpType();
         if (t == 0) {
             System.out.println("no dump type: " + c);
@@ -256,8 +209,7 @@ public class CirSim
 
     }
 
-    public void updateCircuit()
-    {
+    public void updateCircuit() {
 
         if (analyzeFlag) {
             analyzeCircuit();
@@ -266,8 +218,7 @@ public class CirSim
 
         try {
             runCircuit();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             analyzeFlag = true;
             return;
@@ -278,8 +229,7 @@ public class CirSim
         lastFrameTime = lastTime;
     }
 
-    public String getHint()
-    {
+    public String getHint() {
         CircuitElm c1 = getElm(hintItem1);
         CircuitElm c2 = getElm(hintItem2);
         if (c1 == null || c2 == null) {
@@ -358,29 +308,24 @@ public class CirSim
     */
 
 
-    public CircuitNode getCircuitNode(int n)
-    {
+    public CircuitNode getCircuitNode(int n) {
         if (n >= nodeList.size()) {
             return null;
         }
         return nodeList.elementAt(n);
     }
 
-    public CircuitElm getElm(int n)
-    {
+    public CircuitElm getElm(int n) {
         if (n >= elmList.size()) {
             return null;
         }
         return elmList.elementAt(n);
     }
 
-    public void analyzeCircuit()
-    {
+    public void analyzeCircuit() {
         if (elmList.isEmpty()) {
             return;
         }
-        stopMessage = null;
-        stopElm = null;
         int i, j;
         int vscount = 0;
         nodeList = new Vector<CircuitNode>();
@@ -409,8 +354,7 @@ public class CirSim
         if (!gotGround && volt != null && !gotRail) {
             CircuitNode cn = new CircuitNode();
             nodeList.addElement(cn);
-        }
-        else {
+        } else {
             // otherwise allocate extra node for ground
             CircuitNode cn = new CircuitNode();
             cn.x = cn.y = -1;
@@ -439,8 +383,7 @@ public class CirSim
                     cn.links.addElement(cnl);
                     ce.setNode(j, nodeList.size());
                     nodeList.addElement(cn);
-                }
-                else {
+                } else {
                     CircuitNodeLink cnl = new CircuitNodeLink();
                     cnl.num = j;
                     cnl.elm = ce;
@@ -572,7 +515,8 @@ public class CirSim
                 FindPathInfo fpi = new FindPathInfo(FindPathInfo.INDUCT, ce,
                         ce.getNode(1));
                 if (!fpi.findPath(ce.getNode(0))) {
-                    stop("No path for current source!", ce);
+                    System.out.println("No path for current source!");
+                    stop();
                     return;
                 }
             }
@@ -582,7 +526,8 @@ public class CirSim
                 FindPathInfo fpi = new FindPathInfo(FindPathInfo.VOLTAGE, ce,
                         ce.getNode(1));
                 if (fpi.findPath(ce.getNode(0))) {
-                    stop("Voltage source/wire loop with no resistance!", ce);
+                    System.out.println("Voltage source/wire loop with no resistance!");
+                    stop();
                     return;
                 }
             }
@@ -593,11 +538,11 @@ public class CirSim
                 if (fpi.findPath(ce.getNode(0))) {
                     System.out.println(ce + " shorted");
                     ce.reset();
-                }
-                else {
+                } else {
                     fpi = new FindPathInfo(FindPathInfo.CAP_V, ce, ce.getNode(1));
                     if (fpi.findPath(ce.getNode(0))) {
-                        stop("Capacitor loop with no resistance!", ce);
+                        System.out.println("Capacitor loop with no resistance!");
+                        stop();
                         return;
                     }
                 }
@@ -651,7 +596,8 @@ public class CirSim
 		}*/
             if (j == matrixSize) {
                 if (qp == -1) {
-                    stop("Matrix error", null);
+                    System.out.println("Matrix Error!");
+                    stop();
                     return;
                 }
                 RowInfo elt = circuitRowInfo[qp];
@@ -681,8 +627,7 @@ public class CirSim
                     circuitRowInfo[i].dropRow = true;
                     //System.out.println(qp + " * " + qv + " = const " + elt.value);
                     i = -1; // start over from scratch
-                }
-                else if (circuitRightSide[i] + rsadd == 0) {
+                } else if (circuitRightSide[i] + rsadd == 0) {
                     // we found a row with only two nonzero entries, and one
                     // is the negative of the other; the values are equal
                     if (elt.type != RowInfo.ROW_NORMAL) {
@@ -745,8 +690,7 @@ public class CirSim
                     elt.value = e2.value;
                     elt.mapCol = -1;
                     //System.out.println(i + " = [late]const " + elt.value);
-                }
-                else {
+                } else {
                     elt.mapCol = e2.mapCol;
                     //System.out.println(i + " maps to: " + e2.mapCol);
                 }
@@ -782,8 +726,7 @@ public class CirSim
                 RowInfo ri = circuitRowInfo[j];
                 if (ri.type == RowInfo.ROW_CONST) {
                     newrs[ii] -= ri.value * circuitMatrix[i][j];
-                }
-                else {
+                } else {
                     newmatx[ii][ri.mapCol] += circuitMatrix[i][j];
                 }
             }
@@ -816,33 +759,29 @@ public class CirSim
         // needing to do it every frame
         if (!circuitNonLinear) {
             if (!lu_factor(circuitMatrix, circuitMatrixSize, circuitPermute)) {
-                stop("Singular matrix!", null);
+                System.out.println("Singular Matrix!");
+                stop();// singular matrix
                 return;
             }
         }
     }
 
 
-    public void stop(String s, CircuitElm ce)
-    {
-        stopMessage = s;
+    public void stop() {
         circuitMatrix = null;
-        stopElm = ce;
         analyzeFlag = false;
     }
 
     // control voltage source vs with voltage from n1 to n2 (must
     // also call stampVoltageSource())
-    public void stampVCVS(int n1, int n2, double coef, int vs)
-    {
+    public void stampVCVS(int n1, int n2, double coef, int vs) {
         int vn = nodeList.size() + vs;
         stampMatrix(vn, n1, coef);
         stampMatrix(vn, n2, -coef);
     }
 
     // stamp independent voltage source #vs, from n1 to n2, amount v
-    public void stampVoltageSource(int n1, int n2, int vs, double v)
-    {
+    public void stampVoltageSource(int n1, int n2, int vs, double v) {
         int vn = nodeList.size() + vs;
         stampMatrix(vn, n1, -1);
         stampMatrix(vn, n2, 1);
@@ -852,8 +791,7 @@ public class CirSim
     }
 
     // use this if the amount of voltage is going to be updated in doStep()
-    public void stampVoltageSource(int n1, int n2, int vs)
-    {
+    public void stampVoltageSource(int n1, int n2, int vs) {
         int vn = nodeList.size() + vs;
         stampMatrix(vn, n1, -1);
         stampMatrix(vn, n2, 1);
@@ -862,14 +800,12 @@ public class CirSim
         stampMatrix(n2, vn, -1);
     }
 
-    public void updateVoltageSource(int n1, int n2, int vs, double v)
-    {
+    public void updateVoltageSource(int n1, int n2, int vs, double v) {
         int vn = nodeList.size() + vs;
         stampRightSide(vn, v);
     }
 
-    public void stampResistor(int n1, int n2, double r)
-    {
+    public void stampResistor(int n1, int n2, double r) {
         double r0 = 1 / r;
         if (Double.isNaN(r0) || Double.isInfinite(r0)) {
             System.out.print("bad resistance " + r + " " + r0 + "\n");
@@ -882,8 +818,7 @@ public class CirSim
         stampMatrix(n2, n1, -r0);
     }
 
-    public void stampConductance(int n1, int n2, double r0)
-    {
+    public void stampConductance(int n1, int n2, double r0) {
         stampMatrix(n1, n1, r0);
         stampMatrix(n2, n2, r0);
         stampMatrix(n1, n2, -r0);
@@ -891,23 +826,20 @@ public class CirSim
     }
 
     // current from cn1 to cn2 is equal to voltage from vn1 to 2, divided by g
-    public void stampVCCurrentSource(int cn1, int cn2, int vn1, int vn2, double g)
-    {
+    public void stampVCCurrentSource(int cn1, int cn2, int vn1, int vn2, double g) {
         stampMatrix(cn1, vn1, g);
         stampMatrix(cn2, vn2, g);
         stampMatrix(cn1, vn2, -g);
         stampMatrix(cn2, vn1, -g);
     }
 
-    public void stampCurrentSource(int n1, int n2, double i)
-    {
+    public void stampCurrentSource(int n1, int n2, double i) {
         stampRightSide(n1, -i);
         stampRightSide(n2, i);
     }
 
     // stamp a current source from n1 to n2 depending on current through vs
-    public void stampCCCS(int n1, int n2, int vs, double gain)
-    {
+    public void stampCCCS(int n1, int n2, int vs, double gain) {
         int vn = nodeList.size() + vs;
         stampMatrix(n1, vn, gain);
         stampMatrix(n2, vn, -gain);
@@ -916,8 +848,7 @@ public class CirSim
     // stamp value x in row i, column j, meaning that a voltage change
     // of dv in node j will increase the current into node i by x dv.
     // (Unless i or j is a voltage source node.)
-    public void stampMatrix(int i, int j, double x)
-    {
+    public void stampMatrix(int i, int j, double x) {
         if (i > 0 && j > 0) {
             if (circuitNeedsMap) {
                 i = circuitRowInfo[i - 1].mapRow;
@@ -929,8 +860,7 @@ public class CirSim
                 }
                 j = ri.mapCol;
                 //System.out.println("stamping " + i + " " + j + " " + x);
-            }
-            else {
+            } else {
                 i--;
                 j--;
             }
@@ -940,14 +870,12 @@ public class CirSim
 
     // stamp value x on the right side of row i, representing an
     // independent current source flowing into node i
-    public void stampRightSide(int i, double x)
-    {
+    public void stampRightSide(int i, double x) {
         if (i > 0) {
             if (circuitNeedsMap) {
                 i = circuitRowInfo[i - 1].mapRow;
                 //System.out.println("stamping " + i + " " + x);
-            }
-            else {
+            } else {
                 i--;
             }
             circuitRightSide[i] += x;
@@ -955,8 +883,7 @@ public class CirSim
     }
 
     // indicate that the value on the right side of row i changes in doStep()
-    public void stampRightSide(int i)
-    {
+    public void stampRightSide(int i) {
         //System.out.println("rschanges true " + (i-1));
         if (i > 0) {
             circuitRowInfo[i - 1].rsChanges = true;
@@ -964,24 +891,21 @@ public class CirSim
     }
 
     // indicate that the values on the left side of row i change in doStep()
-    public void stampNonLinear(int i)
-    {
+    public void stampNonLinear(int i) {
         if (i > 0) {
             circuitRowInfo[i - 1].lsChanges = true;
         }
     }
 
-    public double getIterCount()
-    {
+    public double getIterCount() {
         //if (speedBar.getValue() == 0) {
-            return 0;
+        return 0;
         //}
         //return (Math.exp((speedBar.getValue()-1)/24.) + .5);
         //return .1 * Math.exp((speedBar.getValue() - 61) / 24.);
     }
 
-    public void runCircuit()
-    {
+    public void runCircuit() {
         if (circuitMatrix == null || elmList.size() == 0) {
             circuitMatrix = null;
             return;
@@ -1021,16 +945,14 @@ public class CirSim
                     CircuitElm ce = getElm(i);
                     ce.doStep();
                 }
-                if (stopMessage != null) {
-                    return;
-                }
                 boolean printit = debugprint;
                 debugprint = false;
                 for (j = 0; j != circuitMatrixSize; j++) {
                     for (i = 0; i != circuitMatrixSize; i++) {
                         double x = circuitMatrix[i][j];
                         if (Double.isNaN(x) || Double.isInfinite(x)) {
-                            stop("nan/infinite matrix!", null);
+                            System.out.println("nan/infinite matrix!");
+                            stop();
                             return;
                         }
                     }
@@ -1050,7 +972,8 @@ public class CirSim
                     }
                     if (!lu_factor(circuitMatrix, circuitMatrixSize,
                             circuitPermute)) {
-                        stop("Singular matrix!", null);
+                        System.out.println("Singular matrix!");
+                        stop();
                         return;
                     }
                 }
@@ -1062,8 +985,7 @@ public class CirSim
                     double res = 0;
                     if (ri.type == RowInfo.ROW_CONST) {
                         res = ri.value;
-                    }
-                    else {
+                    } else {
                         res = circuitRightSide[ri.mapCol];
                     }
 		    /*System.out.println(j + " " + res + " " +
@@ -1080,8 +1002,7 @@ public class CirSim
                                     cn.links.elementAt(k);
                             cnl.elm.setNodeVoltage(cnl.num, res);
                         }
-                    }
-                    else {
+                    } else {
                         int ji = j - (nodeList.size() - 1);
                         //System.out.println("setting vsrc " + ji + " to " + res);
                         voltageSources[ji].setCurrent(ji, res);
@@ -1095,7 +1016,8 @@ public class CirSim
                 System.out.print("converged after " + subiter + " iterations\n");
             }
             if (subiter == subiterCount) {
-                stop("Convergence failed!", null);
+                System.out.println("Convergence Failed!");
+                stop();
                 break;
             }
             t += timeStep;
@@ -1110,9 +1032,13 @@ public class CirSim
         //System.out.println((System.currentTimeMillis()-lastFrameTime)/(double) iter);
     }
 
-    public int min(int a, int b) { return (a < b) ? a : b; }
+    public int min(int a, int b) {
+        return (a < b) ? a : b;
+    }
 
-    public int max(int a, int b) { return (a > b) ? a : b; }
+    public int max(int a, int b) {
+        return (a > b) ? a : b;
+    }
 
     /*
 
@@ -1333,13 +1259,11 @@ public class CirSim
 
     */
 
-    public void readSetup(String text)
-    {
+    public void readSetup(String text) {
         readSetup(text, false);
     }
 
-    public void readSetup(String text, boolean retain)
-    {
+    public void readSetup(String text, boolean retain) {
         readSetup(text.getBytes(), text.length(), retain);
     }
 
@@ -1369,8 +1293,7 @@ public class CirSim
 
     */
 
-    public void readSetup(byte b[], int len, boolean retain)
-    {
+    public void readSetup(byte b[], int len, boolean retain) {
         int i;
         if (!retain) {
             for (i = 0; i != elmList.size(); i++) {
@@ -1448,12 +1371,10 @@ public class CirSim
                     oarr[5] = st;
                     ce = (CircuitElm) cstr.newInstance(oarr);
                     elmList.addElement(ce);
-                }
-                catch (java.lang.reflect.InvocationTargetException ee) {
+                } catch (java.lang.reflect.InvocationTargetException ee) {
                     ee.getTargetException().printStackTrace();
                     break;
-                }
-                catch (Exception ee) {
+                } catch (Exception ee) {
                     ee.printStackTrace();
                     break;
                 }
@@ -1463,15 +1384,13 @@ public class CirSim
         }
     }
 
-    public void readHint(StringTokenizer st)
-    {
+    public void readHint(StringTokenizer st) {
         hintType = new Integer(st.nextToken()).intValue();
         hintItem1 = new Integer(st.nextToken()).intValue();
         hintItem2 = new Integer(st.nextToken()).intValue();
     }
 
-    public void readOptions(StringTokenizer st)
-    {
+    public void readOptions(StringTokenizer st) {
         int flags = new Integer(st.nextToken()).intValue();
         timeStep = new Double(st.nextToken()).doubleValue();
         double sp = new Double(st.nextToken()).doubleValue();
@@ -1494,8 +1413,7 @@ public class CirSim
 
     */
 
-    public int locateElm(CircuitElm elm)
-    {
+    public int locateElm(CircuitElm elm) {
         int i;
         for (i = 0; i != elmList.size(); i++) {
             if (elm == elmList.elementAt(i)) {
@@ -1506,16 +1424,14 @@ public class CirSim
     }
 
 
-    public int distanceSq(int x1, int y1, int x2, int y2)
-    {
+    public int distanceSq(int x1, int y1, int x2, int y2) {
         x2 -= x1;
         y2 -= y1;
         return x2 * x2 + y2 * y2;
     }
 
 
-    public CircuitElm constructElement(Class c, int x0, int y0)
-    {
+    public CircuitElm constructElement(Class c, int x0, int y0) {
         // find element class
         Class carr[] = new Class[2];
         //carr[0] = getClass();
@@ -1523,12 +1439,10 @@ public class CirSim
         Constructor cstr = null;
         try {
             cstr = c.getConstructor(carr);
-        }
-        catch (NoSuchMethodException ee) {
+        } catch (NoSuchMethodException ee) {
             System.out.println("caught NoSuchMethodException " + c);
             return null;
-        }
-        catch (Exception ee) {
+        } catch (Exception ee) {
             ee.printStackTrace();
             return null;
         }
@@ -1539,8 +1453,7 @@ public class CirSim
         oarr[1] = new Integer(y0);
         try {
             return (CircuitElm) cstr.newInstance(oarr);
-        }
-        catch (Exception ee) {
+        } catch (Exception ee) {
             ee.printStackTrace();
         }
         return null;
@@ -1731,8 +1644,7 @@ public class CirSim
     // gaussian elimination.  On entry, a[0..n-1][0..n-1] is the
     // matrix to be factored.  ipvt[] returns an integer vector of pivot
     // indices, used in the lu_solve() routine.
-    public boolean lu_factor(double a[][], int n, int ipvt[])
-    {
+    public boolean lu_factor(double a[][], int n, int ipvt[]) {
         double scaleFactors[];
         int i, j, k;
 
@@ -1816,8 +1728,7 @@ public class CirSim
     // Solves the set of n linear equations using a LU factorization
     // previously performed by lu_factor.  On input, b[0..n-1] is the right
     // hand side of the equations, and on output, contains the solution.
-    public void lu_solve(double a[][], int n, int ipvt[], double b[])
-    {
+    public void lu_solve(double a[][], int n, int ipvt[], double b[]) {
         int i;
 
         // find first nonzero b element
@@ -1857,8 +1768,7 @@ public class CirSim
         }
     }
 
-    public  class FindPathInfo
-    {
+    public class FindPathInfo {
         static final int INDUCT = 1;
         static final int VOLTAGE = 2;
         static final int SHORT = 3;
@@ -1868,18 +1778,18 @@ public class CirSim
         CircuitElm firstElm;
         int type;
 
-        public FindPathInfo(int t, CircuitElm e, int d)
-        {
+        public FindPathInfo(int t, CircuitElm e, int d) {
             dest = d;
             type = t;
             firstElm = e;
             used = new boolean[nodeList.size()];
         }
 
-        public boolean findPath(int n1) { return findPath(n1, -1); }
+        public boolean findPath(int n1) {
+            return findPath(n1, -1);
+        }
 
-        public boolean findPath(int n1, int depth)
-        {
+        public boolean findPath(int n1, int depth) {
             if (n1 == dest) {
                 return true;
             }

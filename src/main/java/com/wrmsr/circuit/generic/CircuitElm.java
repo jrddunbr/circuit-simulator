@@ -13,8 +13,6 @@ public abstract class CircuitElm
     public static double currentMult, powerMult;
     public static CirSim sim;
     public int x, y, x2, y2, flags, nodes[], voltSource;
-    public int dx, dy, dsign;
-    public double dn, dpx1, dpy1;
     public double volts[];
     public double current, curcount;
     public boolean noDiagonal;
@@ -34,8 +32,6 @@ public abstract class CircuitElm
     public static void initClass(CirSim s)
     {
         sim = s;
-
-
         showFormat = DecimalFormat.getInstance();
         showFormat.setMaximumFractionDigits(2);
         shortFormat = DecimalFormat.getInstance();

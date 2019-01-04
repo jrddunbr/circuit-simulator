@@ -7,7 +7,7 @@ public class Circuit
 
     public static void main(String args[])
     {
-        ogf = new CirSim(null);
+        ogf = new CirSim();
         ogf.init();
     }
 };
